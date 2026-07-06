@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bookbank/Widgets/NavigationBar.dart';
-import 'package:bookbank/Theme/app_style.dart';
+import 'package:bookbank/Widgets/navigation_bar.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: AppColors.background),
-      home: HomePage(),
+      theme: AppTheme.lightTheme,
+      home: const HomePage(),
     );
   }
 }
