@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
@@ -142,255 +144,291 @@ class _RecordScreenState extends State<RecordScreen> {
     final filtered = _filteredTransactions;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 45, 24, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              isTablet ? 32.w : 24.w,
+              isTablet ? 60.h : 45.h,
+              isTablet ? 32.w : 24.w,
+              isTablet ? 32.h : 24.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.list_alt, size: 28, color: theme.iconTheme.color),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Text('Record', style: textTheme.bodyMedium),
-                    Text(
-                      'Transaction History',
-                      style: textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
-                      ),
+                    Icon(
+                      Icons.list_alt,
+                      size: isTablet ? 32.sp : 28.sp,
+                      color: theme.iconTheme.color,
                     ),
-                  ],
-                ),
-              ],
-            ),
-
-            Container(
-              height: 50,
-              width: double.infinity,
-              margin: const EdgeInsets.only(top: 18, bottom: 12),
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.border),
-                borderRadius: BorderRadius.circular(50),
-                color: theme.colorScheme.surface,
-              ),
-              child: Row(
-                children: [
-                  _buildFilterTab(
-                    value: RecordFilter.all,
-                    icon: Icons.filter_list,
-                    label: 'All',
-                  ),
-                  _buildFilterTab(
-                    value: RecordFilter.income,
-                    icon: Icons.trending_up,
-                    label: 'Income',
-                  ),
-                  _buildFilterTab(
-                    value: RecordFilter.expense,
-                    icon: Icons.trending_down,
-                    label: 'Expense',
-                  ),
-                ],
-              ),
-            ),
-
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 48,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.border),
-                      borderRadius: BorderRadius.circular(50),
-                      color: theme.colorScheme.surface,
-                    ),
-                    child: Row(
+                    SizedBox(width: isTablet ? 20.w : 16.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.search,
-                          size: AppSize.l,
-                          color: theme.iconTheme.color,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            style: textTheme.bodySmall,
-                            decoration: InputDecoration(
-                              hintText: 'Search',
-                              hintStyle: textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurface.withValues(
-                                  alpha: 0.5,
-                                ),
-                              ),
-                              border: InputBorder.none,
-                              isDense: true,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                            onChanged: (_) => setState(() {}),
+                        Text(
+                          'Record',
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: isTablet ? 18.sp : 16.sp,
                           ),
                         ),
-                        if (_searchController.text.isNotEmpty)
-                          GestureDetector(
-                            onTap: () {
-                              _searchController.clear();
-                              setState(() {});
-                            },
-                            child: Icon(
-                              Icons.close,
-                              size: 18,
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: Container(
-                    height: 48,
-                    width: 150,
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _hasDateRange
-                            ? theme.colorScheme.onSurface
-                            : AppColors.border,
-                      ),
-                      borderRadius: BorderRadius.circular(50),
-                      color: theme.colorScheme.surface,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: InkWell(
-                            onTap: _selectDateRange,
-                            borderRadius: BorderRadius.circular(50),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Text(
-                                _dateRangeLabel,
-                                overflow: TextOverflow.ellipsis,
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: _hasDateRange
-                                      ? theme.colorScheme.onSurface
-                                      : theme.colorScheme.onSurface.withValues(
-                                          alpha: 0.5,
-                                        ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        InkWell(
-                          onTap: _hasDateRange
-                              ? _clearDateFilter
-                              : _selectDateRange,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Icon(
-                            _hasDateRange ? Icons.close : Icons.calendar_today,
-                            size: 18,
+                        Text(
+                          'Transaction History',
+                          style: textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurface.withValues(
                               alpha: 0.5,
                             ),
+                            fontSize: isTablet ? 14.sp : 12.sp,
                           ),
                         ),
                       ],
                     ),
+                  ],
+                ),
+
+                Container(
+                  height: isTablet ? 56.h : 50.h,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(
+                    top: isTablet ? 24.h : 18.h,
+                    bottom: isTablet ? 16.h : 12.h,
+                  ),
+                  padding: EdgeInsets.all(isTablet ? 3.r : 2.r),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.border),
+                    borderRadius: BorderRadius.circular(50.r),
+                    color: theme.colorScheme.surface,
+                  ),
+                  child: Row(
+                    children: [
+                      _buildFilterTab(
+                        value: RecordFilter.all,
+                        icon: Icons.filter_list,
+                        label: 'All',
+                      ),
+                      _buildFilterTab(
+                        value: RecordFilter.income,
+                        icon: Icons.trending_up,
+                        label: 'Income',
+                      ),
+                      _buildFilterTab(
+                        value: RecordFilter.expense,
+                        icon: Icons.trending_down,
+                        label: 'Expense',
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
 
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(top: 16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.border),
-                  color: theme.colorScheme.surface,
-                ),
-                child: Column(
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            'Amount',
-                            style: textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            'Position',
-                            style: textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            'Date',
-                            style: textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Divider(color: AppColors.border, height: 1),
                     Expanded(
-                      child: _isLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : filtered.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No records found',
+                      child: Container(
+                        height: isTablet ? 56.h : 48.h,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isTablet ? 20.w : 16.w,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.border),
+                          borderRadius: BorderRadius.circular(50.r),
+                          color: theme.colorScheme.surface,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              size: isTablet ? 24.sp : 20.sp,
+                              color: theme.iconTheme.color,
+                            ),
+                            SizedBox(width: isTablet ? 12.w : 8.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _searchController,
                                 style: textTheme.bodySmall?.copyWith(
+                                  fontSize: isTablet ? 16.sp : 14.sp,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Search',
+                                  hintStyle: textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.5),
+                                    fontSize: isTablet ? 16.sp : 14.sp,
+                                  ),
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                                onChanged: (_) => setState(() {}),
+                              ),
+                            ),
+                            if (_searchController.text.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  _searchController.clear();
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  size: isTablet ? 22.sp : 18.sp,
                                   color: theme.colorScheme.onSurface.withValues(
                                     alpha: 0.5,
                                   ),
                                 ),
                               ),
-                            )
-                          : ListView.builder(
-                              itemCount: filtered.length,
-                              itemBuilder: (context, index) {
-                                return _buildRecordRow(filtered[index]);
-                              },
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: isTablet ? 16.w : 12.w),
+                    Flexible(
+                      child: Container(
+                        height: isTablet ? 56.h : 48.h,
+                        width: isTablet ? 180.w : 150.w,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isTablet ? 18.w : 14.w,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: _hasDateRange
+                                ? theme.colorScheme.onSurface
+                                : AppColors.border,
+                          ),
+                          borderRadius: BorderRadius.circular(50.r),
+                          color: theme.colorScheme.surface,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: InkWell(
+                                onTap: _selectDateRange,
+                                borderRadius: BorderRadius.circular(50.r),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: isTablet ? 14.h : 12.h,
+                                  ),
+                                  child: Text(
+                                    _dateRangeLabel,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: _hasDateRange
+                                          ? theme.colorScheme.onSurface
+                                          : theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.5),
+                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
+                            SizedBox(width: isTablet ? 12.w : 8.w),
+                            InkWell(
+                              onTap: _hasDateRange
+                                  ? _clearDateFilter
+                                  : _selectDateRange,
+                              borderRadius: BorderRadius.circular(20.r),
+                              child: Icon(
+                                _hasDateRange
+                                    ? Icons.close
+                                    : Icons.calendar_today,
+                                size: isTablet ? 22.sp : 18.sp,
+                                color: theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
+
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: isTablet ? 24.h : 16.h),
+                    padding: EdgeInsets.all(isTablet ? 20.r : 16.r),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(color: AppColors.border),
+                      color: theme.colorScheme.surface,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                'Amount',
+                                style: textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: isTablet ? 16.sp : 14.sp,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                'Position',
+                                style: textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: isTablet ? 16.sp : 14.sp,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                'Date',
+                                style: textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: isTablet ? 16.sp : 14.sp,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: isTablet ? 12.h : 8.h),
+                        Divider(color: AppColors.border, height: 1),
+                        Expanded(
+                          child: _isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : filtered.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'No records found',
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.5),
+                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: filtered.length,
+                                  itemBuilder: (context, index) {
+                                    return _buildRecordRow(filtered[index]);
+                                  },
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

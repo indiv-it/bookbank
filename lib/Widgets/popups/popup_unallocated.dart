@@ -78,6 +78,7 @@ class PopupUnallocated extends StatelessWidget {
             ],
           ),
           Text('Unallocated Funds', style: AppSize.s),
+          const SizedBox(height: 8),
 
           // Money display
           Row(
@@ -110,7 +111,10 @@ class PopupUnallocated extends StatelessWidget {
           const SizedBox(height: 8),
 
           // All money in the group
-          Text('All money in the group', style: AppSize.s),
+          Text(
+            'All money in the group',
+            style: AppSize.s.copyWith(color: AppColors.grey),
+          ),
           LayoutBuilder(
             builder: (context, constraints) {
               return Container(

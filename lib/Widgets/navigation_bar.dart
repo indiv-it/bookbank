@@ -1,5 +1,7 @@
 import 'package:bookbank/features/charts/chart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:bookbank/features/home/home_screen.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
@@ -31,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   // Build navigation item
   Widget _buildNavItem(int index, IconData icon) {
     bool isSelected = currentIndex == index;
+    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -39,8 +42,8 @@ class _HomePageState extends State<HomePage> {
       },
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
-        width: 50,
-        height: 50,
+        width: isTablet ? 60.w : 50.w,
+        height: isTablet ? 60.h : 50.h,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,16 +51,16 @@ class _HomePageState extends State<HomePage> {
             Icon(
               icon,
               color: isSelected ? AppColors.card : AppColors.grey,
-              size: 23,
+              size: isTablet ? 28.sp : 23.sp,
             ),
             if (isSelected) ...[
-              const SizedBox(height: 6),
+              SizedBox(height: isTablet ? 8.h : 6.h),
               Container(
-                width: 24,
-                height: 3,
+                width: isTablet ? 28.w : 24.w,
+                height: isTablet ? 4.h : 3.h,
                 decoration: BoxDecoration(
                   color: AppColors.card,
-                  borderRadius: BorderRadius.circular(1.5),
+                  borderRadius: BorderRadius.circular(isTablet ? 2.r : 1.5.r),
                 ),
               ),
             ],
@@ -70,13 +73,17 @@ class _HomePageState extends State<HomePage> {
   // Build the navigation bar
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     return Scaffold(
       extendBody: true,
       body: pages[currentIndex],
       bottomNavigationBar: SafeArea(
         child: Container(
-          height: 80,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          height: isTablet ? 100.h : 80.h,
+          margin: EdgeInsets.symmetric(
+            horizontal: isTablet ? 24.w : 20.w,
+            vertical: isTablet ? 20.h : 15.h,
+          ),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -86,10 +93,10 @@ class _HomePageState extends State<HomePage> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 65,
+                  height: isTablet ? 75.h : 65.h,
                   decoration: BoxDecoration(
                     color: AppColors.black,
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(isTablet ? 40.r : 35.r),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -97,7 +104,9 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       _buildNavItem(0, Icons.home),
                       _buildNavItem(1, Icons.list_alt),
-                      const SizedBox(width: 80), // Space for center button
+                      SizedBox(
+                        width: isTablet ? 100.w : 80.w,
+                      ), // Space for center button
                       _buildNavItem(3, Icons.area_chart),
                       _buildNavItem(4, Icons.edit_square),
                     ],
@@ -121,14 +130,21 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: Container(
-                    height: 70,
-                    width: 70,
+                    height: isTablet ? 84.h : 70.h,
+                    width: isTablet ? 84.w : 70.w,
                     decoration: BoxDecoration(
                       color: AppColors.background,
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.black, width: 8),
+                      border: Border.all(
+                        color: AppColors.black,
+                        width: isTablet ? 10 : 8,
+                      ),
                     ),
-                    child: Icon(Icons.add, color: AppColors.black, size: 24),
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.black,
+                      size: isTablet ? 28.sp : 24.sp,
+                    ),
                   ),
                 ),
               ),

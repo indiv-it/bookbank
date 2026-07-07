@@ -1,5 +1,7 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 // Local Imports
@@ -99,126 +101,155 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 45, 24, 24),
-        child: Column(
-          children: [
-            // Header app
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              isTablet ? 32.w : 24.w,
+              isTablet ? 60.h : 45.h,
+              isTablet ? 32.w : 24.w,
+              isTablet ? 32.h : 24.h,
+            ),
+            child: Column(
               children: [
+                // Header app
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: isTablet ? 48.w : 40.w,
+                          height: isTablet ? 48.h : 40.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              isTablet ? 24.r : 20.r,
+                            ),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        SizedBox(width: isTablet ? 12.w : 8.w),
+                        Text(
+                          "BookBank",
+                          style: textTheme.titleLarge?.copyWith(
+                            fontSize: isTablet ? 24.sp : 20.sp,
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: isTablet ? 48.w : 40.w,
+                      height: isTablet ? 48.h : 40.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: theme.colorScheme.onSurface,
+                        borderRadius: BorderRadius.circular(
+                          isTablet ? 24.r : 20.r,
+                        ),
+                        border: Border.all(color: AppColors.border),
+                        color: theme.colorScheme.surface,
+                      ),
+                      child: Icon(
+                        Icons.menu,
+                        color: AppColors.black,
+                        size: isTablet ? 24.sp : 20.sp,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Text("BookBank", style: textTheme.titleLarge),
                   ],
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: AppColors.border),
-                    color: theme.colorScheme.surface,
-                  ),
-                  child: Icon(Icons.menu, color: AppColors.black),
+                SizedBox(height: isTablet ? 24.h : 16.h),
+
+                DashboardSummary(
+                  totalBalance: _totalBalance,
+                  bankBalance: _bankBalance,
+                  cashBalance: _cashBalance,
+                  incomeTotal: _incomeTotal,
+                  expenseTotal: _expenseTotal,
+                  monthlyIncome: _monthlyIncome,
+                  monthlyExpense: _monthlyExpense,
+                  spots: _spots,
+                ),
+
+                UnallocatedSummary(
+                  incomeTotal: _incomeTotal,
+                  totalBalance: _totalBalance,
+                  unallocatedAmount: _unallocatedAmount,
+                  group1Amount: _group1Amount,
+                  group2Amount: _group2Amount,
+                  group3Amount: _group3Amount,
+                  group4Amount: _group4Amount,
+                  group1Percentage: _group1Percentage,
+                  group2Percentage: _group2Percentage,
+                  group3Percentage: _group3Percentage,
+                  group4Percentage: _group4Percentage,
+                  unallocatedPercentage: _unallocatedPercentage,
+                ),
+
+                // Groups Row1
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GroupCard(
+                        groupName: 'Group1',
+                        groupCount: _group1Count,
+                        groupAmount: _group1Amount,
+                        groupColor: theme.colorScheme.primary,
+                        groupIcon: Icons.add,
+                        transactions: _transactions,
+                        percentage: _group1Percentage,
+                      ),
+                    ),
+                    SizedBox(width: isTablet ? 16.w : 12.w),
+                    Expanded(
+                      child: GroupCard(
+                        groupName: 'Group2',
+                        groupCount: _group2Count,
+                        groupAmount: _group2Amount,
+                        groupColor: theme.colorScheme.secondary,
+                        groupIcon: Icons.add,
+                        transactions: _transactions,
+                        percentage: _group2Percentage,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: isTablet ? 16.h : 12.h),
+
+                // Groups Row2
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GroupCard(
+                        groupName: 'Group3',
+                        groupCount: _group3Count,
+                        groupAmount: _group3Amount,
+                        groupColor: Colors.purple,
+                        groupIcon: Icons.add,
+                        transactions: _transactions,
+                        percentage: _group3Percentage,
+                      ),
+                    ),
+                    SizedBox(width: isTablet ? 16.w : 12.w),
+                    Expanded(
+                      child: GroupCard(
+                        groupName: 'Group4',
+                        groupCount: _group4Count,
+                        groupAmount: _group4Amount,
+                        groupColor: Colors.pink,
+                        groupIcon: Icons.add,
+                        transactions: _transactions,
+                        percentage: _group4Percentage,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-
-            DashboardSummary(
-              totalBalance: _totalBalance,
-              bankBalance: _bankBalance,
-              cashBalance: _cashBalance,
-              incomeTotal: _incomeTotal,
-              expenseTotal: _expenseTotal,
-              monthlyIncome: _monthlyIncome,
-              monthlyExpense: _monthlyExpense,
-              spots: _spots,
-            ),
-
-            UnallocatedSummary(
-              incomeTotal: _incomeTotal,
-              totalBalance: _totalBalance,
-              unallocatedAmount: _unallocatedAmount,
-              group1Amount: _group1Amount,
-              group2Amount: _group2Amount,
-              group3Amount: _group3Amount,
-              group4Amount: _group4Amount,
-              group1Percentage: _group1Percentage,
-              group2Percentage: _group2Percentage,
-              group3Percentage: _group3Percentage,
-              group4Percentage: _group4Percentage,
-              unallocatedPercentage: _unallocatedPercentage,
-            ),
-
-            // Groups Row1
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GroupCard(
-                  groupName: 'Group1',
-                  groupCount: _group1Count,
-                  groupAmount: _group1Amount,
-                  groupColor:
-                      theme.colorScheme.primary, // Using primary color for blue
-                  groupIcon: Icons.add,
-                  transactions: _transactions,
-                  percentage: _group1Percentage,
-                ),
-                GroupCard(
-                  groupName: 'Group2',
-                  groupCount: _group2Count,
-                  groupAmount: _group2Amount,
-                  groupColor:
-                      theme.colorScheme.secondary, // Using secondary for orange
-                  groupIcon: Icons.add,
-                  transactions: _transactions,
-                  percentage: _group2Percentage,
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Groups Row2
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GroupCard(
-                  groupName: 'Group3',
-                  groupCount: _group3Count,
-                  groupAmount: _group3Amount,
-                  groupColor:
-                      Colors.purple, // Replace with proper color from theme
-                  groupIcon: Icons.add,
-                  transactions: _transactions,
-                  percentage: _group3Percentage,
-                ),
-                GroupCard(
-                  groupName: 'Group4',
-                  groupCount: _group4Count,
-                  groupAmount: _group4Amount,
-                  groupColor:
-                      Colors.pink, // Replace with proper color from theme
-                  groupIcon: Icons.add,
-                  transactions: _transactions,
-                  percentage: _group4Percentage,
-                ),
-              ],
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

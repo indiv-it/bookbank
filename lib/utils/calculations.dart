@@ -7,46 +7,56 @@ class FinancialCalculations {
 
   FinancialCalculations(this.transactions);
 
-  // รายรับเงินในบัญชี
+  // รายรับเงินในบัญชี + transfer ที่เข้า bank (moneyGroup='bank')
   int filterBankIncome() {
     int sum = 0;
     for (var element in transactions) {
-      if (element.moneyList == 'bank' && element.moneyType == 'income') {
+      if (element.moneyType == 'income' && element.moneyList == 'bank') {
+        sum += element.amount.toInt();
+      } else if (element.moneyType == 'transfer' && element.moneyGroup == 'bank') {
+        // transfer เข้า bank → เพิ่มยอด bank
         sum += element.amount.toInt();
       }
     }
     return sum;
   }
 
-  // รายจ่ายเงินในบัญชี (รวม transfer ที่ออกจาก bank)
+  // รายจ่ายเงินในบัญชี + transfer ที่ออกจาก bank (moneyList='bank')
   int filterBankExpense() {
     int sum = 0;
     for (var element in transactions) {
-      if (element.moneyList == 'bank' &&
-          (element.moneyType == 'expense' || element.moneyType == 'transfer')) {
+      if (element.moneyType == 'expense' && element.moneyList == 'bank') {
+        sum += element.amount.toInt();
+      } else if (element.moneyType == 'transfer' && element.moneyList == 'bank') {
+        // transfer ออกจาก bank → ลดยอด bank
         sum += element.amount.toInt();
       }
     }
     return sum;
   }
 
-  // รายรับเงินสด
+  // รายรับเงินสด + transfer ที่เข้า cash (moneyGroup='cash')
   int filterCashIncome() {
     int sum = 0;
     for (var element in transactions) {
-      if (element.moneyList == 'cash' &&
-          (element.moneyType == 'income' || element.moneyType == 'transfer')) {
+      if (element.moneyType == 'income' && element.moneyList == 'cash') {
+        sum += element.amount.toInt();
+      } else if (element.moneyType == 'transfer' && element.moneyGroup == 'cash') {
+        // transfer เข้า cash → เพิ่มยอด cash
         sum += element.amount.toInt();
       }
     }
     return sum;
   }
 
-  // รายจ่ายเงินสด
+  // รายจ่ายเงินสด + transfer ที่ออกจาก cash (moneyList='cash')
   int filterCashExpense() {
     int sum = 0;
     for (var element in transactions) {
-      if (element.moneyList == 'cash' && element.moneyType == 'expense') {
+      if (element.moneyType == 'expense' && element.moneyList == 'cash') {
+        sum += element.amount.toInt();
+      } else if (element.moneyType == 'transfer' && element.moneyList == 'cash') {
+        // transfer ออกจาก cash → ลดยอด cash
         sum += element.amount.toInt();
       }
     }

@@ -73,7 +73,7 @@ class DashboardSummary extends StatelessWidget {
                     Text("Total balance", style: textTheme.bodySmall),
                     Text(
                       "\$ ${totalBalance.toStringAsFixed(2)}",
-                      style: textTheme.bodyMedium,
+                      style: TextStyle(fontSize: AppSize.l),
                     ),
                   ],
                 ),
@@ -157,7 +157,7 @@ class DashboardSummary extends StatelessWidget {
             children: [
               Text(
                 "\$ ${balance.toStringAsFixed(2)}",
-                style: textTheme.bodySmall,
+                style: TextStyle(fontSize: AppSize.m),
               ),
               Text(
                 "${total > 0 ? (balance / total * 100).toStringAsFixed(1) : 0}%",
