@@ -27,7 +27,7 @@ class TypeSelector extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Container(
-          height: 48,
+          height: 50,
           padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.border),

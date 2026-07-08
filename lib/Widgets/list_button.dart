@@ -18,7 +18,7 @@ class ListButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 155,
+      width: 170,
       color: AppColors.card,
       child: TextButton(
         onPressed: function,

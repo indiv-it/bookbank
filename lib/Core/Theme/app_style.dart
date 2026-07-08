@@ -19,6 +19,7 @@ class AppColors {
   static const Color grey = Colors.grey;
   static final Color border = Colors.grey[300]!;
   static final Color background = Colors.grey[100]!;
+  static const Color amber = Colors.amber;
 
   // Group Colors
   static const Color blue = Colors.blue;

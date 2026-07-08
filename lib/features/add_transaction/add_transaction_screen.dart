@@ -122,7 +122,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   ),
                   SizedBox(height: 8.h),
                   Container(
-                    height: isTablet ? 56.h : 48.h,
+                    height: isTablet ? 56.h : 50.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       border: Border.all(color: AppColors.border),
@@ -355,7 +355,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 ),
                                 SizedBox(height: 8.h),
                                 Container(
-                                  height: isTablet ? 56.h : 48.h,
+                                  height: 50.h,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.r),
                                     border: Border.all(color: AppColors.border),
@@ -433,7 +433,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                               .map(
                                                 (item) => PopupMenuItem<String>(
                                                   value: item,
-                                                  child: Text(item),
+                                                  child: Text(
+                                                    item,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
                                                 ),
                                               )
                                               .toList();
@@ -463,8 +469,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   onTap: () => _selectDate(context),
                                   borderRadius: BorderRadius.circular(10.r),
                                   child: Container(
-                                    height: isTablet ? 56.h : 48.h,
-                                    width: isTablet ? 180.w : 140.w,
+                                    height: isTablet ? 56.h : 50.h,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 12.w,
                                     ),

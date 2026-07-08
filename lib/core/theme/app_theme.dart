@@ -14,6 +14,7 @@ class AppColors {
   static const Color orange = Colors.orange;
   static const Color purple = Colors.purple;
   static const Color pink = Colors.pink;
+  static const Color amber = Colors.amber;
 }
 
 class AppSize {

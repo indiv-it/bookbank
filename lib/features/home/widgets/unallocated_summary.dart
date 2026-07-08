@@ -40,6 +40,18 @@ class UnallocatedSummary extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
+    final pureUnallocated =
+        unallocatedAmount -
+        group1Amount -
+        group2Amount -
+        group3Amount -
+        group4Amount;
+    final double barTotal = incomeTotal > 0 ? incomeTotal : 1.0;
+    final pct = calculatePercentage(
+      unallocatedAmount,
+      incomeTotal,
+    ).toStringAsFixed(1);
+
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -99,57 +111,56 @@ class UnallocatedSummary extends StatelessWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 return Container(
-                  height: 6,
                   width: double.infinity,
+                  height: 5,
+                  margin: EdgeInsets.only(top: 8),
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: AppColors.border,
-                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ClipRect(
-                    child: Row(
-                      children: [
-                        MoneyBar(
-                          width: calculateBarWidth(
-                            group1Amount,
-                            totalBalance,
-                            constraints.maxWidth,
-                          ).toDouble(),
-                          color: AppColors.blue,
-                        ),
-                        MoneyBar(
-                          width: calculateBarWidth(
-                            group2Amount,
-                            totalBalance,
-                            constraints.maxWidth,
-                          ).toDouble(),
-                          color: AppColors.orange,
-                        ),
-                        MoneyBar(
-                          width: calculateBarWidth(
-                            group3Amount,
-                            totalBalance,
-                            constraints.maxWidth,
-                          ).toDouble(),
-                          color: AppColors.purple,
-                        ),
-                        MoneyBar(
-                          width: calculateBarWidth(
-                            group4Amount,
-                            totalBalance,
-                            constraints.maxWidth,
-                          ).toDouble(),
-                          color: AppColors.pink,
-                        ),
-                        MoneyBar(
-                          width: calculateBarWidth(
-                            unallocatedAmount,
-                            totalBalance,
-                            constraints.maxWidth,
-                          ).toDouble(),
-                          color: AppColors.border,
-                        ),
-                      ],
-                    ),
+                  child: Row(
+                    children: [
+                      MoneyBar(
+                        width: calculateBarWidth(
+                          group1Amount,
+                          barTotal,
+                          constraints.maxWidth,
+                        ).toDouble(),
+                        color: AppColors.blue,
+                      ),
+                      MoneyBar(
+                        width: calculateBarWidth(
+                          group2Amount,
+                          barTotal,
+                          constraints.maxWidth,
+                        ).toDouble(),
+                        color: AppColors.orange,
+                      ),
+                      MoneyBar(
+                        width: calculateBarWidth(
+                          group3Amount,
+                          barTotal,
+                          constraints.maxWidth,
+                        ).toDouble(),
+                        color: AppColors.purple,
+                      ),
+                      MoneyBar(
+                        width: calculateBarWidth(
+                          group4Amount,
+                          barTotal,
+                          constraints.maxWidth,
+                        ).toDouble(),
+                        color: AppColors.pink,
+                      ),
+                      MoneyBar(
+                        width: calculateBarWidth(
+                          pureUnallocated,
+                          barTotal,
+                          constraints.maxWidth,
+                        ).toDouble(),
+                        color: AppColors.grey,
+                      ),
+                    ],
                   ),
                 );
               },
@@ -178,14 +189,9 @@ class UnallocatedSummary extends StatelessWidget {
                   percentage: group4Percentage,
                 ),
                 MoneyNumber(
-                  amount:
-                      unallocatedAmount -
-                      group1Amount -
-                      group2Amount -
-                      group3Amount -
-                      group4Amount,
+                  amount: unallocatedAmount,
                   color: AppColors.border,
-                  percentage: unallocatedPercentage,
+                  percentage: double.parse(pct),
                 ),
               ],
             ),
