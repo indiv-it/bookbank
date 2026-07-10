@@ -140,21 +140,100 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: isTablet ? 48.w : 40.w,
-                      height: isTablet ? 48.h : 40.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          isTablet ? 24.r : 20.r,
+                    Row(
+                      children: [
+                        Container(
+                          width: isTablet ? 48.w : 40.w,
+                          height: isTablet ? 48.h : 40.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              isTablet ? 24.r : 20.r,
+                            ),
+                            border: Border.all(color: AppColors.border),
+                            color: theme.colorScheme.surface,
+                          ),
+                          child: Icon(
+                            Icons.notifications_none,
+                            color: AppColors.black,
+                            size: isTablet ? 24.sp : 20.sp,
+                          ),
                         ),
-                        border: Border.all(color: AppColors.border),
-                        color: theme.colorScheme.surface,
-                      ),
-                      child: Icon(
-                        Icons.menu,
-                        color: AppColors.black,
-                        size: isTablet ? 24.sp : 20.sp,
-                      ),
+                        const SizedBox(width: 8),
+                        PopupMenuButton<String>(
+                          icon: Icon(
+                            Icons.menu,
+                            size: isTablet ? 24.sp : 20.sp,
+                          ),
+                          offset: Offset(70.w, 50.h),
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              AppColors.card,
+                            ),
+                            side: WidgetStatePropertyAll(
+                              BorderSide(color: AppColors.border),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          onSelected: (String value) {
+                            // Handle menu selection
+                          },
+                          itemBuilder: (BuildContext context) => [
+                            ...[
+                              {'name': 'Edit Group', 'icon': Icons.edit},
+                              {
+                                'name': 'Dark Theme',
+                                'icon': Icons.nightlight_round_rounded,
+                                'switch': true,
+                              },
+                              {
+                                'name': 'Change language',
+                                'icon': Icons.language,
+                              },
+                              {
+                                'name': 'Change currency',
+                                'icon': Icons.currency_exchange,
+                              },
+                              {'name': 'About', 'icon': Icons.info},
+                            ].map((item) {
+                              return PopupMenuItem<String>(
+                                value: item['name'] as String,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          item['icon'] as IconData,
+                                          size: 16.sp,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          item['name'] as String,
+                                          style: TextStyle(
+                                            fontSize: AppSize.m,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        if (item['switch'] == true) ...[
+                                          const Spacer(),
+                                          Transform.scale(
+                                            scale: 0.6,
+                                            child: Switch(
+                                              value: true,
+                                              onChanged: (value) {},
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),

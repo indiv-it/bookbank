@@ -68,6 +68,7 @@ Future<void> deleteRecord(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: AppColors.card,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: const Text('Delete'),
       content: const Text('Are you sure you want to delete this record?'),
       actions: [
@@ -93,34 +94,35 @@ Future<void> deleteRecord(
       SnackBar(
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.width * 1.4,
-          left: MediaQuery.of(context).size.width * 0.5,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          left: 16,
           right: 16,
         ),
         backgroundColor: AppColors.card,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: Container(
           decoration: BoxDecoration(
-            border: Border(left: BorderSide(color: AppColors.red, width: 3)),
+            border: Border(left: BorderSide(color: AppColors.green, width: 3)),
           ),
           padding: EdgeInsets.only(left: 8),
           child: Row(
             children: [
-              Icon(Icons.check_circle_outline, color: Colors.red),
+              Icon(
+                Icons.check_circle_outline,
+                color: AppColors.green,
+                size: 24,
+              ),
               SizedBox(width: 12),
               Expanded(
                 child: Text(
                   'Deleted successfully',
-                  style: TextStyle(
-                    color: AppColors.black,
-                    fontSize: AppSize.s.fontSize,
-                  ),
+                  style: TextStyle(fontSize: 16, color: AppColors.black),
                 ),
               ),
             ],
           ),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

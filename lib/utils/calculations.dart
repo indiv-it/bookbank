@@ -13,7 +13,8 @@ class FinancialCalculations {
     for (var element in transactions) {
       if (element.moneyType == 'income' && element.moneyList == 'bank') {
         sum += element.amount.toInt();
-      } else if (element.moneyType == 'transfer' && element.moneyGroup == 'bank') {
+      } else if (element.moneyType == 'transfer' &&
+          element.moneyGroup == 'bank') {
         // transfer เข้า bank → เพิ่มยอด bank
         sum += element.amount.toInt();
       }
@@ -27,7 +28,8 @@ class FinancialCalculations {
     for (var element in transactions) {
       if (element.moneyType == 'expense' && element.moneyList == 'bank') {
         sum += element.amount.toInt();
-      } else if (element.moneyType == 'transfer' && element.moneyList == 'bank') {
+      } else if (element.moneyType == 'transfer' &&
+          element.moneyList == 'bank') {
         // transfer ออกจาก bank → ลดยอด bank
         sum += element.amount.toInt();
       }
@@ -41,7 +43,8 @@ class FinancialCalculations {
     for (var element in transactions) {
       if (element.moneyType == 'income' && element.moneyList == 'cash') {
         sum += element.amount.toInt();
-      } else if (element.moneyType == 'transfer' && element.moneyGroup == 'cash') {
+      } else if (element.moneyType == 'transfer' &&
+          element.moneyGroup == 'cash') {
         // transfer เข้า cash → เพิ่มยอด cash
         sum += element.amount.toInt();
       }
@@ -55,7 +58,8 @@ class FinancialCalculations {
     for (var element in transactions) {
       if (element.moneyType == 'expense' && element.moneyList == 'cash') {
         sum += element.amount.toInt();
-      } else if (element.moneyType == 'transfer' && element.moneyList == 'cash') {
+      } else if (element.moneyType == 'transfer' &&
+          element.moneyList == 'cash') {
         // transfer ออกจาก cash → ลดยอด cash
         sum += element.amount.toInt();
       }
@@ -125,7 +129,7 @@ class FinancialCalculations {
 
   // รวมเงินคงเหลือทั้งหมด
   int sumAll() {
-    return income() - expense();
+    return sumBank() + sumCash();
   }
 
   // รวมเงินคงเหลือตามกลุ่ม
