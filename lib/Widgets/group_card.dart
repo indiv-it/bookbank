@@ -11,6 +11,8 @@ class GroupCard extends StatelessWidget {
   final IconData groupIcon;
   final List<MyData> transactions;
   final double percentage;
+  final bool savingsGoalEnabled;
+  final double savingsGoalAmount;
 
   const GroupCard({
     super.key,
@@ -21,6 +23,8 @@ class GroupCard extends StatelessWidget {
     required this.groupIcon,
     required this.transactions,
     required this.percentage,
+    this.savingsGoalEnabled = false,
+    this.savingsGoalAmount = 0,
   });
 
   @override
@@ -38,6 +42,9 @@ class GroupCard extends StatelessWidget {
                 transactions: transactions,
                 icon: groupIcon,
                 percentage: percentage,
+                savingsGoalAmount: savingsGoalAmount,
+                savingsGoalEnabled: savingsGoalEnabled,
+                groupAmount: groupAmount,
               ),
             );
           },
@@ -84,7 +91,38 @@ class GroupCard extends StatelessWidget {
                 fontSize: AppSize.s.fontSize,
               ),
             ),
-            Text('\$${groupAmount.toStringAsFixed(2)}', style: AppSize.m),
+            Row(
+              children: [
+                Text('\$${groupAmount.toStringAsFixed(2)}', style: AppSize.m),
+                Spacer(),
+                if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
+                  Text(
+                    '฿${savingsGoalAmount.toStringAsFixed(0)}',
+                    style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: AppSize.s.fontSize,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
+              SizedBox(height: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: (groupAmount / savingsGoalAmount).clamp(0.0, 1.0),
+                      backgroundColor: AppColors.grey.withValues(alpha: 0.2),
+                      valueColor: AlwaysStoppedAnimation<Color>(groupColor),
+                      minHeight: 4,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

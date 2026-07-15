@@ -18,6 +18,10 @@ class UnallocatedSummary extends StatelessWidget {
   final double group3Percentage;
   final double group4Percentage;
   final double unallocatedPercentage;
+  final Color group1Color;
+  final Color group2Color;
+  final Color group3Color;
+  final Color group4Color;
 
   const UnallocatedSummary({
     super.key,
@@ -33,6 +37,10 @@ class UnallocatedSummary extends StatelessWidget {
     required this.group3Percentage,
     required this.group4Percentage,
     required this.unallocatedPercentage,
+    required this.group1Color,
+    required this.group2Color,
+    required this.group3Color,
+    required this.group4Color,
   });
 
   @override
@@ -66,6 +74,10 @@ class UnallocatedSummary extends StatelessWidget {
                 group3Amount: group3Amount,
                 group4Amount: group4Amount,
                 unallocatedAmount: unallocatedAmount,
+                group1Color: group1Color,
+                group2Color: group2Color,
+                group3Color: group3Color,
+                group4Color: group4Color,
               ),
             );
           },
@@ -126,7 +138,7 @@ class UnallocatedSummary extends StatelessWidget {
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
-                        color: AppColors.blue,
+                        color: group1Color,
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
@@ -134,7 +146,7 @@ class UnallocatedSummary extends StatelessWidget {
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
-                        color: AppColors.orange,
+                        color: group2Color,
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
@@ -142,7 +154,7 @@ class UnallocatedSummary extends StatelessWidget {
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
-                        color: AppColors.purple,
+                        color: group3Color,
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
@@ -150,7 +162,7 @@ class UnallocatedSummary extends StatelessWidget {
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
-                        color: AppColors.pink,
+                        color: group4Color,
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
@@ -170,22 +182,22 @@ class UnallocatedSummary extends StatelessWidget {
               children: [
                 MoneyNumber(
                   amount: group1Amount,
-                  color: AppColors.blue,
+                  color: group1Color,
                   percentage: group1Percentage,
                 ),
                 MoneyNumber(
                   amount: group2Amount,
-                  color: AppColors.orange,
+                  color: group2Color,
                   percentage: group2Percentage,
                 ),
                 MoneyNumber(
                   amount: group3Amount,
-                  color: AppColors.purple,
+                  color: group3Color,
                   percentage: group3Percentage,
                 ),
                 MoneyNumber(
                   amount: group4Amount,
-                  color: AppColors.pink,
+                  color: group4Color,
                   percentage: group4Percentage,
                 ),
                 MoneyNumber(

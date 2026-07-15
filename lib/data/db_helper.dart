@@ -27,7 +27,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -46,6 +46,19 @@ class DatabaseHelper {
         title TEXT
       )
     ''');
+    await db.execute('''
+      CREATE TABLE group_settings(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        groupId TEXT NOT NULL UNIQUE,
+        groupName TEXT NOT NULL,
+        iconCodePoint INTEGER NOT NULL,
+        colorValue INTEGER NOT NULL,
+        savingsGoalEnabled INTEGER NOT NULL DEFAULT 0,
+        savingsGoalAmount REAL NOT NULL DEFAULT 0
+      )
+    ''');
+    // Insert default group settings
+    await _insertDefaultGroupSettings(db);
   }
 
   /// อัปเกรดฐานข้อมูลเมื่อเปลี่ยนเวอร์ชัน
@@ -55,6 +68,61 @@ class DatabaseHelper {
     }
     if (oldVersion < 3) {
       await db.execute('ALTER TABLE transactions ADD COLUMN title TEXT');
+    }
+    if (oldVersion < 4) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS group_settings(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          groupId TEXT NOT NULL UNIQUE,
+          groupName TEXT NOT NULL,
+          iconCodePoint INTEGER NOT NULL,
+          colorValue INTEGER NOT NULL,
+          savingsGoalEnabled INTEGER NOT NULL DEFAULT 0,
+          savingsGoalAmount REAL NOT NULL DEFAULT 0
+        )
+      ''');
+      await _insertDefaultGroupSettings(db);
+    }
+  }
+
+  /// แทรกข้อมูลเริ่มต้นสำหรับ group settings
+  Future<void> _insertDefaultGroupSettings(Database db) async {
+    final defaultGroups = [
+      {
+        'groupId': 'Group1',
+        'groupName': 'Group1',
+        'iconCodePoint': 0xe145,
+        'colorValue': 0xFF2196F3,
+      }, // Icons.add
+      {
+        'groupId': 'Group2',
+        'groupName': 'Group2',
+        'iconCodePoint': 0xe145,
+        'colorValue': 0xFF4CAF50,
+      }, // Icons.add
+      {
+        'groupId': 'Group3',
+        'groupName': 'Group3',
+        'iconCodePoint': 0xe145,
+        'colorValue': 0xFF9C27B0,
+      }, // Icons.add
+      {
+        'groupId': 'Group4',
+        'groupName': 'Group4',
+        'iconCodePoint': 0xe145,
+        'colorValue': 0xFFE91E63,
+      }, // Icons.add
+    ];
+
+    for (var group in defaultGroups) {
+      await db.insert('group_settings', {
+        'groupId': group['groupId'],
+        'groupName': group['groupName'],
+        'iconCodePoint': group['iconCodePoint'],
+        'colorValue': group['colorValue'],
+        'savingsGoalEnabled': 0,
+        'savingsGoalAmount': 0,
+      }, conflictAlgorithm: ConflictAlgorithm.ignore);
     }
   }
 
@@ -94,5 +162,46 @@ class DatabaseHelper {
   Future<int> deleteData(int id) async {
     final db = await database;
     return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// อ่านข้อมูล group settings ทั้งหมด
+  Future<List<GroupSettings>> getAllGroupSettings() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('group_settings');
+    return maps.map((map) => GroupSettings.fromMap(map)).toList();
+  }
+
+  /// อ่านข้อมูล group settings ตาม groupId
+  Future<GroupSettings?> getGroupSettings(String groupId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'group_settings',
+      where: 'groupId = ?',
+      whereArgs: [groupId],
+    );
+    if (maps.isEmpty) return null;
+    return GroupSettings.fromMap(maps.first);
+  }
+
+  /// อัปเดตหรือแทรกข้อมูล group settings
+  Future<int> upsertGroupSettings(GroupSettings settings) async {
+    final db = await database;
+    return await db.insert(
+      'group_settings',
+      settings.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// อัปเดตข้อมูล group settings ตาม id
+  Future<int> updateGroupSettings(GroupSettings settings) async {
+    final db = await database;
+    if (settings.id == null) return 0;
+    return await db.update(
+      'group_settings',
+      settings.toMap(),
+      where: 'id = ?',
+      whereArgs: [settings.id],
+    );
   }
 }

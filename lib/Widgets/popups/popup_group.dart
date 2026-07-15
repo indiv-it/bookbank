@@ -12,6 +12,9 @@ class PopupGroup extends StatelessWidget {
   final List<MyData> transactions;
   final IconData icon;
   final double percentage;
+  final double? savingsGoalAmount;
+  final bool savingsGoalEnabled;
+  final double? groupAmount;
 
   const PopupGroup({
     super.key,
@@ -20,6 +23,9 @@ class PopupGroup extends StatelessWidget {
     required this.transactions,
     required this.icon,
     required this.percentage,
+    required this.savingsGoalAmount,
+    required this.savingsGoalEnabled,
+    required this.groupAmount,
   });
 
   @override
@@ -35,7 +41,7 @@ class PopupGroup extends StatelessWidget {
 
     return Container(
       width: 100,
-      height: 300,
+      height: savingsGoalEnabled && savingsGoalAmount! > 0 ? 320 : 300,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.card,
@@ -119,6 +125,38 @@ class PopupGroup extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
+
+          if (savingsGoalEnabled && savingsGoalAmount! > 0) ...[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Target',
+                      style: TextStyle(fontSize: AppSize.s.fontSize),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '฿ ${savingsGoalAmount?.toStringAsFixed(2)}',
+                      style: TextStyle(fontSize: AppSize.s.fontSize),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: (groupAmount! / savingsGoalAmount!).clamp(0.0, 1.0),
+                    backgroundColor: AppColors.grey.withValues(alpha: 0.2),
+                    valueColor: AlwaysStoppedAnimation<Color>(groupColor),
+                    minHeight: 4,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
 
           // Income / Expense summary
           Row(

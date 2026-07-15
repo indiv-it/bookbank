@@ -11,6 +11,10 @@ class PopupUnallocated extends StatelessWidget {
   final double group3Amount;
   final double group4Amount;
   final double unallocatedAmount;
+  final Color group1Color;
+  final Color group2Color;
+  final Color group3Color;
+  final Color group4Color;
 
   const PopupUnallocated({
     super.key,
@@ -20,6 +24,10 @@ class PopupUnallocated extends StatelessWidget {
     required this.group3Amount,
     required this.group4Amount,
     required this.unallocatedAmount,
+    required this.group1Color,
+    required this.group2Color,
+    required this.group3Color,
+    required this.group4Color,
   });
 
   @override
@@ -133,7 +141,7 @@ class PopupUnallocated extends StatelessWidget {
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
-                      color: AppColors.blue,
+                      color: group1Color,
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
@@ -141,7 +149,7 @@ class PopupUnallocated extends StatelessWidget {
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
-                      color: AppColors.orange,
+                      color: group2Color,
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
@@ -149,7 +157,7 @@ class PopupUnallocated extends StatelessWidget {
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
-                      color: AppColors.purple,
+                      color: group3Color,
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
@@ -157,7 +165,7 @@ class PopupUnallocated extends StatelessWidget {
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
-                      color: AppColors.pink,
+                      color: group4Color,
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
@@ -179,25 +187,25 @@ class PopupUnallocated extends StatelessWidget {
             children: [
               GroupUnallocatedPopup(
                 title: 'Group 1',
-                color: AppColors.blue,
+                color: group1Color,
                 amount: '฿ ${group1Amount.toStringAsFixed(2)}',
                 percentage: '$p1%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 2',
-                color: AppColors.orange,
+                color: group2Color,
                 amount: '฿ ${group2Amount.toStringAsFixed(2)}',
                 percentage: '$p2%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 3',
-                color: AppColors.purple,
+                color: group3Color,
                 amount: '฿ ${group3Amount.toStringAsFixed(2)}',
                 percentage: '$p3%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 4',
-                color: AppColors.pink,
+                color: group4Color,
                 amount: '฿ ${group4Amount.toStringAsFixed(2)}',
                 percentage: '$p4%',
               ),

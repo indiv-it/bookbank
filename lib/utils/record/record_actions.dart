@@ -1,8 +1,5 @@
+import 'package:bookbank/Widgets/record_widgets.dart';
 import 'package:flutter/material.dart';
-
-// Functions
-import 'record_utils.dart';
-import '../../Widgets/record_widgets.dart';
 
 // Screens
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
@@ -15,36 +12,95 @@ import '../../Core/Theme/app_style.dart';
 /// Shows the record details dialog.
 Future<void> viewRecord(BuildContext context, MyData item) async {
   final isIncome = item.moneyType == 'income';
+  final isTransfer = item.moneyType == 'transfer';
+
+  final fromLabel = item.moneyList == 'bank' ? 'Bank' : 'Cash';
+  final toLabel = item.moneyGroup == 'bank' ? 'Bank' : 'Cash';
+
   await showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: AppColors.card,
-      title: const Text('Record Details'),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildDetailRow(
-            'Amount',
-            '${isIncome ? '+' : '-'}฿ ${item.amount.toStringAsFixed(2)}',
+          // Header / Exit button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(Icons.close),
+              ),
+            ],
           ),
-          buildDetailRow('Name', item.title ?? 'Anonymous'),
-          buildDetailRow('Type', isIncome ? 'Income' : 'Expense'),
-          buildDetailRow(
-            'Category',
-            item.moneyList == 'bank' ? 'Bank' : 'Cash',
+          Row(
+            children: [
+              SizedBox(
+                width: 10,
+                height: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: isIncome
+                        ? AppColors.green
+                        : item.moneyType == 'transfer'
+                        ? AppColors.orange
+                        : AppColors.red,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${item.moneyType == 'transfer' ? 'Alternative' : item.title}',
+                style: TextStyle(fontSize: AppSize.s.fontSize),
+              ),
+            ],
           ),
-          if (item.moneyGroup.isNotEmpty)
-            buildDetailRow('Group', item.moneyGroup),
-          buildDetailRow('Date', formatDisplayDate(item.date)),
+          Text(
+            '฿${item.amount.toStringAsFixed(0)}',
+            style: TextStyle(fontSize: AppSize.l.fontSize),
+          ),
+          const SizedBox(height: 16),
+          recondListView(
+            isIncome
+                ? Icons.trending_up
+                : item.moneyType == 'transfer'
+                ? Icons.swap_horiz
+                : Icons.trending_down,
+            'Money List',
+            isIncome
+                ? 'Income'
+                : item.moneyType == 'transfer'
+                ? 'Alternative'
+                : 'Expense',
+          ),
+          const SizedBox(height: 8),
+          recondListView(
+            item.moneyList == 'bank'
+                ? Icons.account_balance
+                : Icons.account_balance_wallet,
+            'Money Position',
+            isTransfer
+                ? '$fromLabel → $toLabel'
+                : item.moneyList == 'bank'
+                ? 'Bank'
+                : 'Cash',
+          ),
+          const SizedBox(height: 8),
+          recondListView(
+            Icons.group_outlined,
+            'Group',
+            item.moneyType == 'transfer' ? '' : item.moneyGroup,
+          ),
+          const SizedBox(height: 8),
+          recondListView(Icons.date_range, 'Date', item.date.toString()),
         ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
-        ),
-      ],
     ),
   );
 }

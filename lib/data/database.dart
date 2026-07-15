@@ -43,3 +43,49 @@ class MyData {
     );
   }
 }
+
+class GroupSettings {
+  GroupSettings({
+    this.id,
+    required this.groupId,
+    required this.groupName,
+    required this.iconCodePoint,
+    required this.colorValue,
+    required this.savingsGoalEnabled,
+    this.savingsGoalAmount = 0,
+  });
+
+  int? id;
+  String groupId;
+  String groupName;
+  int iconCodePoint;
+  int colorValue;
+  bool savingsGoalEnabled;
+  double savingsGoalAmount;
+
+  /// แปลงข้อมูลในคลาสเป็นแผนที่สำหรับเขียนลง SQLite
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'groupId': groupId,
+      'groupName': groupName,
+      'iconCodePoint': iconCodePoint,
+      'colorValue': colorValue,
+      'savingsGoalEnabled': savingsGoalEnabled ? 1 : 0,
+      'savingsGoalAmount': savingsGoalAmount,
+    };
+  }
+
+  /// สร้างวัตถุจากผลลัพธ์ที่อ่านจาก SQLite
+  factory GroupSettings.fromMap(Map<String, dynamic> map) {
+    return GroupSettings(
+      id: map['id'] as int?,
+      groupId: (map['groupId'] as String?) ?? '',
+      groupName: (map['groupName'] as String?) ?? '',
+      iconCodePoint: (map['iconCodePoint'] as int?) ?? 0,
+      colorValue: (map['colorValue'] as int?) ?? 0,
+      savingsGoalEnabled: (map['savingsGoalEnabled'] as int?) == 1,
+      savingsGoalAmount: (map['savingsGoalAmount'] as num?)?.toDouble() ?? 0,
+    );
+  }
+}

@@ -76,6 +76,21 @@ Widget buildFilterTab({
   );
 }
 
+Widget recondListView(IconData icon, String title, String data) {
+  return Row(
+    children: [
+      Icon(icon, size: AppSize.xl.fontSize),
+      const SizedBox(width: 8),
+      Text(
+        '$title :',
+        style: TextStyle(fontSize: AppSize.s.fontSize, color: AppColors.grey),
+      ),
+      const SizedBox(width: 8),
+      Text(data),
+    ],
+  );
+}
+
 /// Builds a single record row in the list.
 Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
   final isTransfer = item.moneyType == 'transfer';
