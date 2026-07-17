@@ -1,13 +1,13 @@
-import 'package:bookbank/Widgets/record_widgets.dart';
+import 'package:bookbank/features/records/widgets/record_widgets.dart';
 import 'package:flutter/material.dart';
 
 // Screens
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 
 // Database / Style
-import '../../data/database.dart';
-import '../../data/db_helper.dart';
-import '../../Core/Theme/app_style.dart';
+import '../../../data/database.dart';
+import '../../../data/db_helper.dart';
+import '../../../core/theme/app_style.dart';
 
 /// Shows the record details dialog.
 Future<void> viewRecord(BuildContext context, MyData item) async {

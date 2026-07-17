@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
+import 'package:bookbank/core/theme/app_style.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/utils/calculations.dart';
-import 'package:bookbank/Widgets/popups/popup_main.dart';
+import 'package:bookbank/features/home/popup/popup_main.dart';
 import 'package:intl/intl.dart';
 
 class PopupGroup extends StatelessWidget {

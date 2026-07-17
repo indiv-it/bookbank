@@ -1,7 +1,8 @@
-import 'package:bookbank/Core/Theme/app_style.dart';
+import 'package:bookbank/core/theme/app_style.dart';
 import 'package:flutter/material.dart';
 
 class ListButton extends StatelessWidget {
+  final String buttonKey;
   final String titel;
   final String? onKey;
   final VoidCallback function;
@@ -9,6 +10,7 @@ class ListButton extends StatelessWidget {
 
   const ListButton({
     super.key,
+    required this.buttonKey,
     required this.titel,
     required this.onKey,
     required this.function,
@@ -28,8 +30,12 @@ class ListButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Colors.white, width: 2),
           ),
-          foregroundColor: onKey == titel ? AppColors.card : AppColors.black,
-          backgroundColor: onKey == titel ? AppColors.black : AppColors.card,
+          foregroundColor: buttonKey == onKey
+              ? AppColors.card
+              : AppColors.black,
+          backgroundColor: buttonKey == onKey
+              ? AppColors.black
+              : AppColors.card,
         ),
         child: icon != null
             ? Row(
@@ -38,7 +44,9 @@ class ListButton extends StatelessWidget {
                   Icon(
                     icon,
                     size: AppSize.s.fontSize,
-                    color: onKey == titel ? AppColors.card : AppColors.black,
+                    color: buttonKey == onKey
+                        ? AppColors.card
+                        : AppColors.black,
                   ),
                   const SizedBox(width: 8),
                   Text(titel, style: TextStyle(fontSize: AppSize.s.fontSize)),

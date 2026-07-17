@@ -1,8 +1,8 @@
-import 'package:bookbank/Widgets/dashboard_widgets/_build_summary_item.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
-import 'package:bookbank/Widgets/dashboard_widgets/category_pie_chart.dart';
+import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
 
 class YearlyChart extends StatelessWidget {
   final int selectedYear;
@@ -12,6 +12,7 @@ class YearlyChart extends StatelessWidget {
   final double totalExpense;
   final Map<String, IconData> categoryIcons;
   final Map<String, Color> categoryColors;
+  final Map<String, String> categoryNames;
   final double yearlyIncome;
   final double yearlyExpense;
   final double yearlyNet;
@@ -25,6 +26,7 @@ class YearlyChart extends StatelessWidget {
     required this.totalExpense,
     required this.categoryIcons,
     required this.categoryColors,
+    required this.categoryNames,
     required this.yearlyIncome,
     required this.yearlyExpense,
     required this.yearlyNet,
@@ -221,6 +223,7 @@ class YearlyChart extends StatelessWidget {
             totalExpense: totalExpense,
             categoryIcons: categoryIcons,
             categoryColors: categoryColors,
+            categoryNames: categoryNames,
           ),
         ],
       ),

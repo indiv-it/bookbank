@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
+import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 
 class GroupEditDialog extends StatefulWidget {
   final GroupSettings groupSettings;
@@ -44,7 +46,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
 
   final List<Color> _availableColors = [
     Colors.blue,
-    Colors.green,
+    const Color.fromARGB(255, 8, 192, 14),
     Colors.purple,
     Colors.pink,
     Colors.red,
@@ -86,7 +88,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
       groupId: widget.groupSettings.groupId,
       groupName: _nameController.text,
       iconCodePoint: _selectedIcon.codePoint,
-      colorValue: _selectedColor.value,
+      colorValue: _selectedColor.toARGB32(),
       savingsGoalEnabled: _savingsGoalEnabled,
       savingsGoalAmount: _savingsGoalEnabled
           ? double.tryParse(_amountController.text) ?? 0
@@ -94,7 +96,14 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
     );
 
     await DatabaseHelper.instance.updateGroupSettings(updatedSettings);
+
+    // Notify provider to refresh group settings across all screens
     if (mounted) {
+      final groupProvider = Provider.of<GroupSettingsProvider>(
+        context,
+        listen: false,
+      );
+      await groupProvider.updateGroupSettings(updatedSettings);
       Navigator.of(context).pop(true);
     }
   }

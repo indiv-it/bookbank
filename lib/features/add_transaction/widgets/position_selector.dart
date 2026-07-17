@@ -1,6 +1,6 @@
-import 'package:bookbank/Core/Theme/app_style.dart';
+import 'package:bookbank/core/theme/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbank/Widgets/list_button.dart';
+import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 
 class PositionSelector extends StatelessWidget {
   final String? selectedPosition;
@@ -38,12 +38,14 @@ class PositionSelector extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ListButton(
+                buttonKey: 'Bank',
                 titel: 'Bank',
                 icon: Icons.account_balance_rounded,
                 onKey: selectedPosition,
                 function: () => onChanged('Bank'),
               ),
               ListButton(
+                buttonKey: 'Cash',
                 titel: 'Cash',
                 icon: Icons.account_balance_wallet,
                 onKey: selectedPosition,

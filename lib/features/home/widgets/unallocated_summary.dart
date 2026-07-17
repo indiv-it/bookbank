@@ -1,8 +1,8 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbank/Widgets/popups/popup_unallocated.dart';
-import 'package:bookbank/Widgets/unallocated_bar.dart';
-import 'package:bookbank/Widgets/unallocated_number.dart';
+import 'package:bookbank/features/home/popup/popup_unallocated.dart';
+import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
+import 'package:bookbank/features/home/widgets/unallocated_number.dart';
 import 'package:bookbank/utils/calculations.dart';
 
 class UnallocatedSummary extends StatelessWidget {

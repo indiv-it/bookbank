@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import '../../Core/Theme/app_style.dart';
+import '../../../core/theme/app_style.dart';
 
 // ----- Line Chart Helper Functions -----
 List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {

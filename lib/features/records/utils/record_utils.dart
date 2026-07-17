@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import '../../data/database.dart';
+import '../../../data/database.dart';
 
 /// Returns the display name for a transaction item.
 String getItemName(MyData item) {

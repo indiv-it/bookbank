@@ -1,7 +1,7 @@
 import 'package:bookbank/data/database.dart';
-import 'package:bookbank/Widgets/popups/popup_group.dart';
+import 'package:bookbank/features/home/popup/popup_group.dart';
 import 'package:flutter/material.dart';
-import '../Core/Theme/app_style.dart';
+import '../../../core/theme/app_style.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;

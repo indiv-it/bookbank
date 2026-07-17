@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // Local Imports
-import 'package:bookbank/Widgets/dashboard_widgets/daily_summary_card.dart';
-import 'package:bookbank/Widgets/dashboard_widgets/monthly_chart.dart';
-import 'package:bookbank/Widgets/dashboard_widgets/yearly_chart.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/daily_summary_card.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/monthly_chart.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/yearly_chart.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 
 // Database
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
+import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 
 class ChartScreen extends StatefulWidget {
   const ChartScreen({super.key});
@@ -46,20 +48,35 @@ class _ChartScreenState extends State<ChartScreen> {
   double _yearlyExpense = 0;
   double _yearlyNet = 0;
 
-  // Category icons and colors
-  final Map<String, IconData> _categoryIcons = {
-    'Group1': Icons.work,
-    'Group2': Icons.shopping_cart,
-    'Group3': Icons.restaurant,
-    'Group4': Icons.movie,
-  };
+  final List<IconData> _availableIcons = [
+    Icons.add,
+    Icons.shopping_cart,
+    Icons.food_bank,
+    Icons.home,
+    Icons.directions_car,
+    Icons.flight,
+    Icons.movie,
+    Icons.music_note,
+    Icons.book,
+    Icons.sports_soccer,
+    Icons.health_and_safety,
+    Icons.work,
+    Icons.school,
+    Icons.pets,
+    Icons.restaurant,
+    Icons.coffee,
+    Icons.card_giftcard,
+    Icons.celebration,
+    Icons.favorite,
+    Icons.star,
+  ];
 
-  final Map<String, Color> _categoryColors = {
-    'Group1': AppColors.blue,
-    'Group2': AppColors.orange,
-    'Group3': AppColors.purple,
-    'Group4': AppColors.pink,
-  };
+  IconData _getIconFromCodePoint(int codePoint) {
+    return _availableIcons.firstWhere(
+      (icon) => icon.codePoint == codePoint,
+      orElse: () => Icons.add,
+    );
+  }
 
   @override
   void initState() {
@@ -178,90 +195,288 @@ class _ChartScreenState extends State<ChartScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Row(
+    return Consumer<GroupSettingsProvider>(
+      builder: (context, groupProvider, child) {
+        final groupSettings = groupProvider.groupSettings;
+
+        final Map<String, IconData> categoryIcons = {
+          'Group1': _getIconFromCodePoint(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group1',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group1',
+                    groupName: 'Group1',
+                    iconCodePoint: Icons.work.codePoint,
+                    colorValue: AppColors.blue.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .iconCodePoint,
+          ),
+          'Group2': _getIconFromCodePoint(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group2',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group2',
+                    groupName: 'Group2',
+                    iconCodePoint: Icons.shopping_cart.codePoint,
+                    colorValue: AppColors.orange.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .iconCodePoint,
+          ),
+          'Group3': _getIconFromCodePoint(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group3',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group3',
+                    groupName: 'Group3',
+                    iconCodePoint: Icons.restaurant.codePoint,
+                    colorValue: AppColors.purple.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .iconCodePoint,
+          ),
+          'Group4': _getIconFromCodePoint(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group4',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group4',
+                    groupName: 'Group4',
+                    iconCodePoint: Icons.movie.codePoint,
+                    colorValue: AppColors.pink.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .iconCodePoint,
+          ),
+        };
+
+        final Map<String, Color> categoryColors = {
+          'Group1': Color(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group1',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group1',
+                    groupName: 'Group1',
+                    iconCodePoint: Icons.work.codePoint,
+                    colorValue: AppColors.blue.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .colorValue,
+          ),
+          'Group2': Color(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group2',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group2',
+                    groupName: 'Group2',
+                    iconCodePoint: Icons.shopping_cart.codePoint,
+                    colorValue: AppColors.orange.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .colorValue,
+          ),
+          'Group3': Color(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group3',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group3',
+                    groupName: 'Group3',
+                    iconCodePoint: Icons.restaurant.codePoint,
+                    colorValue: AppColors.purple.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .colorValue,
+          ),
+          'Group4': Color(
+            groupSettings
+                .firstWhere(
+                  (s) => s.groupId == 'Group4',
+                  orElse: () => GroupSettings(
+                    groupId: 'Group4',
+                    groupName: 'Group4',
+                    iconCodePoint: Icons.movie.codePoint,
+                    colorValue: AppColors.pink.toARGB32(),
+                    savingsGoalEnabled: false,
+                    savingsGoalAmount: 0,
+                  ),
+                )
+                .colorValue,
+          ),
+        };
+
+        final Map<String, String> categoryNames = {
+          'Group1': groupSettings
+              .firstWhere(
+                (s) => s.groupId == 'Group1',
+                orElse: () => GroupSettings(
+                  groupId: 'Group1',
+                  groupName: 'Group1',
+                  iconCodePoint: Icons.work.codePoint,
+                  colorValue: AppColors.blue.toARGB32(),
+                  savingsGoalEnabled: false,
+                  savingsGoalAmount: 0,
+                ),
+              )
+              .groupName,
+          'Group2': groupSettings
+              .firstWhere(
+                (s) => s.groupId == 'Group2',
+                orElse: () => GroupSettings(
+                  groupId: 'Group2',
+                  groupName: 'Group2',
+                  iconCodePoint: Icons.shopping_cart.codePoint,
+                  colorValue: AppColors.orange.toARGB32(),
+                  savingsGoalEnabled: false,
+                  savingsGoalAmount: 0,
+                ),
+              )
+              .groupName,
+          'Group3': groupSettings
+              .firstWhere(
+                (s) => s.groupId == 'Group3',
+                orElse: () => GroupSettings(
+                  groupId: 'Group3',
+                  groupName: 'Group3',
+                  iconCodePoint: Icons.restaurant.codePoint,
+                  colorValue: AppColors.purple.toARGB32(),
+                  savingsGoalEnabled: false,
+                  savingsGoalAmount: 0,
+                ),
+              )
+              .groupName,
+          'Group4': groupSettings
+              .firstWhere(
+                (s) => s.groupId == 'Group4',
+                orElse: () => GroupSettings(
+                  groupId: 'Group4',
+                  groupName: 'Group4',
+                  iconCodePoint: Icons.movie.codePoint,
+                  colorValue: AppColors.pink.toARGB32(),
+                  savingsGoalEnabled: false,
+                  savingsGoalAmount: 0,
+                ),
+              )
+              .groupName,
+        };
+
+        return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.area_chart, size: 24, color: theme.iconTheme.color),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // Header
+                  Row(
                     children: [
-                      Text(
-                        'Dashboard',
-                        style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+                      Icon(
+                        Icons.area_chart,
+                        size: 24,
+                        color: theme.iconTheme.color,
                       ),
-                      Text(
-                        'View your statistics in detail.',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                        ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Dashboard',
+                            style: textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'View your statistics in detail.',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+                  const SizedBox(height: 24),
+
+                  // Container 1 - Daily Summary
+                  DailySummaryCard(
+                    selectedDate: _selectedDate,
+                    dailyIncome: _dailyIncome,
+                    dailyExpense: _dailyExpense,
+                    dailyNet: _dailyNet,
+                    onDateChanged: _onDateChanged,
+                    categoryExpenses: _dailyCategoryExpenses,
+                    categoryIcons: categoryIcons,
+                    categoryColors: categoryColors,
+                    categoryNames: categoryNames,
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Container 2 - Monthly Chart
+                  MonthlyChart(
+                    selectedYear: _selectedYear,
+                    selectedMonth: _selectedMonth,
+                    spots: _monthlySpots,
+                    onMonthChanged: _onMonthChanged,
+                    categoryExpenses: _monthlyCategoryExpenses,
+                    totalExpense: _monthlyCategoryExpenses.values.fold(
+                      0.0,
+                      (a, b) => a + b,
+                    ),
+                    categoryIcons: categoryIcons,
+                    categoryColors: categoryColors,
+                    categoryNames: categoryNames,
+                    monthlyIncome: _monthlyIncome,
+                    monthlyExpense: _monthlyExpense,
+                    monthlyNet: _monthlyNet,
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Container 3 - Yearly Chart
+                  YearlyChart(
+                    selectedYear: _selectedYear,
+                    spots: _yearlySpots,
+                    onYearChanged: _onYearChanged,
+                    categoryExpenses: _yearlyCategoryExpenses,
+                    totalExpense: _yearlyCategoryExpenses.values.fold(
+                      0.0,
+                      (a, b) => a + b,
+                    ),
+                    categoryIcons: categoryIcons,
+                    categoryColors: categoryColors,
+                    categoryNames: categoryNames,
+                    yearlyIncome: _yearlyIncome,
+                    yearlyExpense: _yearlyExpense,
+                    yearlyNet: _yearlyNet,
+                  ),
                 ],
               ),
-              const SizedBox(height: 24),
-
-              // Container 1 - Daily Summary
-              DailySummaryCard(
-                selectedDate: _selectedDate,
-                dailyIncome: _dailyIncome,
-                dailyExpense: _dailyExpense,
-                dailyNet: _dailyNet,
-                onDateChanged: _onDateChanged,
-                categoryExpenses: _dailyCategoryExpenses,
-                categoryIcons: _categoryIcons,
-                categoryColors: _categoryColors,
-              ),
-              const SizedBox(height: 24),
-
-              // Container 2 - Monthly Chart
-              MonthlyChart(
-                selectedYear: _selectedYear,
-                selectedMonth: _selectedMonth,
-                spots: _monthlySpots,
-                onMonthChanged: _onMonthChanged,
-                categoryExpenses: _monthlyCategoryExpenses,
-                totalExpense: _monthlyCategoryExpenses.values.fold(
-                  0.0,
-                  (a, b) => a + b,
-                ),
-                categoryIcons: _categoryIcons,
-                categoryColors: _categoryColors,
-                monthlyIncome: _monthlyIncome,
-                monthlyExpense: _monthlyExpense,
-                monthlyNet: _monthlyNet,
-              ),
-              const SizedBox(height: 24),
-
-              // Container 3 - Yearly Chart
-              YearlyChart(
-                selectedYear: _selectedYear,
-                spots: _yearlySpots,
-                onYearChanged: _onYearChanged,
-                categoryExpenses: _yearlyCategoryExpenses,
-                totalExpense: _yearlyCategoryExpenses.values.fold(
-                  0.0,
-                  (a, b) => a + b,
-                ),
-                categoryIcons: _categoryIcons,
-                categoryColors: _categoryColors,
-                yearlyIncome: _yearlyIncome,
-                yearlyExpense: _yearlyExpense,
-                yearlyNet: _yearlyNet,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

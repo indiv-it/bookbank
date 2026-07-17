@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
+import 'package:bookbank/core/theme/app_style.dart';
 
 class BuildSummaryItem extends StatelessWidget {
   const BuildSummaryItem({

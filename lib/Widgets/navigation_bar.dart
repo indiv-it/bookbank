@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           height: isTablet ? 100.h : 80.h,
           margin: EdgeInsets.symmetric(
             horizontal: isTablet ? 24.w : 20.w,
-            vertical: isTablet ? 20.h : 15.h,
+            vertical: isTablet ? 20.h : 5.h,
           ),
           child: Stack(
             alignment: Alignment.center,

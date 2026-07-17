@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 
 // Local Imports
 import 'package:bookbank/features/home/widgets/dashboard_summary.dart';
 import 'package:bookbank/features/home/widgets/unallocated_summary.dart';
-import 'package:bookbank/Widgets/group_card.dart';
+import 'package:bookbank/features/home/widgets/group_card.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:bookbank/features/menu/editGroup/editGroup_sgreen.dart';
 
 // Database
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
+import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 
 class GroupData {
   final String groupId;
@@ -48,7 +50,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<MyData> _transactions = [];
-  List<GroupSettings> _groupSettings = [];
   double _totalBalance = 0;
   double _bankBalance = 0;
   double _cashBalance = 0;
@@ -106,8 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  GroupData _getGroupData(String groupId, Color defaultColor) {
-    final settings = _groupSettings.firstWhere(
+  GroupData _getGroupData(
+    String groupId,
+    Color defaultColor,
+    List<GroupSettings> groupSettings,
+  ) {
+    final settings = groupSettings.firstWhere(
       (s) => s.groupId == groupId,
       orElse: () => GroupSettings(
         groupId: groupId,
@@ -164,11 +169,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadData() async {
     final data = await DatabaseHelper.instance.getAllData();
-    final settings = await DatabaseHelper.instance.getAllGroupSettings();
     if (!mounted) return;
     setState(() {
       _transactions = data;
-      _groupSettings = settings;
       _calculateTotals();
     });
   }
@@ -211,388 +214,430 @@ class _HomeScreenState extends State<HomeScreen> {
     final textTheme = theme.textTheme;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              isTablet ? 32.w : 24.w,
-              isTablet ? 60.h : 45.h,
-              isTablet ? 32.w : 24.w,
-              isTablet ? 32.h : 24.h,
-            ),
-            child: Column(
-              children: [
-                // Header app
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Consumer<GroupSettingsProvider>(
+      builder: (context, groupProvider, child) {
+        final groupSettings = groupProvider.groupSettings;
+
+        return Scaffold(
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: EdgeInsets.fromLTRB(
+                  isTablet ? 32.w : 24.w,
+                  isTablet ? 60.h : 45.h,
+                  isTablet ? 32.w : 24.w,
+                  isTablet ? 32.h : 24.h,
+                ),
+                child: Column(
                   children: [
+                    // Header app
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: isTablet ? 48.w : 40.w,
-                          height: isTablet ? 48.h : 40.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              isTablet ? 24.r : 20.r,
-                            ),
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                        SizedBox(width: isTablet ? 12.w : 8.w),
-                        Text(
-                          "BookBank",
-                          style: textTheme.titleLarge?.copyWith(
-                            fontSize: isTablet ? 24.sp : 20.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: isTablet ? 48.w : 40.w,
-                          height: isTablet ? 48.h : 40.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              isTablet ? 24.r : 20.r,
-                            ),
-                            border: Border.all(color: AppColors.border),
-                            color: theme.colorScheme.surface,
-                          ),
-                          child: Icon(
-                            Icons.notifications_none,
-                            color: AppColors.black,
-                            size: isTablet ? 24.sp : 20.sp,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        PopupMenuButton<String>(
-                          icon: Icon(
-                            Icons.menu,
-                            size: isTablet ? 24.sp : 20.sp,
-                          ),
-                          offset: Offset(70.w, 50.h),
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              AppColors.card,
-                            ),
-                            side: WidgetStatePropertyAll(
-                              BorderSide(color: AppColors.border),
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          onSelected: (String value) {
-                            final menuItems = [
-                              {
-                                'name': 'Edit Group',
-                                'icon': Icons.edit,
-                                'popup': EditGroupSgreen(),
-                              },
-                              {
-                                'name': 'Dark Theme',
-                                'icon': Icons.nightlight_round_rounded,
-                                'switch': true,
-                              },
-                              {
-                                'name': 'Change language',
-                                'icon': Icons.language,
-                              },
-                              {
-                                'name': 'Change currency',
-                                'icon': Icons.currency_exchange,
-                              },
-                              {'name': 'About', 'icon': Icons.info},
-                            ];
-                            final selectedItem = menuItems.firstWhere(
-                              (item) => item['name'] == value,
-                            );
-                            if (selectedItem['popup'] != null) {
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  child: selectedItem['popup'] as Widget,
+                        Row(
+                          children: [
+                            Container(
+                              width: isTablet ? 48.w : 40.w,
+                              height: isTablet ? 48.h : 40.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  isTablet ? 24.r : 20.r,
                                 ),
-                              );
-                            }
-                          },
-                          itemBuilder: (BuildContext context) => [
-                            ...[
-                              {
-                                'name': 'Edit Group',
-                                'icon': Icons.edit,
-                                'popup': EditGroupSgreen(),
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ),
+                            SizedBox(width: isTablet ? 12.w : 8.w),
+                            Text(
+                              "BookBank",
+                              style: textTheme.titleLarge?.copyWith(
+                                fontSize: isTablet ? 24.sp : 20.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: isTablet ? 48.w : 40.w,
+                              height: isTablet ? 48.h : 40.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  isTablet ? 24.r : 20.r,
+                                ),
+                                border: Border.all(color: AppColors.border),
+                                color: theme.colorScheme.surface,
+                              ),
+                              child: Icon(
+                                Icons.notifications_none,
+                                color: AppColors.black,
+                                size: isTablet ? 24.sp : 20.sp,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            PopupMenuButton<String>(
+                              icon: Icon(
+                                Icons.menu,
+                                size: isTablet ? 24.sp : 20.sp,
+                              ),
+                              offset: Offset(70.w, 50.h),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                  AppColors.card,
+                                ),
+                                side: WidgetStatePropertyAll(
+                                  BorderSide(color: AppColors.border),
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              onSelected: (String value) {
+                                final menuItems = [
+                                  {
+                                    'name': 'Edit Group',
+                                    'icon': Icons.edit,
+                                    'popup': EditGroupSgreen(),
+                                  },
+                                  {
+                                    'name': 'Dark Theme',
+                                    'icon': Icons.nightlight_round_rounded,
+                                    'switch': true,
+                                  },
+                                  {
+                                    'name': 'Change language',
+                                    'icon': Icons.language,
+                                  },
+                                  {
+                                    'name': 'Change currency',
+                                    'icon': Icons.currency_exchange,
+                                  },
+                                  {'name': 'About', 'icon': Icons.info},
+                                ];
+                                final selectedItem = menuItems.firstWhere(
+                                  (item) => item['name'] == value,
+                                );
+                                if (selectedItem['popup'] != null) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog(
+                                      child: selectedItem['popup'] as Widget,
+                                    ),
+                                  );
+                                }
                               },
-                              {
-                                'name': 'Dark Theme',
-                                'icon': Icons.nightlight_round_rounded,
-                                'switch': true,
-                              },
-                              {
-                                'name': 'Change language',
-                                'icon': Icons.language,
-                              },
-                              {
-                                'name': 'Change currency',
-                                'icon': Icons.currency_exchange,
-                              },
-                              {'name': 'About', 'icon': Icons.info},
-                            ].map((item) {
-                              return PopupMenuItem<String>(
-                                value: item['name'] as String,
-                                child: Column(
-                                  children: [
-                                    Row(
+                              itemBuilder: (BuildContext context) => [
+                                ...[
+                                  {
+                                    'name': 'Edit Group',
+                                    'icon': Icons.edit,
+                                    'popup': EditGroupSgreen(),
+                                  },
+                                  {
+                                    'name': 'Dark Theme',
+                                    'icon': Icons.nightlight_round_rounded,
+                                    'switch': true,
+                                  },
+                                  {
+                                    'name': 'Change language',
+                                    'icon': Icons.language,
+                                  },
+                                  {
+                                    'name': 'Change currency',
+                                    'icon': Icons.currency_exchange,
+                                  },
+                                  {'name': 'About', 'icon': Icons.info},
+                                ].map((item) {
+                                  return PopupMenuItem<String>(
+                                    value: item['name'] as String,
+                                    child: Column(
                                       children: [
-                                        Icon(
-                                          item['icon'] as IconData,
-                                          size: 16.sp,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          item['name'] as String,
-                                          style: TextStyle(
-                                            fontSize: AppSize.m,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        if (item['switch'] == true) ...[
-                                          const Spacer(),
-                                          Transform.scale(
-                                            scale: 0.6,
-                                            child: Switch(
-                                              value: true,
-                                              onChanged: (value) {},
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              item['icon'] as IconData,
+                                              size: 16.sp,
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              item['name'] as String,
+                                              style: TextStyle(
+                                                fontSize: AppSize.m,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            if (item['switch'] == true) ...[
+                                              const Spacer(),
+                                              Transform.scale(
+                                                scale: 0.6,
+                                                child: Switch(
+                                                  value: true,
+                                                  onChanged: (value) {},
+                                                ),
+                                              ),
+                                            ],
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
+                              ],
+                            ),
                           ],
                         ),
                       ],
                     ),
+                    SizedBox(height: isTablet ? 24.h : 16.h),
+
+                    DashboardSummary(
+                      totalBalance: _totalBalance,
+                      bankBalance: _bankBalance,
+                      cashBalance: _cashBalance,
+                      incomeTotal: _incomeTotal,
+                      expenseTotal: _expenseTotal,
+                      monthlyIncome: _monthlyIncome,
+                      monthlyExpense: _monthlyExpense,
+                      spots: _spots,
+                    ),
+
+                    UnallocatedSummary(
+                      incomeTotal: _incomeTotal,
+                      totalBalance: _totalBalance,
+                      unallocatedAmount: _unallocatedAmount,
+                      group1Amount: _group1Amount,
+                      group2Amount: _group2Amount,
+                      group3Amount: _group3Amount,
+                      group4Amount: _group4Amount,
+                      group1Percentage: _group1Percentage,
+                      group2Percentage: _group2Percentage,
+                      group3Percentage: _group3Percentage,
+                      group4Percentage: _group4Percentage,
+                      unallocatedPercentage: _unallocatedPercentage,
+                      group1Color: _getGroupData(
+                        'Group1',
+                        theme.colorScheme.primary,
+                        groupSettings,
+                      ).groupColor,
+                      group2Color: _getGroupData(
+                        'Group2',
+                        theme.colorScheme.secondary,
+                        groupSettings,
+                      ).groupColor,
+                      group3Color: _getGroupData(
+                        'Group3',
+                        theme.colorScheme.tertiary,
+                        groupSettings,
+                      ).groupColor,
+                      group4Color: _getGroupData(
+                        'Group4',
+                        theme.colorScheme.error,
+                        groupSettings,
+                      ).groupColor,
+                    ),
+
+                    // Groups Row1
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: GroupCard(
+                            groupName: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).groupName,
+                            groupCount: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).groupCount,
+                            groupAmount: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).groupAmount,
+                            groupColor: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).groupColor,
+                            groupIcon: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).groupIcon,
+                            transactions: _transactions,
+                            percentage: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).percentage,
+                            savingsGoalEnabled: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).savingsGoalEnabled,
+                            savingsGoalAmount: _getGroupData(
+                              'Group1',
+                              theme.colorScheme.primary,
+                              groupSettings,
+                            ).savingsGoalAmount,
+                          ),
+                        ),
+                        SizedBox(width: isTablet ? 16.w : 12.w),
+                        Expanded(
+                          child: GroupCard(
+                            groupName: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).groupName,
+                            groupCount: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).groupCount,
+                            groupAmount: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).groupAmount,
+                            groupColor: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).groupColor,
+                            groupIcon: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).groupIcon,
+                            transactions: _transactions,
+                            percentage: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).percentage,
+                            savingsGoalEnabled: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).savingsGoalEnabled,
+                            savingsGoalAmount: _getGroupData(
+                              'Group2',
+                              theme.colorScheme.secondary,
+                              groupSettings,
+                            ).savingsGoalAmount,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: isTablet ? 16.h : 12.h),
+
+                    // Groups Row2
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: GroupCard(
+                            groupName: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).groupName,
+                            groupCount: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).groupCount,
+                            groupAmount: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).groupAmount,
+                            groupColor: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).groupColor,
+                            groupIcon: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).groupIcon,
+                            transactions: _transactions,
+                            percentage: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).percentage,
+                            savingsGoalEnabled: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).savingsGoalEnabled,
+                            savingsGoalAmount: _getGroupData(
+                              'Group3',
+                              Colors.purple,
+                              groupSettings,
+                            ).savingsGoalAmount,
+                          ),
+                        ),
+                        SizedBox(width: isTablet ? 16.w : 12.w),
+                        Expanded(
+                          child: GroupCard(
+                            groupName: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).groupName,
+                            groupCount: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).groupCount,
+                            groupAmount: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).groupAmount,
+                            groupColor: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).groupColor,
+                            groupIcon: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).groupIcon,
+                            transactions: _transactions,
+                            percentage: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).percentage,
+                            savingsGoalEnabled: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).savingsGoalEnabled,
+                            savingsGoalAmount: _getGroupData(
+                              'Group4',
+                              Colors.pink,
+                              groupSettings,
+                            ).savingsGoalAmount,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(height: isTablet ? 24.h : 16.h),
-
-                DashboardSummary(
-                  totalBalance: _totalBalance,
-                  bankBalance: _bankBalance,
-                  cashBalance: _cashBalance,
-                  incomeTotal: _incomeTotal,
-                  expenseTotal: _expenseTotal,
-                  monthlyIncome: _monthlyIncome,
-                  monthlyExpense: _monthlyExpense,
-                  spots: _spots,
-                ),
-
-                UnallocatedSummary(
-                  incomeTotal: _incomeTotal,
-                  totalBalance: _totalBalance,
-                  unallocatedAmount: _unallocatedAmount,
-                  group1Amount: _group1Amount,
-                  group2Amount: _group2Amount,
-                  group3Amount: _group3Amount,
-                  group4Amount: _group4Amount,
-                  group1Percentage: _group1Percentage,
-                  group2Percentage: _group2Percentage,
-                  group3Percentage: _group3Percentage,
-                  group4Percentage: _group4Percentage,
-                  unallocatedPercentage: _unallocatedPercentage,
-                  group1Color: _getGroupData(
-                    'Group1',
-                    theme.colorScheme.primary,
-                  ).groupColor,
-                  group2Color: _getGroupData(
-                    'Group2',
-                    theme.colorScheme.secondary,
-                  ).groupColor,
-                  group3Color: _getGroupData(
-                    'Group3',
-                    theme.colorScheme.tertiary,
-                  ).groupColor,
-                  group4Color: _getGroupData(
-                    'Group4',
-                    theme.colorScheme.error,
-                  ).groupColor,
-                ),
-
-                // Groups Row1
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: GroupCard(
-                        groupName: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).groupName,
-                        groupCount: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).groupCount,
-                        groupAmount: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).groupAmount,
-                        groupColor: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).groupColor,
-                        groupIcon: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).groupIcon,
-                        transactions: _transactions,
-                        percentage: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).percentage,
-                        savingsGoalEnabled: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).savingsGoalEnabled,
-                        savingsGoalAmount: _getGroupData(
-                          'Group1',
-                          theme.colorScheme.primary,
-                        ).savingsGoalAmount,
-                      ),
-                    ),
-                    SizedBox(width: isTablet ? 16.w : 12.w),
-                    Expanded(
-                      child: GroupCard(
-                        groupName: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).groupName,
-                        groupCount: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).groupCount,
-                        groupAmount: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).groupAmount,
-                        groupColor: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).groupColor,
-                        groupIcon: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).groupIcon,
-                        transactions: _transactions,
-                        percentage: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).percentage,
-                        savingsGoalEnabled: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).savingsGoalEnabled,
-                        savingsGoalAmount: _getGroupData(
-                          'Group2',
-                          theme.colorScheme.secondary,
-                        ).savingsGoalAmount,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: isTablet ? 16.h : 12.h),
-
-                // Groups Row2
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: GroupCard(
-                        groupName: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).groupName,
-                        groupCount: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).groupCount,
-                        groupAmount: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).groupAmount,
-                        groupColor: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).groupColor,
-                        groupIcon: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).groupIcon,
-                        transactions: _transactions,
-                        percentage: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).percentage,
-                        savingsGoalEnabled: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).savingsGoalEnabled,
-                        savingsGoalAmount: _getGroupData(
-                          'Group3',
-                          Colors.purple,
-                        ).savingsGoalAmount,
-                      ),
-                    ),
-                    SizedBox(width: isTablet ? 16.w : 12.w),
-                    Expanded(
-                      child: GroupCard(
-                        groupName: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).groupName,
-                        groupCount: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).groupCount,
-                        groupAmount: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).groupAmount,
-                        groupColor: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).groupColor,
-                        groupIcon: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).groupIcon,
-                        transactions: _transactions,
-                        percentage: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).percentage,
-                        savingsGoalEnabled: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).savingsGoalEnabled,
-                        savingsGoalAmount: _getGroupData(
-                          'Group4',
-                          Colors.pink,
-                        ).savingsGoalAmount,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

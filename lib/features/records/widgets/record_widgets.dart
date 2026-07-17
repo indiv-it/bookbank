@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 // Theme / Database
-import '../Core/Theme/app_style.dart';
-import '../data/database.dart';
+import '../../../core/theme/app_style.dart';
+import '../../../data/database.dart';
 
 // Functions
-import '../utils/record/record_utils.dart';
-import '../utils/record/record_filter.dart';
+import '../utils/record_utils.dart';
+import '../utils/record_filter.dart';
 
 /// Builds a detail row for the record details dialog.
 Widget buildDetailRow(String label, String value) {

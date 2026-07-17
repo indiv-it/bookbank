@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import '../Core/Theme/app_style.dart';
+import '../../../core/theme/app_style.dart';
 
-class MoneyNumber extends StatelessWidget {
-  final double amount;
+class GroupUnallocatedPopup extends StatelessWidget {
   final Color color;
-  final double? percentage;
+  final String amount;
+  final String percentage;
+  final String title;
 
-  const MoneyNumber({
+  const GroupUnallocatedPopup({
     super.key,
-    required this.amount,
     required this.color,
-    this.percentage,
+    required this.amount,
+    required this.percentage,
+    required this.title,
   });
 
   @override
@@ -27,12 +29,12 @@ class MoneyNumber extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 10),
+        Text(title, style: AppSize.m),
+        const SizedBox(width: 10),
         Text(
-          percentage != null
-              ? '${percentage!.toStringAsFixed(1)}%'
-              : amount.toString(),
-          style: AppSize.s,
+          '($amount / $percentage)',
+          style: AppSize.s.copyWith(color: AppColors.grey),
         ),
       ],
     );

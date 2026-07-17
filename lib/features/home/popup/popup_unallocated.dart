@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
-import 'package:bookbank/Widgets/unallocated_bar.dart';
-import 'package:bookbank/Widgets/popups/popup_group_unallocated.dart';
+import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
+import 'package:bookbank/features/home/popup/popup_group_unallocated.dart';
 import 'package:bookbank/utils/calculations.dart';
 
 class PopupUnallocated extends StatelessWidget {

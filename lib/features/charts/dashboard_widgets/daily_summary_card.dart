@@ -1,8 +1,8 @@
-import 'package:bookbank/Widgets/dashboard_widgets/_build_summary_item.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
-import 'package:bookbank/Widgets/dashboard_widgets/category_pie_chart.dart';
+import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
 
 class DailySummaryCard extends StatelessWidget {
   final DateTime selectedDate;
@@ -13,6 +13,7 @@ class DailySummaryCard extends StatelessWidget {
   final Map<String, double> categoryExpenses;
   final Map<String, IconData> categoryIcons;
   final Map<String, Color> categoryColors;
+  final Map<String, String> categoryNames;
 
   const DailySummaryCard({
     super.key,
@@ -24,6 +25,7 @@ class DailySummaryCard extends StatelessWidget {
     required this.categoryExpenses,
     required this.categoryIcons,
     required this.categoryColors,
+    required this.categoryNames,
   });
 
   @override
@@ -75,8 +77,8 @@ class DailySummaryCard extends StatelessWidget {
                       final DateTime? picked = await showDatePicker(
                         context: context,
                         initialDate: selectedDate,
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2030),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
                       );
                       if (picked != null) {
                         onDateChanged(picked);
@@ -138,6 +140,7 @@ class DailySummaryCard extends StatelessWidget {
             totalExpense: dailyExpense,
             categoryIcons: categoryIcons,
             categoryColors: categoryColors,
+            categoryNames: categoryNames,
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/Widgets/popups/popup_main.dart';
+import 'package:bookbank/features/home/popup/popup_main.dart';
 
 class DashboardSummary extends StatelessWidget {
   final double totalBalance;

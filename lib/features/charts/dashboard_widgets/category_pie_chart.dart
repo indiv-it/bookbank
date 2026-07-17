@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/Core/Theme/app_style.dart';
+import 'package:bookbank/core/theme/app_style.dart';
 
 class CategoryPieChart extends StatelessWidget {
   final Map<String, double> categoryExpenses;
   final double totalExpense;
   final Map<String, IconData> categoryIcons;
   final Map<String, Color> categoryColors;
+  final Map<String, String> categoryNames;
 
   const CategoryPieChart({
     super.key,
@@ -14,6 +15,7 @@ class CategoryPieChart extends StatelessWidget {
     required this.totalExpense,
     required this.categoryIcons,
     required this.categoryColors,
+    required this.categoryNames,
   });
 
   @override
@@ -66,7 +68,10 @@ class CategoryPieChart extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(category, style: AppSize.s),
+                          Text(
+                            categoryNames[category] ?? category,
+                            style: AppSize.s,
+                          ),
                           Text(
                             '฿${amount.toStringAsFixed(0)}',
                             style: TextStyle(
@@ -97,19 +102,11 @@ class CategoryPieChart extends StatelessWidget {
 
   List<PieChartSectionData> _buildPieSections() {
     final List<PieChartSectionData> sections = [];
-    int colorIndex = 0;
-    final List<Color> colors = [
-      AppColors.blue,
-      AppColors.orange,
-      AppColors.purple,
-      AppColors.pink,
-    ];
 
     for (final entry in categoryExpenses.entries) {
       final value = entry.value;
       final percentage = (value / totalExpense) * 100;
-      final color =
-          categoryColors[entry.key] ?? colors[colorIndex % colors.length];
+      final color = categoryColors[entry.key];
 
       sections.add(
         PieChartSectionData(
@@ -124,7 +121,6 @@ class CategoryPieChart extends StatelessWidget {
           ),
         ),
       );
-      colorIndex++;
     }
 
     return sections;

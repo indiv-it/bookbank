@@ -1,6 +1,6 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbank/Widgets/list_button.dart';
+import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 
 class TypeSelector extends StatelessWidget {
   final String? selectedType;
@@ -38,12 +38,14 @@ class TypeSelector extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ListButton(
+                buttonKey: 'Income',
                 titel: "Income",
                 icon: Icons.trending_up,
                 onKey: selectedType,
                 function: () => onChanged('Income'),
               ),
               ListButton(
+                buttonKey: 'Expense',
                 titel: "Expense",
                 icon: Icons.trending_down,
                 onKey: selectedType,

@@ -1,15 +1,17 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbank/Widgets/list_button.dart';
+import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 
 class CategorySelector extends StatelessWidget {
   final String? selectedGroup;
   final ValueChanged<String?> onChanged;
+  final Map<String, String> categoryNames;
 
   const CategorySelector({
     super.key,
     required this.selectedGroup,
     required this.onChanged,
+    required this.categoryNames,
   });
 
   @override
@@ -39,14 +41,16 @@ class CategorySelector extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ListButton(
-                    titel: 'Group1',
+                    buttonKey: 'Group1',
+                    titel: categoryNames['Group1'] ?? 'Group1',
                     onKey: selectedGroup,
                     function: () {
                       onChanged(selectedGroup == 'Group1' ? null : 'Group1');
                     },
                   ),
                   ListButton(
-                    titel: 'Group2',
+                    buttonKey: 'Group2',
+                    titel: categoryNames['Group2'] ?? 'Group2',
                     onKey: selectedGroup,
                     function: () {
                       onChanged(selectedGroup == 'Group2' ? null : 'Group2');
@@ -59,14 +63,16 @@ class CategorySelector extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ListButton(
-                    titel: 'Group3',
+                    buttonKey: 'Group3',
+                    titel: categoryNames['Group3'] ?? 'Group3',
                     onKey: selectedGroup,
                     function: () {
                       onChanged(selectedGroup == 'Group3' ? null : 'Group3');
                     },
                   ),
                   ListButton(
-                    titel: 'Group4',
+                    buttonKey: 'Group4',
+                    titel: categoryNames['Group4'] ?? 'Group4',
                     onKey: selectedGroup,
                     function: () {
                       onChanged(selectedGroup == 'Group4' ? null : 'Group4');

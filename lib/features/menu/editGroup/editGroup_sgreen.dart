@@ -86,27 +86,27 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'Edit Groups',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.grey,
-                ),
-              ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close, color: AppColors.grey),
+                child: Icon(Icons.close),
               ),
             ],
           ),
-          SizedBox(height: 24),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.edit, size: AppSize.l),
+              SizedBox(width: 8),
+              Text('Edit Groups', style: TextStyle(fontSize: AppSize.m)),
+            ],
+          ),
+          SizedBox(height: 16),
 
           // Group List
           if (_isLoading)
@@ -119,19 +119,25 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
                 itemBuilder: (context, index) {
                   final group = _groupSettings[index];
                   return Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
                       color: AppColors.card,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border(
+                        bottom: index == _groupSettings.length - 1
+                            ? BorderSide.none
+                            : BorderSide(
+                                color: AppColors.grey.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                      ),
                     ),
                     child: Row(
                       children: [
                         // Icon
                         Container(
-                          width: 45,
-                          height: 45,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Color(group.colorValue)),
@@ -142,17 +148,17 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
                           child: Icon(
                             _getIconFromCodePoint(group.iconCodePoint),
                             color: Color(group.colorValue),
+                            size: 18,
                           ),
                         ),
-                        SizedBox(width: 12),
+                        SizedBox(width: 16),
 
                         // Group Name
                         Expanded(
                           child: Text(
                             group.groupName,
                             style: TextStyle(
-                              color: AppColors.grey,
-                              fontSize: 16,
+                              fontSize: AppSize.m,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
