@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/core/theme/app_style.dart';
 import 'package:bookbank/data/database.dart';
+import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:bookbank/features/home/popup/popup_main.dart';
 import 'package:intl/intl.dart';
 
-class PopupGroup extends StatelessWidget {
+class PopupGroup extends StatefulWidget {
   final String groupName;
+  final String groupId;
   final Color groupColor;
   final List<MyData> transactions;
   final IconData icon;
@@ -19,6 +21,7 @@ class PopupGroup extends StatelessWidget {
   const PopupGroup({
     super.key,
     required this.groupName,
+    required this.groupId,
     required this.groupColor,
     required this.transactions,
     required this.icon,
@@ -29,19 +32,43 @@ class PopupGroup extends StatelessWidget {
   });
 
   @override
+  State<PopupGroup> createState() => _PopupGroupState();
+}
+
+class _PopupGroupState extends State<PopupGroup> {
+  List<MyData> _transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final data = await DatabaseHelper.instance.getAllData();
+    if (mounted) {
+      setState(() {
+        _transactions = data;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // สร้างข้อมูลกราฟสำหรับหมวดหมู่นี้
-    final calc = FinancialCalculations(transactions);
-    final groupSpots = calc.generateMonthlySpotsForGroup(groupName);
+    final calc = FinancialCalculations(_transactions);
+    final groupSpots = calc.generateMonthlySpotsForGroup(widget.groupId);
 
     // คำนวณรายรับ/รายจ่ายเฉพาะเดือนปัจจุบัน
-    double totalIncome = calc.monthlyGroupIncome(groupName);
-    double totalExpense = calc.monthlyGroupExpense(groupName);
+    double totalIncome = calc.monthlyGroupIncome(widget.groupId);
+    double totalExpense = calc.monthlyGroupExpense(widget.groupId);
     final net = totalIncome - totalExpense;
 
     return Container(
       width: 100,
-      height: savingsGoalEnabled && savingsGoalAmount! > 0 ? 320 : 300,
+      height: widget.savingsGoalEnabled && widget.savingsGoalAmount! > 0
+          ? 320
+          : 300,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.card,
@@ -72,18 +99,18 @@ class PopupGroup extends StatelessWidget {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      border: BoxBorder.all(color: groupColor),
+                      border: BoxBorder.all(color: widget.groupColor),
                       borderRadius: BorderRadius.circular(10),
-                      color: groupColor.withValues(alpha: 0.2),
+                      color: widget.groupColor.withValues(alpha: 0.2),
                     ),
-                    child: Icon(icon, color: groupColor),
+                    child: Icon(widget.icon, color: widget.groupColor),
                   ),
                   const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        groupName,
+                        widget.groupName,
                         style: TextStyle(
                           color: AppColors.grey,
                           fontSize: AppSize.s.fontSize,
@@ -112,7 +139,7 @@ class PopupGroup extends StatelessWidget {
                 ),
               ),
               Text(
-                '${percentage.toStringAsFixed(1)}%',
+                '${widget.percentage.toStringAsFixed(1)}%',
                 style: TextStyle(fontSize: AppSize.s.fontSize),
               ),
               Text(
@@ -126,7 +153,7 @@ class PopupGroup extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          if (savingsGoalEnabled && savingsGoalAmount! > 0) ...[
+          if (widget.savingsGoalEnabled && widget.savingsGoalAmount! > 0) ...[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -138,7 +165,7 @@ class PopupGroup extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '฿ ${savingsGoalAmount?.toStringAsFixed(2)}',
+                      '฿ ${widget.savingsGoalAmount?.toStringAsFixed(2)}',
                       style: TextStyle(fontSize: AppSize.s.fontSize),
                     ),
                   ],
@@ -147,9 +174,12 @@ class PopupGroup extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: (groupAmount! / savingsGoalAmount!).clamp(0.0, 1.0),
+                    value: (widget.groupAmount! / widget.savingsGoalAmount!)
+                        .clamp(0.0, 1.0),
                     backgroundColor: AppColors.grey.withValues(alpha: 0.2),
-                    valueColor: AlwaysStoppedAnimation<Color>(groupColor),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      widget.groupColor,
+                    ),
                     minHeight: 4,
                   ),
                 ),

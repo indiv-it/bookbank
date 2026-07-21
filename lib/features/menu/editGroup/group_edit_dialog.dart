@@ -110,170 +110,57 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Container(
       width: 400,
-      padding: EdgeInsets.all(24),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
+      ),
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Edit Group',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.grey,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 24,
+          bottom: 24 + keyboardHeight,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Icon(Icons.close, color: AppColors.grey),
                 ),
-              ),
-              InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Icon(Icons.close, color: AppColors.grey),
-              ),
-            ],
-          ),
-          SizedBox(height: 24),
-
-          // Group Name
-          Text(
-            'Group Name',
-            style: TextStyle(fontSize: 14, color: AppColors.grey),
-          ),
-          SizedBox(height: 8),
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.card,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.border),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.border),
-              ),
+              ],
             ),
-          ),
-          SizedBox(height: 16),
 
-          // Icon Selection
-          Text('Icon', style: TextStyle(fontSize: 14, color: AppColors.grey)),
-          SizedBox(height: 8),
-          Container(
-            height: 60,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _availableIcons.length,
-              itemBuilder: (context, index) {
-                final icon = _availableIcons[index];
-                final isSelected = icon.codePoint == _selectedIcon.codePoint;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedIcon = icon;
-                    });
-                  },
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    margin: EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? _selectedColor.withValues(alpha: 0.3)
-                          : AppColors.card,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: isSelected ? _selectedColor : AppColors.border,
-                        width: isSelected ? 2 : 1,
-                      ),
-                    ),
-                    child: Icon(icon, color: _selectedColor),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 16),
-
-          // Color Selection
-          Text('Color', style: TextStyle(fontSize: 14, color: AppColors.grey)),
-          SizedBox(height: 8),
-          Container(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _availableColors.length,
-              itemBuilder: (context, index) {
-                final color = _availableColors[index];
-                final isSelected = color.value == _selectedColor.value;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedColor = color;
-                    });
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    margin: EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isSelected ? AppColors.grey : Colors.transparent,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 16),
-
-          // Savings Goal Switch
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Enable Savings Goal',
-                style: TextStyle(fontSize: 14, color: AppColors.grey),
-              ),
-              Switch(
-                value: _savingsGoalEnabled,
-                onChanged: (value) {
-                  setState(() {
-                    _savingsGoalEnabled = value;
-                  });
-                },
-                activeColor: _selectedColor,
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-
-          // Savings Goal Amount
-          if (_savingsGoalEnabled) ...[
             Text(
-              'Savings Goal Amount',
-              style: TextStyle(fontSize: 14, color: AppColors.grey),
+              'Edit Group',
+              style: TextStyle(
+                fontSize: AppSize.l,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
             ),
+
             SizedBox(height: 8),
             TextField(
-              controller: _amountController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              controller: _nameController,
               decoration: InputDecoration(
-                prefixText: '฿ ',
                 filled: true,
                 fillColor: AppColors.card,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: AppColors.border),
@@ -283,33 +170,164 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                   borderSide: BorderSide(color: AppColors.border),
                 ),
               ),
+              style: TextStyle(height: 1.5, fontSize: AppSize.m),
             ),
             SizedBox(height: 16),
-          ],
 
-          // Save Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _saveSettings,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _selectedColor,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+            // Icon Selection
+            Text('Icon', style: TextStyle(fontSize: 14)),
+            SizedBox(height: 8),
+            Container(
+              height: 35,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _availableIcons.length,
+                itemBuilder: (context, index) {
+                  final icon = _availableIcons[index];
+                  final isSelected = icon.codePoint == _selectedIcon.codePoint;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedIcon = icon;
+                      });
+                    },
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      margin: EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? _selectedColor.withValues(alpha: 0.3)
+                            : AppColors.card,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected ? _selectedColor : AppColors.border,
+                          width: isSelected ? 2 : 1,
+                        ),
+                      ),
+                      child: Icon(icon, color: _selectedColor, size: 16),
+                    ),
+                  );
+                },
               ),
-              child: Text(
-                'Save',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            ),
+            SizedBox(height: 16),
+
+            // Color Selection
+            Text('Color', style: TextStyle(fontSize: AppSize.m)),
+            SizedBox(height: 8),
+            Container(
+              height: 35,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _availableColors.length,
+                itemBuilder: (context, index) {
+                  final color = _availableColors[index];
+                  final isSelected = color.value == _selectedColor.value;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedColor = color;
+                      });
+                    },
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      margin: EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.grey
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 16),
+
+            // Savings Goal Switch
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Enable Savings Goal',
+                  style: TextStyle(fontSize: AppSize.m),
+                ),
+                Transform.scale(
+                  scale: 0.8,
+                  child: Switch(
+                    value: _savingsGoalEnabled,
+                    onChanged: (value) {
+                      setState(() {
+                        _savingsGoalEnabled = value;
+                      });
+                    },
+                    activeThumbColor: _selectedColor,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+
+            // Savings Goal Amount
+            if (_savingsGoalEnabled) ...[
+              Text(
+                'Savings Goal Amount',
+                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _amountController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  prefixText: '฿ ',
+                  filled: true,
+                  fillColor: AppColors.card,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.border),
+                  ),
+                ),
+                style: TextStyle(fontSize: AppSize.m, height: 1.2),
+              ),
+              SizedBox(height: 16),
+            ],
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: _saveSettings,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _selectedColor,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

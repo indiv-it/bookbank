@@ -5,6 +5,7 @@ import '../../../core/theme/app_style.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;
+  final String groupId;
   final int groupCount;
   final double groupAmount;
   final Color groupColor;
@@ -17,6 +18,7 @@ class GroupCard extends StatelessWidget {
   const GroupCard({
     super.key,
     required this.groupName,
+    required this.groupId,
     required this.groupCount,
     required this.groupAmount,
     required this.groupColor,
@@ -38,6 +40,7 @@ class GroupCard extends StatelessWidget {
             return Dialog(
               child: PopupGroup(
                 groupName: groupName,
+                groupId: groupId,
                 groupColor: groupColor,
                 transactions: transactions,
                 icon: groupIcon,

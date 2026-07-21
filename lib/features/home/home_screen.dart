@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
         groupId: groupId,
         groupName: groupId,
         iconCodePoint: Icons.add.codePoint,
-        colorValue: defaultColor.value,
+        colorValue: defaultColor.toARGB32(),
         savingsGoalEnabled: false,
         savingsGoalAmount: 0,
       ),
@@ -446,6 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               theme.colorScheme.primary,
                               groupSettings,
                             ).groupName,
+                            groupId: 'Group1',
                             groupCount: _getGroupData(
                               'Group1',
                               theme.colorScheme.primary,
@@ -492,6 +493,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               theme.colorScheme.secondary,
                               groupSettings,
                             ).groupName,
+                            groupId: 'Group2',
                             groupCount: _getGroupData(
                               'Group2',
                               theme.colorScheme.secondary,
@@ -545,6 +547,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Colors.purple,
                               groupSettings,
                             ).groupName,
+                            groupId: 'Group3',
                             groupCount: _getGroupData(
                               'Group3',
                               Colors.purple,
@@ -591,6 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Colors.pink,
                               groupSettings,
                             ).groupName,
+                            groupId: 'Group4',
                             groupCount: _getGroupData(
                               'Group4',
                               Colors.pink,

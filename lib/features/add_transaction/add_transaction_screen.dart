@@ -9,6 +9,11 @@ import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/add_transaction/widgets/type_selector.dart';
 import 'package:bookbank/features/add_transaction/widgets/position_selector.dart';
 import 'package:bookbank/features/add_transaction/widgets/category_selector.dart';
+import 'package:bookbank/features/add_transaction/widgets/header.dart';
+import 'package:bookbank/features/add_transaction/widgets/amount_input.dart';
+import 'package:bookbank/features/add_transaction/widgets/transfer_mode.dart';
+import 'package:bookbank/features/add_transaction/widgets/title_input.dart';
+import 'package:bookbank/features/add_transaction/widgets/save_button.dart';
 import 'package:bookbank/Widgets/inWell.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
@@ -85,7 +90,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
-    final isDesktop = ResponsiveBreakpoints.of(context).isDesktop;
 
     return Consumer<GroupSettingsProvider>(
       builder: (context, groupProvider, child) {
@@ -151,21 +155,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add, size: 16.sp),
-                    SizedBox(width: 4.w),
-                    Text(
-                      'Add List',
-                      style: textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: isTablet ? 18.sp : 16.sp,
-                      ),
-                    ),
-                  ],
-                ),
+                const Header(),
                 SizedBox(height: 16.h),
 
                 // Form
@@ -174,391 +164,80 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Amount Input
-                      Text(
-                        'Amount',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.5,
-                          ),
-                          fontSize: isTablet ? 14.sp : 12.sp,
-                        ),
+                      AmountInput(
+                        controller: _amountController,
+                        errorText: _amountError,
+                        isTransferMode: _isTransferMode,
+                        onChanged: (value) {
+                          setState(() {
+                            _amountError = value.isEmpty
+                                ? '*Please enter an amount'
+                                : null;
+                          });
+                        },
+                        onSaved: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            _number = num.tryParse(value) ?? 0;
+                          }
+                        },
+                        onTransferModeToggle: () {
+                          setState(() {
+                            _isTransferMode = !_isTransferMode;
+                            if (_isTransferMode) {
+                              _transferFrom = selectedType ?? 'Bank';
+                              _transferTo = _transferFrom == 'Bank'
+                                  ? 'Cash'
+                                  : 'Bank';
+                            }
+                          });
+                        },
                       ),
-                      SizedBox(height: 8.h),
-                      Container(
-                        height: isTablet ? 56.h : 50.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: AppColors.border),
-                          color: theme.colorScheme.surface,
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(width: 16.w),
-                            Text(
-                              '฿',
-                              style: textTheme.bodyMedium?.copyWith(
-                                fontSize: isTablet ? 18.sp : 16.sp,
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                controller: _amountController,
-                                style: textTheme.bodySmall?.copyWith(
-                                  fontSize: isTablet ? 16.sp : 14.sp,
-                                ),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: '00.00',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.never,
-                                  labelStyle: textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurface
-                                        .withValues(alpha: 0.5),
-                                    fontSize: isTablet ? 16.sp : 14.sp,
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _amountError = value.isEmpty
-                                        ? '*Please enter an amount'
-                                        : null;
-                                  });
-                                },
-                                onSaved: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    _number = num.tryParse(value) ?? 0;
-                                  }
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.autorenew_rounded,
-                                size: isTablet ? 24.sp : 20.sp,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isTransferMode = !_isTransferMode;
-                                  if (_isTransferMode) {
-                                    _transferFrom = selectedType ?? 'Bank';
-                                    _transferTo = _transferFrom == 'Bank'
-                                        ? 'Cash'
-                                        : 'Bank';
-                                  }
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (_amountError != null)
-                        Padding(
-                          padding: EdgeInsets.only(top: 4.h),
-                          child: Text(
-                            _amountError!,
-                            style: textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.error,
-                              fontSize: isTablet ? 12.sp : 10.sp,
-                            ),
-                          ),
-                        ),
                       SizedBox(height: 20.h),
 
                       if (_isTransferMode) ...[
-                        // Transfer UI
-                        Column(
+                        TransferMode(
+                          transferFrom: _transferFrom,
+                          transferTo: _transferTo,
+                          onTransferFromChanged: (value) {
+                            setState(() {
+                              _transferFrom = value;
+                              _transferTo = value == 'Bank' ? 'Cash' : 'Bank';
+                            });
+                          },
+                        ),
+                      ] else ...[
+                        Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _transferFrom,
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: isTablet ? 18.sp : 16.sp,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                  ),
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    size: isTablet ? 24.sp : 20.sp,
-                                    color: theme.colorScheme.onSurface
-                                        .withValues(alpha: 0.3),
-                                  ),
-                                ),
-                                Text(
-                                  _transferTo,
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: isTablet ? 18.sp : 16.sp,
-                                  ),
-                                ),
-                              ],
+                            Expanded(
+                              child: TitleInput(controller: _titleController),
                             ),
-                            SizedBox(height: 16.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: isTablet ? 8.w : 5.w,
-                                    vertical: isTablet ? 4.h : 2.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    border: Border.all(
-                                      color: AppColors.border,
-                                      width: 1,
+                            SizedBox(width: 16.w),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Date',
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.5),
+                                      fontSize: isTablet ? 14.sp : 12.sp,
                                     ),
-                                    color: AppColors.card,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      FilledButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _transferFrom = 'Bank';
-                                            _transferTo = 'Cash';
-                                          });
-                                        },
-                                        style: FilledButton.styleFrom(
-                                          backgroundColor:
-                                              _transferFrom == 'Bank'
-                                              ? AppColors.black
-                                              : AppColors.card,
-                                          foregroundColor:
-                                              _transferFrom == 'Bank'
-                                              ? AppColors.card
-                                              : AppColors.black,
-                                          minimumSize: Size(
-                                            isTablet ? 170.w : 145.w,
-                                            isTablet ? 48.h : 40.h,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          'Bank',
-                                          style: TextStyle(
-                                            fontSize: isTablet ? 16.sp : 14.sp,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      FilledButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _transferFrom = 'Cash';
-                                            _transferTo = 'Bank';
-                                          });
-                                        },
-                                        style: FilledButton.styleFrom(
-                                          backgroundColor:
-                                              _transferFrom == 'Cash'
-                                              ? AppColors.black
-                                              : AppColors.card,
-                                          foregroundColor:
-                                              _transferFrom == 'Cash'
-                                              ? AppColors.card
-                                              : AppColors.black,
-                                          minimumSize: Size(
-                                            isTablet ? 170.w : 145.w,
-                                            isTablet ? 48.h : 40.h,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          'Cash',
-                                          style: TextStyle(
-                                            fontSize: isTablet ? 16.sp : 14.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  SizedBox(height: 8.h),
+                                  DateSelectorInkWell(
+                                    selectedDate: selectedDate,
+                                    formatDate: _formatDate,
+                                    onTap: () => _selectDate(context),
+                                    theme: theme,
+                                    textTheme: textTheme,
+                                    isTablet: isTablet,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ] else ...[
-                        // Title and Date
-                        if (!isDesktop || !isTablet) ...[
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Title',
-                                      style: textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onSurface
-                                            .withValues(alpha: 0.5),
-                                        fontSize: isTablet ? 14.sp : 12.sp,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.h),
-                                    Container(
-                                      height: 50.h,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          10.r,
-                                        ),
-                                        border: Border.all(
-                                          color: AppColors.border,
-                                        ),
-                                        color: theme.colorScheme.surface,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: 16.w),
-                                          Icon(
-                                            Icons.text_fields,
-                                            size: isTablet ? 20.sp : 16.sp,
-                                            color: theme.colorScheme.onSurface
-                                                .withValues(alpha: 0.5),
-                                          ),
-                                          Expanded(
-                                            child: TextField(
-                                              controller: _titleController,
-                                              style: textTheme.bodySmall
-                                                  ?.copyWith(
-                                                    fontSize: isTablet
-                                                        ? 16.sp
-                                                        : 14.sp,
-                                                  ),
-                                              decoration: InputDecoration(
-                                                labelText: 'Title',
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior.never,
-                                                labelStyle: textTheme.bodySmall
-                                                    ?.copyWith(
-                                                      color: theme
-                                                          .colorScheme
-                                                          .onSurface
-                                                          .withValues(
-                                                            alpha: 0.5,
-                                                          ),
-                                                      fontSize: isTablet
-                                                          ? 16.sp
-                                                          : 14.sp,
-                                                    ),
-                                                enabledBorder:
-                                                    const OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    const OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                          PopupMenuButton<String>(
-                                            icon: Icon(
-                                              Icons.arrow_drop_down,
-                                              size: isTablet ? 28.sp : 24.sp,
-                                            ),
-                                            offset: Offset(70.w, 50.h),
-                                            color: theme.colorScheme.surface,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                            ),
-                                            onSelected: (String value) {
-                                              setState(() {
-                                                _titleController.text = value;
-                                              });
-                                            },
-                                            itemBuilder: (BuildContext context) {
-                                              return [
-                                                    'Food',
-                                                    'Transport',
-                                                    'Shopping',
-                                                    'Bills',
-                                                    'Entertainment',
-                                                  ]
-                                                  .map(
-                                                    (
-                                                      item,
-                                                    ) => PopupMenuItem<String>(
-                                                      value: item,
-                                                      child: Text(
-                                                        item,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                  .toList();
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 16.w),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Date',
-                                      style: textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onSurface
-                                            .withValues(alpha: 0.5),
-                                        fontSize: isTablet ? 14.sp : 12.sp,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.h),
-                                    DateSelectorInkWell(
-                                      selectedDate: selectedDate,
-                                      formatDate: _formatDate,
-                                      onTap: () => _selectDate(context),
-                                      theme: theme,
-                                      textTheme: textTheme,
-                                      isTablet: isTablet,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                         SizedBox(height: 16.h),
 
                         TypeSelector(
@@ -587,8 +266,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 ),
                 SizedBox(height: 30.h),
 
-                // Save Button
-                FilledButton(
+                SaveButton(
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) return;
 
@@ -700,28 +378,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       });
                     }
                   },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: theme.colorScheme.onSurface,
-                    foregroundColor: theme.colorScheme.surface,
-                    minimumSize: Size(
-                      isTablet ? 500.w : 400.w,
-                      isTablet ? 56.h : 50.h,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add, size: isTablet ? 24.sp : 20.sp),
-                      SizedBox(width: 10.w),
-                      Text(
-                        'Save',
-                        style: TextStyle(fontSize: isTablet ? 18.sp : 16.sp),
-                      ),
-                    ],
-                  ),
                 ),
                 SizedBox(height: 30.h),
               ],
