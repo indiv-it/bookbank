@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 class MoneyNumber extends StatelessWidget {
   final double amount;
@@ -32,7 +32,7 @@ class MoneyNumber extends StatelessWidget {
           percentage != null
               ? '${percentage!.toStringAsFixed(1)}%'
               : amount.toString(),
-          style: AppSize.s,
+          style: TextStyle(fontSize: AppSize.s),
         ),
       ],
     );

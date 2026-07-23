@@ -1,4 +1,4 @@
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ListButton extends StatelessWidget {
@@ -43,16 +43,16 @@ class ListButton extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    size: AppSize.s.fontSize,
+                    size: AppSize.s,
                     color: buttonKey == onKey
                         ? AppColors.card
                         : AppColors.black,
                   ),
                   const SizedBox(width: 8),
-                  Text(titel, style: TextStyle(fontSize: AppSize.s.fontSize)),
+                  Text(titel, style: TextStyle(fontSize: AppSize.s)),
                 ],
               )
-            : Text(titel, style: TextStyle(fontSize: AppSize.s.fontSize)),
+            : Text(titel, style: TextStyle(fontSize: AppSize.s)),
       ),
     );
   }

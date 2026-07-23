@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/popup/popup_group_unallocated.dart';
 import 'package:bookbank/utils/calculations.dart';
@@ -85,7 +85,7 @@ class PopupUnallocated extends StatelessWidget {
               ),
             ],
           ),
-          Text('Unallocated Funds', style: AppSize.s),
+          Text('Unallocated Funds', style: TextStyle(fontSize: AppSize.s)),
           const SizedBox(height: 8),
 
           // Money display
@@ -93,7 +93,7 @@ class PopupUnallocated extends StatelessWidget {
             children: [
               Text(
                 '฿ ${unallocatedAmount.toStringAsFixed(2)}',
-                style: AppSize.m,
+                style: TextStyle(fontSize: AppSize.m),
               ),
               const SizedBox(width: 8),
               SizedBox(
@@ -109,7 +109,7 @@ class PopupUnallocated extends StatelessWidget {
                     '$pct%',
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s.fontSize,
+                      fontSize: AppSize.s,
                     ),
                   ),
                 ),
@@ -121,7 +121,7 @@ class PopupUnallocated extends StatelessWidget {
           // All money in the group
           Text(
             'All money in the group',
-            style: AppSize.s.copyWith(color: AppColors.grey),
+            style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
           ),
           LayoutBuilder(
             builder: (context, constraints) {

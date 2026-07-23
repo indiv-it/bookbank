@@ -1,7 +1,7 @@
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/features/home/popup/popup_group.dart';
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;
@@ -31,6 +31,7 @@ class GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -58,9 +59,9 @@ class GroupCard extends StatelessWidget {
         width: 150,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: theme.colorScheme.surface),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,21 +90,21 @@ class GroupCard extends StatelessWidget {
             ),
             Text(
               groupName,
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: AppSize.s.fontSize,
-              ),
+              style: TextStyle(color: AppColors.grey, fontSize: AppSize.s),
             ),
             Row(
               children: [
-                Text('\$${groupAmount.toStringAsFixed(2)}', style: AppSize.m),
+                Text(
+                  '\$${groupAmount.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: AppSize.m),
+                ),
                 Spacer(),
                 if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
                   Text(
                     '฿${savingsGoalAmount.toStringAsFixed(0)}',
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s.fontSize,
+                      fontSize: AppSize.s,
                     ),
                   ),
                 ],

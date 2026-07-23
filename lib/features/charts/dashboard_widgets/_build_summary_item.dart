@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 
 class BuildSummaryItem extends StatelessWidget {
   const BuildSummaryItem({
@@ -19,14 +19,14 @@ class BuildSummaryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, size: AppSize.xl.fontSize),
+        Icon(icon, size: AppSize.xl),
         const SizedBox(height: 4),
-        Text(title, style: AppSize.s),
+        Text(title, style: TextStyle(fontSize: AppSize.s)),
         const SizedBox(height: 4),
         Text(
           '฿${amount.toStringAsFixed(2)}',
           style: TextStyle(
-            fontSize: AppSize.s.fontSize,
+            fontSize: AppSize.s,
             fontWeight: FontWeight.bold,
             color: color,
           ),

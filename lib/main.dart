@@ -20,21 +20,32 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return ChangeNotifierProvider(
-          create: (_) => GroupSettingsProvider(),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            home: const HomePage(),
-            builder: (context, widget) {
-              return ResponsiveBreakpoints.builder(
-                breakpoints: const [
-                  Breakpoint(start: 0, end: 450, name: MOBILE),
-                  Breakpoint(start: 451, end: 800, name: TABLET),
-                  Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                  Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-                ],
-                child: widget!,
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => GroupSettingsProvider()),
+            ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          ],
+          child: Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: themeProvider.isDarkMode
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                home: const HomePage(),
+                builder: (context, widget) {
+                  return ResponsiveBreakpoints.builder(
+                    breakpoints: const [
+                      Breakpoint(start: 0, end: 450, name: MOBILE),
+                      Breakpoint(start: 451, end: 800, name: TABLET),
+                      Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                      Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+                    ],
+                    child: widget!,
+                  );
+                },
               );
             },
           ),

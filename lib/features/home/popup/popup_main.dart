@@ -1,75 +1,8 @@
+import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import '../../../core/theme/app_style.dart';
-
-// ----- Line Chart Helper Functions -----
-List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
-  List<LineChartBarData> segments = [];
-
-  for (int i = 0; i < spots.length - 1; i++) {
-    final start = spots[i];
-    final end = spots[i + 1];
-
-    if ((start.y >= 0 && end.y >= 0) || (start.y < 0 && end.y < 0)) {
-      final color = start.y >= 0 ? AppColors.green : AppColors.red;
-
-      segments.add(
-        LineChartBarData(
-          spots: [start, end],
-          isCurved: true,
-          color: color,
-          barWidth: 1.5,
-          dotData: FlDotData(show: false),
-
-          belowBarData: BarAreaData(
-            show: true,
-            color: color.withValues(alpha: 0.2),
-          ),
-        ),
-      );
-      continue;
-    }
-
-    final ratio = start.y / (start.y - end.y);
-    final x0 = start.x + (end.x - start.x) * ratio;
-    final zeroPoint = FlSpot(x0, 0);
-
-    final color1 = start.y >= 0 ? AppColors.green : AppColors.red;
-
-    segments.add(
-      LineChartBarData(
-        spots: [start, zeroPoint],
-        isCurved: true,
-        color: color1,
-        barWidth: 1.5,
-        dotData: FlDotData(show: false),
-        belowBarData: BarAreaData(
-          show: true,
-          color: color1.withValues(alpha: 0.2),
-        ),
-      ),
-    );
-
-    final color2 = end.y >= 0 ? AppColors.green : AppColors.red;
-
-    segments.add(
-      LineChartBarData(
-        spots: [zeroPoint, end],
-        isCurved: true,
-        color: color2,
-        barWidth: 1.5,
-        dotData: FlDotData(show: false),
-        belowBarData: BarAreaData(
-          show: true,
-          color: color2.withValues(alpha: 0.25),
-        ),
-      ),
-    );
-  }
-
-  return segments;
-}
+import '../../../core/theme/app_theme.dart';
 
 // ----- Display Widget -----
 class PopupMain extends StatelessWidget {
@@ -129,7 +62,7 @@ class PopupMain extends StatelessWidget {
               ),
             ],
           ),
-          Text('Total balance', style: AppSize.s),
+          Text('Total balance', style: TextStyle(fontSize: AppSize.s)),
 
           // Balance display
           Row(
@@ -153,7 +86,7 @@ class PopupMain extends StatelessWidget {
                         '$incomeExpensePct%',
                         style: TextStyle(
                           color: AppColors.green,
-                          fontSize: AppSize.s.fontSize,
+                          fontSize: AppSize.s,
                         ),
                       ),
                     ],
@@ -171,7 +104,7 @@ class PopupMain extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 'Bank : ฿ ${bankBalance.toStringAsFixed(2)} / $bankPct%',
-                style: AppSize.s,
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
@@ -181,7 +114,7 @@ class PopupMain extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 'Cash : ฿ ${cashBalance.toStringAsFixed(2)} / $cashPct%',
-                style: AppSize.s,
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
@@ -192,14 +125,11 @@ class PopupMain extends StatelessWidget {
             children: [
               Text(
                 'Monthly data: ',
-                style: TextStyle(
-                  fontSize: AppSize.s.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())}/${DateTime.now().year}',
-                style: AppSize.s,
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
@@ -223,10 +153,10 @@ class PopupMain extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Income', style: AppSize.xs),
+                  Text('Income', style: TextStyle(fontSize: AppSize.xs)),
                   Text(
                     '฿ ${monthlyIncome.toStringAsFixed(2)}',
-                    style: AppSize.s,
+                    style: TextStyle(fontSize: AppSize.s),
                   ),
                 ],
               ),
@@ -247,10 +177,10 @@ class PopupMain extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Expense', style: AppSize.xs),
+                  Text('Expense', style: TextStyle(fontSize: AppSize.xs)),
                   Text(
                     '฿ ${monthlyExpense.toStringAsFixed(2)}',
-                    style: AppSize.s,
+                    style: TextStyle(fontSize: AppSize.s),
                   ),
                 ],
               ),

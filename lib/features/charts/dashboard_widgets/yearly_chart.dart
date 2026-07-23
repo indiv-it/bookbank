@@ -1,7 +1,7 @@
 import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
 
 class YearlyChart extends StatelessWidget {
@@ -50,10 +50,7 @@ class YearlyChart extends StatelessWidget {
             children: [
               Text(
                 'Data for the year',
-                style: TextStyle(
-                  fontSize: AppSize.s.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
               ),
               Row(
                 children: [
@@ -61,10 +58,7 @@ class YearlyChart extends StatelessWidget {
                     icon: const Icon(Icons.chevron_left),
                     onPressed: () => onYearChanged(selectedYear - 1),
                   ),
-                  Text(
-                    '$selectedYear',
-                    style: TextStyle(fontSize: AppSize.s.fontSize),
-                  ),
+                  Text('$selectedYear', style: TextStyle(fontSize: AppSize.s)),
                   IconButton(
                     icon: const Icon(Icons.chevron_right),
                     onPressed: () => onYearChanged(selectedYear + 1),
@@ -144,7 +138,7 @@ class YearlyChart extends StatelessWidget {
                         if (value.toInt() >= 1 && value.toInt() <= 12) {
                           return Text(
                             months[value.toInt() - 1],
-                            style: AppSize.xs,
+                            style: TextStyle(fontSize: AppSize.xs),
                           );
                         }
                         return const Text('');
@@ -157,7 +151,10 @@ class YearlyChart extends StatelessWidget {
                       reservedSize: 50,
                       interval: _calculateInterval(spots),
                       getTitlesWidget: (value, meta) {
-                        return Text('฿${value.toInt()}', style: AppSize.xs);
+                        return Text(
+                          '฿${value.toInt()}',
+                          style: TextStyle(fontSize: AppSize.xs),
+                        );
                       },
                     ),
                   ),
@@ -213,7 +210,7 @@ class YearlyChart extends StatelessWidget {
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s.fontSize),
+            style: TextStyle(fontSize: AppSize.s),
           ),
           const SizedBox(height: 16),
 

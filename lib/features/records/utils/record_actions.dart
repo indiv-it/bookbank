@@ -7,7 +7,7 @@ import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 // Database / Style
 import '../../../data/database.dart';
 import '../../../data/db_helper.dart';
-import '../../../core/theme/app_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Shows the record details dialog.
 Future<void> viewRecord(BuildContext context, MyData item) async {
@@ -57,13 +57,13 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
               const SizedBox(width: 8),
               Text(
                 '${item.moneyType == 'transfer' ? 'Alternative' : item.title}',
-                style: TextStyle(fontSize: AppSize.s.fontSize),
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
           Text(
             '฿${item.amount.toStringAsFixed(0)}',
-            style: TextStyle(fontSize: AppSize.l.fontSize),
+            style: TextStyle(fontSize: AppSize.l),
           ),
           const SizedBox(height: 16),
           recondListView(

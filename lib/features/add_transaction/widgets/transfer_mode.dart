@@ -34,9 +34,7 @@ class TransferMode extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Icon(
                 Icons.arrow_forward,
                 size: isTablet ? 24.sp : 20.sp,
@@ -63,10 +61,7 @@ class TransferMode extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(
-                  color: AppColors.border,
-                  width: 1,
-                ),
+                border: Border.all(color: AppColors.border, width: 1),
                 color: AppColors.card,
               ),
               child: Row(
@@ -86,16 +81,12 @@ class TransferMode extends StatelessWidget {
                         isTablet ? 48.h : 40.h,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                     child: Text(
                       'Bank',
-                      style: TextStyle(
-                        fontSize: isTablet ? 16.sp : 14.sp,
-                      ),
+                      style: TextStyle(fontSize: isTablet ? 16.sp : 14.sp),
                     ),
                   ),
                   SizedBox(width: 10.w),
@@ -113,16 +104,12 @@ class TransferMode extends StatelessWidget {
                         isTablet ? 48.h : 40.h,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                     child: Text(
                       'Cash',
-                      style: TextStyle(
-                        fontSize: isTablet ? 16.sp : 14.sp,
-                      ),
+                      style: TextStyle(fontSize: isTablet ? 16.sp : 14.sp),
                     ),
                   ),
                 ],

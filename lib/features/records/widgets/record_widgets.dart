@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Theme / Database
-import '../../../core/theme/app_style.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../data/database.dart';
 
 // Functions
@@ -19,14 +19,11 @@ Widget buildDetailRow(String label, String value) {
           width: 72,
           child: Text(
             label,
-            style: TextStyle(
-              fontSize: AppSize.s.fontSize,
-              color: AppColors.grey,
-            ),
+            style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
           ),
         ),
         Expanded(
-          child: Text(value, style: TextStyle(fontSize: AppSize.s.fontSize)),
+          child: Text(value, style: TextStyle(fontSize: AppSize.s)),
         ),
       ],
     ),
@@ -58,13 +55,13 @@ Widget buildFilterTab({
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isSelected) ...[
-              Icon(icon, size: AppSize.m.fontSize, color: AppColors.card),
+              Icon(icon, size: AppSize.m, color: AppColors.card),
               const SizedBox(width: 6),
             ],
             Text(
               label,
               style: TextStyle(
-                fontSize: AppSize.s.fontSize,
+                fontSize: AppSize.s,
                 color: isSelected ? AppColors.card : AppColors.grey,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
@@ -79,11 +76,11 @@ Widget buildFilterTab({
 Widget recondListView(IconData icon, String title, String data) {
   return Row(
     children: [
-      Icon(icon, size: AppSize.xl.fontSize),
+      Icon(icon, size: AppSize.xl),
       const SizedBox(width: 8),
       Text(
         '$title :',
-        style: TextStyle(fontSize: AppSize.s.fontSize, color: AppColors.grey),
+        style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
       ),
       const SizedBox(width: 8),
       Text(data),
@@ -150,7 +147,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                   Text(
                     isTransfer ? 'Alternate' : '${item.title}',
                     style: TextStyle(
-                      fontSize: AppSize.xs.fontSize,
+                      fontSize: AppSize.xs,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF5D4037),
                     ),
@@ -160,7 +157,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                       Text(
                         '฿ ${item.amount.toStringAsFixed(2)}',
                         style: TextStyle(
-                          fontSize: (AppSize.m.fontSize ?? 12) - 1,
+                          fontSize: AppSize.m - 1,
                           color: const Color(0xFF8D6E63),
                         ),
                       ),
@@ -178,7 +175,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                     ? 'Income'
                     : 'Expense',
                 style: TextStyle(
-                  fontSize: AppSize.xs.fontSize,
+                  fontSize: AppSize.xs,
                   fontWeight: FontWeight.w600,
                   color: AppColors.grey,
                 ),
@@ -190,7 +187,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
               child: Text(
                 formatDisplayDate(item.date),
                 style: TextStyle(
-                  fontSize: AppSize.xs.fontSize,
+                  fontSize: AppSize.xs,
                   color: const Color(0xFF8D6E63),
                 ),
                 textAlign: TextAlign.end,
@@ -215,12 +212,9 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.visibility, size: AppSize.l.fontSize),
+                      Icon(Icons.visibility, size: AppSize.l),
                       const SizedBox(width: 8),
-                      Text(
-                        'View',
-                        style: TextStyle(fontSize: AppSize.s.fontSize),
-                      ),
+                      Text('View', style: TextStyle(fontSize: AppSize.s)),
                     ],
                   ),
                 ),
@@ -230,12 +224,9 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.edit, size: AppSize.l.fontSize),
+                        Icon(Icons.edit, size: AppSize.l),
                         const SizedBox(width: 8),
-                        Text(
-                          'Edit',
-                          style: TextStyle(fontSize: AppSize.s.fontSize),
-                        ),
+                        Text('Edit', style: TextStyle(fontSize: AppSize.s)),
                       ],
                     ),
                   ),
@@ -245,17 +236,13 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.delete,
-                        color: AppColors.red,
-                        size: AppSize.l.fontSize,
-                      ),
+                      Icon(Icons.delete, color: AppColors.red, size: AppSize.l),
                       const SizedBox(width: 8),
                       Text(
                         'Delete',
                         style: TextStyle(
                           color: AppColors.red,
-                          fontSize: AppSize.s.fontSize,
+                          fontSize: AppSize.s,
                         ),
                       ),
                     ],

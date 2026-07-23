@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:bookbank/features/home/home_screen.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 import 'package:bookbank/features/records/record_screen.dart';
 
@@ -33,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   // Build navigation item
   Widget _buildNavItem(int index, IconData icon) {
     bool isSelected = currentIndex == index;
+    final theme = Theme.of(context);
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     return GestureDetector(
       onTap: () {
@@ -50,7 +50,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             Icon(
               icon,
-              color: isSelected ? AppColors.card : AppColors.grey,
+              color: isSelected
+                  ? theme.colorScheme.surface
+                  : theme.colorScheme.outline,
               size: isTablet ? 28.sp : 23.sp,
             ),
             if (isSelected) ...[
@@ -59,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 width: isTablet ? 28.w : 24.w,
                 height: isTablet ? 4.h : 3.h,
                 decoration: BoxDecoration(
-                  color: AppColors.card,
+                  color: theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(isTablet ? 2.r : 1.5.r),
                 ),
               ),
@@ -73,6 +75,7 @@ class _HomePageState extends State<HomePage> {
   // Build the navigation bar
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     return Scaffold(
       extendBody: true,
@@ -95,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   height: isTablet ? 75.h : 65.h,
                   decoration: BoxDecoration(
-                    color: AppColors.black,
+                    color: theme.colorScheme.surfaceBright,
                     borderRadius: BorderRadius.circular(isTablet ? 40.r : 35.r),
                   ),
                   child: Row(
@@ -133,16 +136,16 @@ class _HomePageState extends State<HomePage> {
                     height: isTablet ? 84.h : 70.h,
                     width: isTablet ? 84.w : 70.w,
                     decoration: BoxDecoration(
-                      color: AppColors.background,
+                      color: theme.colorScheme.surface,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.black,
+                        color: theme.colorScheme.surfaceBright,
                         width: isTablet ? 10 : 8,
                       ),
                     ),
                     child: Icon(
                       Icons.add,
-                      color: AppColors.black,
+                      color: theme.colorScheme.onSurface,
                       size: isTablet ? 28.sp : 24.sp,
                     ),
                   ),

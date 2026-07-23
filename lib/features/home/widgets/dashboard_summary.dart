@@ -1,3 +1,4 @@
+import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -58,7 +59,7 @@ class DashboardSummary extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: theme.colorScheme.surface),
         ),
         child: Column(
           children: [
@@ -162,7 +163,7 @@ class DashboardSummary extends StatelessWidget {
               Text(
                 "${total > 0 ? (balance / total * 100).toStringAsFixed(1) : 0}%",
                 style: textTheme.labelSmall?.copyWith(
-                  color: AppColors.black.withValues(alpha: 0.5),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
             ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 class GroupUnallocatedPopup extends StatelessWidget {
   final Color color;
@@ -30,11 +30,11 @@ class GroupUnallocatedPopup extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Text(title, style: AppSize.m),
+        Text(title, style: TextStyle(fontSize: AppSize.m)),
         const SizedBox(width: 10),
         Text(
           '($amount / $percentage)',
-          style: AppSize.s.copyWith(color: AppColors.grey),
+          style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
         ),
       ],
     );

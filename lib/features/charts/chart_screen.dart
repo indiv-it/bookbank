@@ -48,6 +48,9 @@ class _ChartScreenState extends State<ChartScreen> {
   double _yearlyExpense = 0;
   double _yearlyNet = 0;
 
+  // Total balance
+  double _totalBalance = 0;
+
   final List<IconData> _availableIcons = [
     Icons.add,
     Icons.shopping_cart,
@@ -166,6 +169,9 @@ class _ChartScreenState extends State<ChartScreen> {
     _yearlyIncome = calc.yearlyIncome(_selectedYear);
     _yearlyExpense = calc.yearlyExpense(_selectedYear);
     _yearlyNet = calc.yearlyNet(_selectedYear);
+
+    // Calculate total balance
+    _totalBalance = calc.sumAll().toDouble();
   }
 
   void _onDateChanged(DateTime newDate) {
@@ -417,6 +423,28 @@ class _ChartScreenState extends State<ChartScreen> {
                         ],
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total Balance',
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: AppColors.grey,
+                            fontSize: AppSize.s,
+                          ),
+                        ),
+                        Text(
+                          '\$ ${_totalBalance.toStringAsFixed(2)}',
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: AppColors.black,
+                            fontSize: AppSize.l,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 24),
 

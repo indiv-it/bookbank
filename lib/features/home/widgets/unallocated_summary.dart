@@ -91,7 +91,7 @@ class UnallocatedSummary extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: theme.colorScheme.surface),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

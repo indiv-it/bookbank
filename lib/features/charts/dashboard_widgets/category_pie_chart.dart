@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 
 class CategoryPieChart extends StatelessWidget {
   final Map<String, double> categoryExpenses;
@@ -24,7 +24,7 @@ class CategoryPieChart extends StatelessWidget {
       return Center(
         child: Text(
           'Not enough data',
-          style: TextStyle(color: AppColors.grey, fontSize: AppSize.s.fontSize),
+          style: TextStyle(color: AppColors.grey, fontSize: AppSize.s),
         ),
       );
     }
@@ -70,12 +70,12 @@ class CategoryPieChart extends StatelessWidget {
                         children: [
                           Text(
                             categoryNames[category] ?? category,
-                            style: AppSize.s,
+                            style: TextStyle(fontSize: AppSize.s),
                           ),
                           Text(
                             '฿${amount.toStringAsFixed(0)}',
                             style: TextStyle(
-                              fontSize: AppSize.xs.fontSize,
+                              fontSize: AppSize.xs,
                               color: AppColors.grey,
                             ),
                           ),
@@ -85,7 +85,7 @@ class CategoryPieChart extends StatelessWidget {
                     Text(
                       '${percentage.toStringAsFixed(1)}%',
                       style: TextStyle(
-                        fontSize: AppSize.s.fontSize,
+                        fontSize: AppSize.s,
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),

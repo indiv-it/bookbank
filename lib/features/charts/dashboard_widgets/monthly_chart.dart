@@ -2,7 +2,7 @@ import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.d
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
 
 class MonthlyChart extends StatelessWidget {
@@ -56,10 +56,7 @@ class MonthlyChart extends StatelessWidget {
             children: [
               Text(
                 'Data for the month',
-                style: TextStyle(
-                  fontSize: AppSize.s.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
               ),
               Row(
                 children: [
@@ -75,7 +72,7 @@ class MonthlyChart extends StatelessWidget {
                   ),
                   Text(
                     monthFormat.format(selectedDate),
-                    style: TextStyle(fontSize: AppSize.s.fontSize),
+                    style: TextStyle(fontSize: AppSize.s),
                   ),
                   IconButton(
                     icon: const Icon(Icons.chevron_right),
@@ -160,7 +157,7 @@ class MonthlyChart extends StatelessWidget {
                       getTitlesWidget: (value, meta) {
                         return Text(
                           value.toInt().toString(),
-                          style: AppSize.xs,
+                          style: TextStyle(fontSize: AppSize.xs),
                         );
                       },
                     ),
@@ -171,7 +168,10 @@ class MonthlyChart extends StatelessWidget {
                       reservedSize: 50,
                       interval: _calculateInterval(spots),
                       getTitlesWidget: (value, meta) {
-                        return Text('฿${value.toInt()}', style: AppSize.xs);
+                        return Text(
+                          '฿${value.toInt()}',
+                          style: TextStyle(fontSize: AppSize.xs),
+                        );
                       },
                     ),
                   ),
@@ -209,7 +209,7 @@ class MonthlyChart extends StatelessWidget {
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s.fontSize),
+            style: TextStyle(fontSize: AppSize.s),
           ),
           const SizedBox(height: 16),
 

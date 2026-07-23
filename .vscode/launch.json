@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (lib/Widgets/lieChart.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/Widgets/lieChart.dart"
+        }
+    ]
+}

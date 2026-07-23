@@ -1,10 +1,10 @@
+import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/core/theme/app_style.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/utils/calculations.dart';
-import 'package:bookbank/features/home/popup/popup_main.dart';
 import 'package:intl/intl.dart';
 
 class PopupGroup extends StatefulWidget {
@@ -113,12 +113,12 @@ class _PopupGroupState extends State<PopupGroup> {
                         widget.groupName,
                         style: TextStyle(
                           color: AppColors.grey,
-                          fontSize: AppSize.s.fontSize,
+                          fontSize: AppSize.s,
                         ),
                       ),
                       Text(
                         '฿ ${net.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: AppSize.l.fontSize),
+                        style: TextStyle(fontSize: AppSize.l),
                       ),
                       const SizedBox(height: 8),
                     ],
@@ -133,21 +133,15 @@ class _PopupGroupState extends State<PopupGroup> {
             children: [
               Text(
                 'This represents ',
-                style: TextStyle(
-                  fontSize: AppSize.xs.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
               ),
               Text(
                 '${widget.percentage.toStringAsFixed(1)}%',
-                style: TextStyle(fontSize: AppSize.s.fontSize),
+                style: TextStyle(fontSize: AppSize.s),
               ),
               Text(
                 ' of the total amount.',
-                style: TextStyle(
-                  fontSize: AppSize.xs.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
               ),
             ],
           ),
@@ -159,14 +153,11 @@ class _PopupGroupState extends State<PopupGroup> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      'Target',
-                      style: TextStyle(fontSize: AppSize.s.fontSize),
-                    ),
+                    Text('Target', style: TextStyle(fontSize: AppSize.s)),
                     const Spacer(),
                     Text(
                       '฿ ${widget.savingsGoalAmount?.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: AppSize.s.fontSize),
+                      style: TextStyle(fontSize: AppSize.s),
                     ),
                   ],
                 ),
@@ -193,14 +184,11 @@ class _PopupGroupState extends State<PopupGroup> {
             children: [
               Text(
                 'Monthly data: ',
-                style: TextStyle(
-                  fontSize: AppSize.xs.fontSize,
-                  color: AppColors.grey,
-                ),
+                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())} / ${DateTime.now().year}',
-                style: TextStyle(fontSize: AppSize.xs.fontSize),
+                style: TextStyle(fontSize: AppSize.xs),
               ),
             ],
           ),
@@ -220,7 +208,7 @@ class _PopupGroupState extends State<PopupGroup> {
               const SizedBox(width: 6),
               Text(
                 'Income: ฿ ${totalIncome.toStringAsFixed(2)}',
-                style: AppSize.s,
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
@@ -239,7 +227,7 @@ class _PopupGroupState extends State<PopupGroup> {
               const SizedBox(width: 6),
               Text(
                 'Expense: ฿ ${totalExpense.toStringAsFixed(2)}',
-                style: AppSize.s,
+                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
