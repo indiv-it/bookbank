@@ -74,13 +74,15 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 400,
       constraints: BoxConstraints(maxHeight: 500),
       padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -121,7 +123,7 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
                   return Container(
                     padding: EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.card,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(5),
                       border: Border(
                         bottom: index == _groupSettings.length - 1

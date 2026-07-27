@@ -32,12 +32,14 @@ Widget buildDetailRow(String label, String value) {
 
 /// Builds a filter tab widget for the record filter bar.
 Widget buildFilterTab({
+  required BuildContext context,
   required RecordFilter value,
   required RecordFilter selectedFilter,
   required IconData icon,
   required String label,
   required VoidCallback onTap,
 }) {
+  final theme = Theme.of(context);
   final isSelected = selectedFilter == value;
 
   return Expanded(
@@ -48,21 +50,21 @@ Widget buildFilterTab({
         height: 48,
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.black : Colors.transparent,
+          color: isSelected ? theme.colorScheme.onSurface : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isSelected) ...[
-              Icon(icon, size: AppSize.m, color: AppColors.card),
+              Icon(icon, size: AppSize.m, color: theme.colorScheme.surface),
               const SizedBox(width: 6),
             ],
             Text(
               label,
               style: TextStyle(
                 fontSize: AppSize.s,
-                color: isSelected ? AppColors.card : AppColors.grey,
+                color: isSelected ? theme.colorScheme.surface : AppColors.grey,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
@@ -89,7 +91,8 @@ Widget recondListView(IconData icon, String title, String data) {
 }
 
 /// Builds a single record row in the list.
-Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
+Widget buildRecordRow(BuildContext context, MyData item, void Function(String) onMenuAction) {
+  final theme = Theme.of(context);
   final isTransfer = item.moneyType == 'transfer';
   final isIncome = item.moneyType == 'income';
 
@@ -103,9 +106,9 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.border, width: 1), // amber[300]
+          border: Border.all(color: theme.colorScheme.outline, width: 1),
         ),
         child: Row(
           children: [
@@ -149,7 +152,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                     style: TextStyle(
                       fontSize: AppSize.xs,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF5D4037),
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Row(
@@ -158,7 +161,7 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                         '฿ ${item.amount.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: AppSize.m - 1,
-                          color: const Color(0xFF8D6E63),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -188,22 +191,22 @@ Widget buildRecordRow(MyData item, void Function(String) onMenuAction) {
                 formatDisplayDate(item.date),
                 style: TextStyle(
                   fontSize: AppSize.xs,
-                  color: const Color(0xFF8D6E63),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 textAlign: TextAlign.end,
               ),
             ),
             PopupMenuButton<String>(
               padding: EdgeInsets.zero,
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_horiz,
                 size: 18,
-                color: Color(0xFF8D6E63),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
-              color: AppColors.card,
+              color: theme.colorScheme.surface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: AppColors.border),
+                side: BorderSide(color: theme.colorScheme.outline),
               ),
               onSelected: onMenuAction,
               itemBuilder: (context) => [

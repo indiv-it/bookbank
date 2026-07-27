@@ -4,6 +4,7 @@ import 'package:bookbank/features/home/popup/popup_unallocated.dart';
 import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/widgets/unallocated_number.dart';
 import 'package:bookbank/utils/calculations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UnallocatedSummary extends StatelessWidget {
   final double incomeTotal;
@@ -85,13 +86,13 @@ class UnallocatedSummary extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 80,
-        margin: const EdgeInsets.symmetric(vertical: 11),
-        padding: const EdgeInsets.all(12),
+        height: 80.h,
+        margin: EdgeInsets.symmetric(vertical: 11.h),
+        padding: EdgeInsets.all(12.r),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: theme.colorScheme.surface),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,11 +125,11 @@ class UnallocatedSummary extends StatelessWidget {
               builder: (context, constraints) {
                 return Container(
                   width: double.infinity,
-                  height: 5,
-                  margin: EdgeInsets.only(top: 8),
+                  height: 5.h,
+                  margin: EdgeInsets.only(top: 8.h),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: AppColors.border,
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    color: theme.colorScheme.outline,
                   ),
                   child: Row(
                     children: [
@@ -202,7 +203,7 @@ class UnallocatedSummary extends StatelessWidget {
                 ),
                 MoneyNumber(
                   amount: unallocatedAmount,
-                  color: AppColors.border,
+                  color: theme.colorScheme.outline,
                   percentage: double.parse(pct),
                 ),
               ],

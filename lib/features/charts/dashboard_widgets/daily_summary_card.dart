@@ -1,5 +1,6 @@
 import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
@@ -30,14 +31,15 @@ class DailySummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final DateFormat dateFormat = DateFormat('dd MMM yyyy');
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +50,12 @@ class DailySummaryCard extends StatelessWidget {
             children: [
               Text(
                 'data for this day',
-                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
               ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.chevron_left),
+                    icon: Icon(Icons.chevron_left, size: 20.sp),
                     onPressed: () => onDateChanged(
                       selectedDate.subtract(const Duration(days: 1)),
                     ),
@@ -66,8 +68,8 @@ class DailySummaryCard extends StatelessWidget {
                     child: Text(
                       dateFormat.format(selectedDate),
                       style: TextStyle(
-                        fontSize: AppSize.s,
-                        color: AppColors.black,
+                        fontSize: AppSize.s.sp,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     onPressed: () async {
@@ -83,7 +85,7 @@ class DailySummaryCard extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right),
+                    icon: Icon(Icons.chevron_right, size: 20.sp),
                     onPressed: () => onDateChanged(
                       selectedDate.add(const Duration(days: 1)),
                     ),
@@ -92,7 +94,7 @@ class DailySummaryCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           // Row 2: Income, Expense, Net
           Row(
@@ -118,18 +120,18 @@ class DailySummaryCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           // Divider
-          Divider(color: AppColors.border, height: 1),
-          const SizedBox(height: 16),
+          Divider(color: theme.colorScheme.outline, height: 1),
+          SizedBox(height: 16.h),
 
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s),
+            style: TextStyle(fontSize: AppSize.s.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           // Category Pie Chart
           CategoryPieChart(

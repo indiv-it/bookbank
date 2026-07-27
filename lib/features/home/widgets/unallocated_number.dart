@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
 
 class MoneyNumber extends StatelessWidget {
@@ -18,21 +19,21 @@ class MoneyNumber extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 10,
-          height: 10,
+          width: 10.w,
+          height: 10.h,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        SizedBox(width: 5.w),
         Text(
           percentage != null
               ? '${percentage!.toStringAsFixed(1)}%'
               : amount.toString(),
-          style: TextStyle(fontSize: AppSize.s),
+          style: TextStyle(fontSize: AppSize.s.sp),
         ),
       ],
     );

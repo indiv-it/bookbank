@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/records/utils/record_actions.dart';
 import 'package:bookbank/features/records/utils/record_date_filter.dart';
 import 'package:bookbank/features/records/utils/record_filter.dart';
@@ -126,9 +124,8 @@ class _RecordScreenState extends State<RecordScreen> {
     required IconData icon,
     required String label,
   }) {
-    // Note: since buildFilterTab is in record_widgets, we might need to modify it
-    // to accept theme values or rely on context internally, but for now we'll just use it.
     return buildFilterTab(
+      context: context,
       value: value,
       selectedFilter: _filter,
       icon: icon,
@@ -138,7 +135,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Widget _buildRecordRow(MyData item) {
-    return buildRecordRow(item, (action) => _handleMenuAction(action, item));
+    return buildRecordRow(context, item, (action) => _handleMenuAction(action, item));
   }
 
   @override
@@ -146,7 +143,6 @@ class _RecordScreenState extends State<RecordScreen> {
     final filtered = _filteredTransactions;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
     return Consumer<GroupSettingsProvider>(
       builder: (context, groupProvider, child) {
@@ -155,10 +151,10 @@ class _RecordScreenState extends State<RecordScreen> {
             builder: (context, constraints) {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
-                  isTablet ? 32.w : 24.w,
-                  isTablet ? 60.h : 45.h,
-                  isTablet ? 32.w : 24.w,
-                  isTablet ? 32.h : 24.h,
+                  24.w,
+                  45.h,
+                  24.w,
+                  24.h,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,17 +163,17 @@ class _RecordScreenState extends State<RecordScreen> {
                       children: [
                         Icon(
                           Icons.list_alt,
-                          size: isTablet ? 32.sp : 28.sp,
+                          size: 28.sp,
                           color: theme.iconTheme.color,
                         ),
-                        SizedBox(width: isTablet ? 20.w : 16.w),
+                        SizedBox(width: 16.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Record',
                               style: textTheme.bodyMedium?.copyWith(
-                                fontSize: isTablet ? 18.sp : 16.sp,
+                                fontSize: 16.sp,
                               ),
                             ),
                             Text(
@@ -186,7 +182,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 color: theme.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
                                 ),
-                                fontSize: isTablet ? 14.sp : 12.sp,
+                                fontSize: 12.sp,
                               ),
                             ),
                           ],
@@ -195,15 +191,15 @@ class _RecordScreenState extends State<RecordScreen> {
                     ),
 
                     Container(
-                      height: isTablet ? 56.h : 50.h,
+                      height: 50.h,
                       width: double.infinity,
                       margin: EdgeInsets.only(
-                        top: isTablet ? 24.h : 18.h,
-                        bottom: isTablet ? 16.h : 12.h,
+                        top: 18.h,
+                        bottom: 12.h,
                       ),
-                      padding: EdgeInsets.all(isTablet ? 3.r : 2.r),
+                      padding: EdgeInsets.all(2.r),
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: theme.colorScheme.outline),
                         borderRadius: BorderRadius.circular(50.r),
                         color: theme.colorScheme.surface,
                       ),
@@ -232,12 +228,12 @@ class _RecordScreenState extends State<RecordScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                            height: isTablet ? 56.h : 48.h,
+                            height: 48.h,
                             padding: EdgeInsets.symmetric(
-                              horizontal: isTablet ? 20.w : 16.w,
+                              horizontal: 16.w,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.border),
+                              border: Border.all(color: theme.colorScheme.outline),
                               borderRadius: BorderRadius.circular(50.r),
                               color: theme.colorScheme.surface,
                             ),
@@ -245,22 +241,22 @@ class _RecordScreenState extends State<RecordScreen> {
                               children: [
                                 Icon(
                                   Icons.search,
-                                  size: isTablet ? 24.sp : 20.sp,
+                                  size: 20.sp,
                                   color: theme.iconTheme.color,
                                 ),
-                                SizedBox(width: isTablet ? 12.w : 8.w),
+                                SizedBox(width: 8.w),
                                 Expanded(
                                   child: TextField(
                                     controller: _searchController,
                                     style: textTheme.bodySmall?.copyWith(
-                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                      fontSize: 14.sp,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: 'Search',
                                       hintStyle: textTheme.bodySmall?.copyWith(
                                         color: theme.colorScheme.onSurface
                                             .withValues(alpha: 0.5),
-                                        fontSize: isTablet ? 16.sp : 14.sp,
+                                        fontSize: 14.sp,
                                       ),
                                       border: InputBorder.none,
                                       isDense: true,
@@ -277,7 +273,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     },
                                     child: Icon(
                                       Icons.close,
-                                      size: isTablet ? 22.sp : 18.sp,
+                                      size: 18.sp,
                                       color: theme.colorScheme.onSurface
                                           .withValues(alpha: 0.5),
                                     ),
@@ -286,19 +282,19 @@ class _RecordScreenState extends State<RecordScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(width: isTablet ? 16.w : 12.w),
+                        SizedBox(width: 12.w),
                         Flexible(
                           child: Container(
-                            height: isTablet ? 56.h : 48.h,
-                            width: isTablet ? 180.w : 150.w,
+                            height: 48.h,
+                            width: 150.w,
                             padding: EdgeInsets.symmetric(
-                              horizontal: isTablet ? 18.w : 14.w,
+                              horizontal: 14.w,
                             ),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: _hasDateRange
                                     ? theme.colorScheme.onSurface
-                                    : AppColors.border,
+                                    : theme.colorScheme.outline,
                               ),
                               borderRadius: BorderRadius.circular(50.r),
                               color: theme.colorScheme.surface,
@@ -313,7 +309,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     borderRadius: BorderRadius.circular(50.r),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                        vertical: isTablet ? 14.h : 12.h,
+                                        vertical: 12.h,
                                       ),
                                       child: Text(
                                         _dateRangeLabel,
@@ -323,13 +319,13 @@ class _RecordScreenState extends State<RecordScreen> {
                                               ? theme.colorScheme.onSurface
                                               : theme.colorScheme.onSurface
                                                     .withValues(alpha: 0.5),
-                                          fontSize: isTablet ? 16.sp : 14.sp,
+                                          fontSize: 14.sp,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: isTablet ? 12.w : 8.w),
+                                SizedBox(width: 8.w),
                                 InkWell(
                                   onTap: _hasDateRange
                                       ? _clearDateFilter
@@ -339,7 +335,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     _hasDateRange
                                         ? Icons.close
                                         : Icons.calendar_today,
-                                    size: isTablet ? 22.sp : 18.sp,
+                                    size: 18.sp,
                                     color: theme.colorScheme.onSurface
                                         .withValues(alpha: 0.5),
                                   ),
@@ -354,11 +350,11 @@ class _RecordScreenState extends State<RecordScreen> {
                     Expanded(
                       child: Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(top: isTablet ? 24.h : 16.h),
-                        padding: EdgeInsets.all(isTablet ? 20.r : 16.r),
+                        margin: EdgeInsets.only(top: 16.h),
+                        padding: EdgeInsets.all(16.r),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
-                          border: Border.all(color: AppColors.border),
+                          border: Border.all(color: theme.colorScheme.outline),
                           color: theme.colorScheme.surface,
                         ),
                         child: Column(
@@ -371,7 +367,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Amount',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                      fontSize: 14.sp,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -382,7 +378,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Position',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                      fontSize: 14.sp,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -393,15 +389,15 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Date',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: isTablet ? 16.sp : 14.sp,
+                                      fontSize: 14.sp,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: isTablet ? 12.h : 8.h),
-                            Divider(color: AppColors.border, height: 1),
+                            SizedBox(height: 8.h),
+                            Divider(color: theme.colorScheme.outline, height: 1),
                             Expanded(
                               child: _isLoading
                                   ? const Center(
@@ -414,7 +410,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                         style: textTheme.bodySmall?.copyWith(
                                           color: theme.colorScheme.onSurface
                                               .withValues(alpha: 0.5),
-                                          fontSize: isTablet ? 16.sp : 14.sp,
+                                          fontSize: 14.sp,
                                         ),
                                       ),
                                     )

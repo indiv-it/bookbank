@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
 
 /// Checks if a date range is currently selected.
 bool hasDateRange(DateTime? startDate, DateTime? endDate) {
@@ -32,15 +31,18 @@ Future<DateTimeRange?> selectDateRange(
     firstDate: DateTime(2000),
     lastDate: DateTime(2100),
     builder: (context, child) {
+      final currentTheme = Theme.of(context);
       return Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: AppColors.black,
-            onPrimary: Colors.white,
-            surface: AppColors.card,
-            onSurface: Colors.black,
+        data: currentTheme.copyWith(
+          colorScheme: currentTheme.colorScheme.copyWith(
+            primary: currentTheme.colorScheme.onSurface,
+            onPrimary: currentTheme.colorScheme.surface,
+            surface: currentTheme.colorScheme.surface,
+            onSurface: currentTheme.colorScheme.onSurface,
           ),
-          dialogTheme: const DialogThemeData(backgroundColor: Colors.white),
+          dialogTheme: DialogThemeData(
+            backgroundColor: currentTheme.colorScheme.surface,
+          ),
         ),
         child: child!,
       );

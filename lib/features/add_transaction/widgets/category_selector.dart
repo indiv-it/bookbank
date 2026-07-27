@@ -1,4 +1,3 @@
-import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 
@@ -31,7 +30,7 @@ class CategorySelector extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
             color: theme.colorScheme.surface,
           ),

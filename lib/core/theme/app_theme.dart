@@ -171,7 +171,7 @@ class AppTheme {
         secondary: AppColors.orange,
         surface: DarkColors.cardBg,
         surfaceBright: DarkColors.white,
-        outline: AppColors.grey,
+        outline: DarkColors.border,
         error: DarkColors.red,
         onPrimary: DarkColors.white,
         onSecondary: DarkColors.white,

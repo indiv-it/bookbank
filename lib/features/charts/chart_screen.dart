@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -390,7 +391,7 @@ class _ChartScreenState extends State<ChartScreen> {
           backgroundColor: theme.scaffoldBackgroundColor,
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -399,10 +400,10 @@ class _ChartScreenState extends State<ChartScreen> {
                     children: [
                       Icon(
                         Icons.area_chart,
-                        size: 24,
+                        size: 24.sp,
                         color: theme.iconTheme.color,
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -424,7 +425,7 @@ class _ChartScreenState extends State<ChartScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
                   Center(
                     child: Column(
@@ -446,7 +447,7 @@ class _ChartScreenState extends State<ChartScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
                   // Container 1 - Daily Summary
                   DailySummaryCard(
@@ -460,7 +461,7 @@ class _ChartScreenState extends State<ChartScreen> {
                     categoryColors: categoryColors,
                     categoryNames: categoryNames,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
                   // Container 2 - Monthly Chart
                   MonthlyChart(
@@ -480,7 +481,7 @@ class _ChartScreenState extends State<ChartScreen> {
                     monthlyExpense: _monthlyExpense,
                     monthlyNet: _monthlyNet,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
                   // Container 3 - Yearly Chart
                   YearlyChart(

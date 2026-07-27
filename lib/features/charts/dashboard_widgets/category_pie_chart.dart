@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 
@@ -24,7 +25,7 @@ class CategoryPieChart extends StatelessWidget {
       return Center(
         child: Text(
           'Not enough data',
-          style: TextStyle(color: AppColors.grey, fontSize: AppSize.s),
+          style: TextStyle(color: AppColors.grey, fontSize: AppSize.s.sp),
         ),
       );
     }
@@ -35,17 +36,17 @@ class CategoryPieChart extends StatelessWidget {
         Expanded(
           flex: 1,
           child: SizedBox(
-            height: 150,
+            height: 150.h,
             child: PieChart(
               PieChartData(
                 sectionsSpace: 2,
-                centerSpaceRadius: 10,
+                centerSpaceRadius: 10.r,
                 sections: _buildPieSections(),
               ),
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16.w),
         // Right: Category list
         Expanded(
           flex: 1,
@@ -59,23 +60,23 @@ class CategoryPieChart extends StatelessWidget {
               final color = categoryColors[category] ?? AppColors.grey;
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+                padding: EdgeInsets.only(bottom: 8.h),
                 child: Row(
                   children: [
-                    Icon(icon, color: color, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(icon, color: color, size: 20.sp),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             categoryNames[category] ?? category,
-                            style: TextStyle(fontSize: AppSize.s),
+                            style: TextStyle(fontSize: AppSize.s.sp),
                           ),
                           Text(
                             '฿${amount.toStringAsFixed(0)}',
                             style: TextStyle(
-                              fontSize: AppSize.xs,
+                              fontSize: AppSize.xs.sp,
                               color: AppColors.grey,
                             ),
                           ),
@@ -85,7 +86,7 @@ class CategoryPieChart extends StatelessWidget {
                     Text(
                       '${percentage.toStringAsFixed(1)}%',
                       style: TextStyle(
-                        fontSize: AppSize.s,
+                        fontSize: AppSize.s.sp,
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),
@@ -113,9 +114,9 @@ class CategoryPieChart extends StatelessWidget {
           value: value,
           title: '${percentage.toStringAsFixed(0)}%',
           color: color,
-          radius: 50,
-          titleStyle: const TextStyle(
-            fontSize: 12,
+          radius: 50.r,
+          titleStyle: TextStyle(
+            fontSize: 12.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),

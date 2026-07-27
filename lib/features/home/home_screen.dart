@@ -1,7 +1,6 @@
 import 'package:bookbank/Widgets/hearder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 
@@ -210,7 +209,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
     return Consumer<GroupSettingsProvider>(
       builder: (context, groupProvider, child) {
@@ -221,15 +219,15 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, constraints) {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
-                  isTablet ? 32.w : 24.w,
-                  isTablet ? 60.h : 45.h,
-                  isTablet ? 32.w : 24.w,
-                  isTablet ? 32.h : 24.h,
+                  24.w,
+                  45.h,
+                  24.w,
+                  24.h,
                 ),
                 child: Column(
                   children: [
                     Header(),
-                    SizedBox(height: isTablet ? 24.h : 16.h),
+                    SizedBox(height: 16.h),
 
                     DashboardSummary(
                       totalBalance: _totalBalance,
@@ -327,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ).savingsGoalAmount,
                           ),
                         ),
-                        SizedBox(width: isTablet ? 16.w : 12.w),
+                        SizedBox(width: 12.w),
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(
@@ -376,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: isTablet ? 16.h : 12.h),
+                    SizedBox(height: 12.h),
 
                     // Groups Row2
                     Row(
@@ -428,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ).savingsGoalAmount,
                           ),
                         ),
-                        SizedBox(width: isTablet ? 16.w : 12.w),
+                        SizedBox(width: 12.w),
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(

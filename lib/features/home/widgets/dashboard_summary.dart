@@ -3,6 +3,7 @@ import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/features/home/popup/popup_main.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashboardSummary extends StatelessWidget {
   final double totalBalance;
@@ -53,13 +54,13 @@ class DashboardSummary extends StatelessWidget {
         );
       },
       child: Container(
-        height: 150,
-        padding: const EdgeInsets.all(16),
+        height: 150.h,
+        padding: EdgeInsets.all(16.r),
         width: double.infinity,
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: theme.colorScheme.surface),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Column(
           children: [
@@ -74,14 +75,14 @@ class DashboardSummary extends StatelessWidget {
                     Text("Total balance", style: textTheme.bodySmall),
                     Text(
                       "\$ ${totalBalance.toStringAsFixed(2)}",
-                      style: TextStyle(fontSize: AppSize.l),
+                      style: TextStyle(fontSize: AppSize.l.sp),
                     ),
                   ],
                 ),
                 // Line Chart
                 SizedBox(
-                  height: 40,
-                  width: 160,
+                  height: 40.h,
+                  width: 160.w,
                   child: LineChart(
                     LineChartData(
                       lineBarsData: createSegmentsWithArea(spots),
@@ -98,9 +99,9 @@ class DashboardSummary extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             // Divider
-            Divider(color: AppColors.border),
+            Divider(color: theme.colorScheme.outline),
             // Money Position
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,7 +113,11 @@ class DashboardSummary extends StatelessWidget {
                   balance: bankBalance,
                   total: totalBalance,
                 ),
-                Container(width: 1, height: 60, color: AppColors.border),
+                Container(
+                  width: 1,
+                  height: 60.h,
+                  color: theme.colorScheme.outline,
+                ),
                 _buildBalanceItem(
                   context,
                   icon: Icons.account_balance_wallet,
@@ -139,17 +144,17 @@ class DashboardSummary extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return SizedBox(
-      width: 120,
-      height: 60,
+      width: 120.w,
+      height: 60.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Row(
             children: [
-              Icon(icon, size: 16, color: theme.iconTheme.color),
-              const SizedBox(width: 8),
+              Icon(icon, size: 16.sp, color: theme.iconTheme.color),
+              SizedBox(width: 8.w),
               Text(label, style: textTheme.bodySmall),
             ],
           ),
@@ -158,7 +163,7 @@ class DashboardSummary extends StatelessWidget {
             children: [
               Text(
                 "\$ ${balance.toStringAsFixed(2)}",
-                style: TextStyle(fontSize: AppSize.m),
+                style: TextStyle(fontSize: AppSize.m.sp),
               ),
               Text(
                 "${total > 0 ? (balance / total * 100).toStringAsFixed(1) : 0}%",

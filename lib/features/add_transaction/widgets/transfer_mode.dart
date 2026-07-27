@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
 
 class TransferMode extends StatelessWidget {
   final String transferFrom;
@@ -61,8 +60,8 @@ class TransferMode extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(color: AppColors.border, width: 1),
-                color: AppColors.card,
+                border: Border.all(color: theme.colorScheme.outline, width: 1),
+                color: theme.colorScheme.surface,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,11 +70,11 @@ class TransferMode extends StatelessWidget {
                     onPressed: () => onTransferFromChanged('Bank'),
                     style: FilledButton.styleFrom(
                       backgroundColor: transferFrom == 'Bank'
-                          ? AppColors.black
-                          : AppColors.card,
+                          ? theme.colorScheme.onSurface
+                          : theme.colorScheme.surface,
                       foregroundColor: transferFrom == 'Bank'
-                          ? AppColors.card
-                          : AppColors.black,
+                          ? theme.colorScheme.surface
+                          : theme.colorScheme.onSurface,
                       minimumSize: Size(
                         isTablet ? 170.w : 145.w,
                         isTablet ? 48.h : 40.h,
@@ -94,11 +93,11 @@ class TransferMode extends StatelessWidget {
                     onPressed: () => onTransferFromChanged('Cash'),
                     style: FilledButton.styleFrom(
                       backgroundColor: transferFrom == 'Cash'
-                          ? AppColors.black
-                          : AppColors.card,
+                          ? theme.colorScheme.onSurface
+                          : theme.colorScheme.surface,
                       foregroundColor: transferFrom == 'Cash'
-                          ? AppColors.card
-                          : AppColors.black,
+                          ? theme.colorScheme.surface
+                          : theme.colorScheme.onSurface,
                       minimumSize: Size(
                         isTablet ? 170.w : 145.w,
                         isTablet ? 48.h : 40.h,

@@ -1,6 +1,7 @@
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/features/home/popup/popup_group.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
 
 class GroupCard extends StatelessWidget {
@@ -55,13 +56,13 @@ class GroupCard extends StatelessWidget {
         );
       },
       child: Container(
-        height: 140,
-        width: 150,
-        padding: EdgeInsets.all(12),
+        height: 140.h,
+        width: double.infinity,
+        padding: EdgeInsets.all(12.r),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: theme.colorScheme.surface),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,32 +72,32 @@ class GroupCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 45,
-                  height: 45,
-                  margin: EdgeInsets.only(bottom: 8),
+                  width: 45.w,
+                  height: 45.h,
+                  margin: EdgeInsets.only(bottom: 8.h),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(color: groupColor),
                     color: groupColor.withValues(alpha: 0.3),
                   ),
-                  child: Icon(groupIcon, color: groupColor),
+                  child: Icon(groupIcon, color: groupColor, size: 22.sp),
                 ),
                 Icon(
                   Icons.arrow_outward_sharp,
-                  size: 20,
+                  size: 20.sp,
                   color: AppColors.grey,
                 ),
               ],
             ),
             Text(
               groupName,
-              style: TextStyle(color: AppColors.grey, fontSize: AppSize.s),
+              style: TextStyle(color: AppColors.grey, fontSize: AppSize.s.sp),
             ),
             Row(
               children: [
                 Text(
                   '\$${groupAmount.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: AppSize.m),
+                  style: TextStyle(fontSize: AppSize.m.sp),
                 ),
                 Spacer(),
                 if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
@@ -104,24 +105,24 @@ class GroupCard extends StatelessWidget {
                     '฿${savingsGoalAmount.toStringAsFixed(0)}',
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s,
+                      fontSize: AppSize.s.sp,
                     ),
                   ),
                 ],
               ],
             ),
             if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                     child: LinearProgressIndicator(
                       value: (groupAmount / savingsGoalAmount).clamp(0.0, 1.0),
                       backgroundColor: AppColors.grey.withValues(alpha: 0.2),
                       valueColor: AlwaysStoppedAnimation<Color>(groupColor),
-                      minHeight: 4,
+                      minHeight: 4.h,
                     ),
                   ),
                 ],

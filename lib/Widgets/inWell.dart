@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
 
 class DateSelectorInkWell extends StatelessWidget {
   final DateTime? selectedDate;
@@ -29,7 +28,7 @@ class DateSelectorInkWell extends StatelessWidget {
         height: isTablet ? 56.h : 50.h,
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: theme.colorScheme.outline),
           borderRadius: BorderRadius.circular(10.r),
           color: theme.colorScheme.surface,
         ),

@@ -19,23 +19,25 @@ class ListButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: 170,
-      color: AppColors.card,
+      color: theme.colorScheme.surface,
       child: TextButton(
         onPressed: function,
         style: TextButton.styleFrom(
           minimumSize: const Size(155, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Colors.white, width: 2),
+            side: BorderSide(color: theme.colorScheme.surface, width: 2),
           ),
           foregroundColor: buttonKey == onKey
-              ? AppColors.card
-              : AppColors.black,
+              ? theme.colorScheme.surface
+              : theme.colorScheme.onSurface,
           backgroundColor: buttonKey == onKey
-              ? AppColors.black
-              : AppColors.card,
+              ? theme.colorScheme.onSurface
+              : theme.colorScheme.surface,
         ),
         child: icon != null
             ? Row(
@@ -45,8 +47,8 @@ class ListButton extends StatelessWidget {
                     icon,
                     size: AppSize.s,
                     color: buttonKey == onKey
-                        ? AppColors.card
-                        : AppColors.black,
+                        ? theme.colorScheme.surface
+                        : theme.colorScheme.onSurface,
                   ),
                   const SizedBox(width: 8),
                   Text(titel, style: TextStyle(fontSize: AppSize.s)),

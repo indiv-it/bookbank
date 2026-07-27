@@ -1,5 +1,6 @@
 import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
@@ -37,15 +38,16 @@ class MonthlyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final DateFormat monthFormat = DateFormat('MMM yyyy');
     final DateTime selectedDate = DateTime(selectedYear, selectedMonth);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,12 +58,12 @@ class MonthlyChart extends StatelessWidget {
             children: [
               Text(
                 'Data for the month',
-                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
               ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.chevron_left),
+                    icon: Icon(Icons.chevron_left, size: 20.sp),
                     onPressed: () {
                       DateTime newDate = DateTime(
                         selectedYear,
@@ -72,10 +74,10 @@ class MonthlyChart extends StatelessWidget {
                   ),
                   Text(
                     monthFormat.format(selectedDate),
-                    style: TextStyle(fontSize: AppSize.s),
+                    style: TextStyle(fontSize: AppSize.s.sp),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right),
+                    icon: Icon(Icons.chevron_right, size: 20.sp),
                     onPressed: () {
                       DateTime newDate = DateTime(
                         selectedYear,
@@ -88,7 +90,7 @@ class MonthlyChart extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -113,11 +115,11 @@ class MonthlyChart extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 34),
+          SizedBox(height: 34.h),
 
           // Chart
           SizedBox(
-            height: 200,
+            height: 200.h,
             child: LineChart(
               LineChartData(
                 lineBarsData: [
@@ -125,7 +127,7 @@ class MonthlyChart extends StatelessWidget {
                     spots: spots,
                     isCurved: true,
                     color: AppColors.blue,
-                    barWidth: 3,
+                    barWidth: 3.w,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: true),
                     belowBarData: BarAreaData(
@@ -142,8 +144,8 @@ class MonthlyChart extends StatelessWidget {
                   horizontalInterval: _calculateInterval(spots),
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: AppColors.border.withValues(alpha: 0.5),
-                      strokeWidth: 1,
+                      color: theme.colorScheme.outline,
+                      strokeWidth: 1.w,
                     );
                   },
                 ),
@@ -152,12 +154,12 @@ class MonthlyChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 30,
+                      reservedSize: 30.h,
                       interval: _calculateDayInterval(spots),
                       getTitlesWidget: (value, meta) {
                         return Text(
                           value.toInt().toString(),
-                          style: TextStyle(fontSize: AppSize.xs),
+                          style: TextStyle(fontSize: AppSize.xs.sp),
                         );
                       },
                     ),
@@ -165,12 +167,12 @@ class MonthlyChart extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 50,
+                      reservedSize: 50.w,
                       interval: _calculateInterval(spots),
                       getTitlesWidget: (value, meta) {
                         return Text(
                           '฿${value.toInt()}',
-                          style: TextStyle(fontSize: AppSize.xs),
+                          style: TextStyle(fontSize: AppSize.xs.sp),
                         );
                       },
                     ),
@@ -191,7 +193,7 @@ class MonthlyChart extends StatelessWidget {
                       return touchedSpots.map((spot) {
                         return LineTooltipItem(
                           '฿${spot.y.toStringAsFixed(2)}',
-                          TextStyle(color: Colors.white, fontSize: 12),
+                          TextStyle(color: Colors.white, fontSize: 12.sp),
                         );
                       }).toList();
                     },
@@ -200,18 +202,18 @@ class MonthlyChart extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
 
           // Divider
-          Divider(color: AppColors.border, height: 1),
-          const SizedBox(height: 16),
+          Divider(color: theme.colorScheme.outline, height: 1.h),
+          SizedBox(height: 16.h),
 
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s),
+            style: TextStyle(fontSize: AppSize.s.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           // Category Pie Chart
           CategoryPieChart(

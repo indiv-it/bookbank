@@ -1,6 +1,7 @@
 import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
@@ -55,6 +56,7 @@ class _PopupGroupState extends State<PopupGroup> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // สร้างข้อมูลกราฟสำหรับหมวดหมู่นี้
     final calc = FinancialCalculations(_transactions);
     final groupSpots = calc.generateMonthlySpotsForGroup(widget.groupId);
@@ -65,17 +67,16 @@ class _PopupGroupState extends State<PopupGroup> {
     final net = totalIncome - totalExpense;
 
     return Container(
-      width: 100,
-      height: widget.savingsGoalEnabled && widget.savingsGoalAmount! > 0
-          ? 320
-          : 300,
-      padding: EdgeInsets.all(16),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(10),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Close button
           Row(
@@ -85,7 +86,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close),
+                child: Icon(Icons.close, size: 20.sp),
               ),
             ],
           ),
@@ -96,16 +97,16 @@ class _PopupGroupState extends State<PopupGroup> {
               Row(
                 children: [
                   Container(
-                    width: 50,
-                    height: 50,
+                    width: 50.w,
+                    height: 50.h,
                     decoration: BoxDecoration(
-                      border: BoxBorder.all(color: widget.groupColor),
-                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: widget.groupColor),
+                      borderRadius: BorderRadius.circular(10.r),
                       color: widget.groupColor.withValues(alpha: 0.2),
                     ),
-                    child: Icon(widget.icon, color: widget.groupColor),
+                    child: Icon(widget.icon, color: widget.groupColor, size: 24.sp),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -113,39 +114,39 @@ class _PopupGroupState extends State<PopupGroup> {
                         widget.groupName,
                         style: TextStyle(
                           color: AppColors.grey,
-                          fontSize: AppSize.s,
+                          fontSize: AppSize.s.sp,
                         ),
                       ),
                       Text(
                         '฿ ${net.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: AppSize.l),
+                        style: TextStyle(fontSize: AppSize.l.sp),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                     ],
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           Row(
             children: [
               Text(
                 'This represents ',
-                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
                 '${widget.percentage.toStringAsFixed(1)}%',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
               Text(
                 ' of the total amount.',
-                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           if (widget.savingsGoalEnabled && widget.savingsGoalAmount! > 0) ...[
             Column(
@@ -153,17 +154,17 @@ class _PopupGroupState extends State<PopupGroup> {
               children: [
                 Row(
                   children: [
-                    Text('Target', style: TextStyle(fontSize: AppSize.s)),
+                    Text('Target', style: TextStyle(fontSize: AppSize.s.sp)),
                     const Spacer(),
                     Text(
                       '฿ ${widget.savingsGoalAmount?.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: AppSize.s),
+                      style: TextStyle(fontSize: AppSize.s.sp),
                     ),
                   ],
                 ),
-                const SizedBox(height: 5),
+                SizedBox(height: 5.h),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                   child: LinearProgressIndicator(
                     value: (widget.groupAmount! / widget.savingsGoalAmount!)
                         .clamp(0.0, 1.0),
@@ -171,12 +172,12 @@ class _PopupGroupState extends State<PopupGroup> {
                     valueColor: AlwaysStoppedAnimation<Color>(
                       widget.groupColor,
                     ),
-                    minHeight: 4,
+                    minHeight: 4.h,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
           ],
 
           // Income / Expense summary
@@ -184,58 +185,58 @@ class _PopupGroupState extends State<PopupGroup> {
             children: [
               Text(
                 'Monthly data: ',
-                style: TextStyle(fontSize: AppSize.xs, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())} / ${DateTime.now().year}',
-                style: TextStyle(fontSize: AppSize.xs),
+                style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Row(
             children: [
               SizedBox(
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: AppColors.green,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6.w),
               Text(
                 'Income: ฿ ${totalIncome.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
             ],
           ),
           Row(
             children: [
               SizedBox(
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: AppColors.red,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6.w),
               Text(
                 'Expense: ฿ ${totalExpense.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           // Line Chart
           SizedBox(
-            height: 60,
+            height: 60.h,
             width: double.infinity,
             child: LineChart(
               LineChartData(

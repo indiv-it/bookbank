@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/popup/popup_group_unallocated.dart';
@@ -32,6 +33,7 @@ class PopupUnallocated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final pct = calculatePercentage(
       unallocatedAmount,
       totalIncome,
@@ -63,15 +65,16 @@ class PopupUnallocated extends StatelessWidget {
     final double barTotal = totalIncome > 0 ? totalIncome : 1.0;
 
     return Container(
-      width: 100,
-      height: 280,
-      padding: EdgeInsets.all(16),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(10),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Title / Close button
           Row(
@@ -81,27 +84,27 @@ class PopupUnallocated extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close),
+                child: Icon(Icons.close, size: 20.sp),
               ),
             ],
           ),
-          Text('Unallocated Funds', style: TextStyle(fontSize: AppSize.s)),
-          const SizedBox(height: 8),
+          Text('Unallocated Funds', style: TextStyle(fontSize: AppSize.s.sp)),
+          SizedBox(height: 8.h),
 
           // Money display
           Row(
             children: [
               Text(
                 '฿ ${unallocatedAmount.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: AppSize.m),
+                style: TextStyle(fontSize: AppSize.m.sp),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               SizedBox(
-                height: 20,
+                height: 20.h,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(color: AppColors.grey),
                     color: AppColors.grey.withValues(alpha: 0.1),
                   ),
@@ -109,29 +112,29 @@ class PopupUnallocated extends StatelessWidget {
                     '$pct%',
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s,
+                      fontSize: AppSize.s.sp,
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           // All money in the group
           Text(
             'All money in the group',
-            style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+            style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
           ),
           LayoutBuilder(
             builder: (context, constraints) {
               return Container(
                 width: double.infinity,
-                height: 5,
-                margin: EdgeInsets.only(top: 8),
+                height: 5.h,
+                margin: EdgeInsets.only(top: 8.h),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: AppColors.border,
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                  color: theme.colorScheme.outline,
                 ),
                 child: Row(
                   children: [
@@ -180,7 +183,7 @@ class PopupUnallocated extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           // Group
           Column(
@@ -211,7 +214,7 @@ class PopupUnallocated extends StatelessWidget {
               ),
               GroupUnallocatedPopup(
                 title: 'Unallocated',
-                color: AppColors.border,
+                color: theme.colorScheme.outline,
                 amount: '฿ ${unallocatedAmount.toStringAsFixed(2)}',
                 percentage: '$pct%',
               ),

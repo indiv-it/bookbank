@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:bookbank/features/menu/editGroup/editGroup_sgreen.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
 
 class Header extends StatelessWidget {
@@ -12,7 +11,6 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     return Column(
       children: [
         // Header app
@@ -22,52 +20,52 @@ class Header extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: isTablet ? 48.w : 40.w,
-                  height: isTablet ? 48.h : 40.h,
+                  width: 40.w,
+                  height: 40.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(isTablet ? 24.r : 20.r),
+                    borderRadius: BorderRadius.circular(20.r),
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
-                SizedBox(width: isTablet ? 12.w : 8.w),
+                SizedBox(width: 8.w),
                 Text(
                   "BookBank",
-                  style: textTheme.titleLarge?.copyWith(
-                    fontSize: isTablet ? 24.sp : 20.sp,
-                  ),
+                  style: textTheme.titleLarge?.copyWith(fontSize: 20.sp),
                 ),
               ],
             ),
             Row(
               children: [
                 Container(
-                  width: isTablet ? 48.w : 40.w,
-                  height: isTablet ? 48.h : 40.h,
+                  width: 35.w,
+                  height: 35.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(isTablet ? 24.r : 20.r),
-                    border: Border.all(color: theme.colorScheme.surface),
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(color: theme.colorScheme.outline),
                     color: theme.colorScheme.surface,
                   ),
                   child: Icon(
                     Icons.notifications_none,
                     color: theme.colorScheme.onSurface,
-                    size: isTablet ? 24.sp : 20.sp,
+                    size: 18.sp,
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
+
                 PopupMenuButton<String>(
-                  icon: Icon(Icons.menu, size: isTablet ? 24.sp : 20.sp),
+                  icon: Icon(Icons.menu, size: 20.sp),
                   offset: Offset(70.w, 50.h),
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
                       theme.colorScheme.surface,
                     ),
                     side: WidgetStatePropertyAll(
-                      BorderSide(color: theme.colorScheme.surface),
+                      BorderSide(color: theme.colorScheme.outline),
                     ),
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
+                    side: BorderSide(color: theme.colorScheme.outline),
                   ),
                   onSelected: (String value) {
                     final menuItems = [
@@ -125,11 +123,11 @@ class Header extends StatelessWidget {
                             Row(
                               children: [
                                 Icon(item['icon'] as IconData, size: 16.sp),
-                                const SizedBox(width: 10),
+                                SizedBox(width: 10.w),
                                 Text(
                                   item['name'] as String,
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -145,9 +143,13 @@ class Header extends StatelessWidget {
                                             themeProvider.toggleTheme();
                                           },
                                           activeThumbColor: Colors.white,
-                                          activeTrackColor: const Color(
-                                            0xFF6750A4,
-                                          ),
+                                          activeTrackColor:
+                                              const Color.fromARGB(
+                                                255,
+                                                75,
+                                                87,
+                                                255,
+                                              ),
                                           inactiveThumbColor:
                                               Colors.grey.shade400,
                                           inactiveTrackColor:

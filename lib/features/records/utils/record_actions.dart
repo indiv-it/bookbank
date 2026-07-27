@@ -20,7 +20,7 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
   await showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: AppColors.card,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -123,7 +123,7 @@ Future<void> deleteRecord(
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: AppColors.card,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: const Text('Delete'),
       content: const Text('Are you sure you want to delete this record?'),
@@ -145,6 +145,7 @@ Future<void> deleteRecord(
   await DatabaseHelper.instance.deleteData(item.id!);
   onDeleted();
   if (context.mounted) {
+    final theme = Theme.of(context);
     // Show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -154,7 +155,7 @@ Future<void> deleteRecord(
           left: 16,
           right: 16,
         ),
-        backgroundColor: AppColors.card,
+        backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: Container(
           decoration: BoxDecoration(
@@ -172,7 +173,7 @@ Future<void> deleteRecord(
               Expanded(
                 child: Text(
                   'Deleted successfully',
-                  style: TextStyle(fontSize: 16, color: AppColors.black),
+                  style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface),
                 ),
               ),
             ],

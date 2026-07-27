@@ -2,6 +2,7 @@ import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
 
 // ----- Display Widget -----
@@ -29,6 +30,7 @@ class PopupMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final bankPct = totalBalance != 0
         ? (bankBalance / totalBalance * 100).toStringAsFixed(1)
         : '0.0';
@@ -40,15 +42,16 @@ class PopupMain extends StatelessWidget {
         : '0.0';
 
     return Container(
-      width: 100,
-      height: 300,
-      padding: EdgeInsets.all(16),
+      width: double.infinity,
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(10),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Header / Exit button
           Row(
@@ -58,35 +61,42 @@ class PopupMain extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close),
+                child: Icon(Icons.close, size: 20.sp),
               ),
             ],
           ),
-          Text('Total balance', style: TextStyle(fontSize: AppSize.s)),
+          Text('Total balance', style: TextStyle(fontSize: AppSize.s.sp)),
 
           // Balance display
           Row(
             children: [
-              Text('฿ ${totalBalance.toStringAsFixed(2)}'),
-              const SizedBox(width: 8),
+              Text(
+                '฿ ${totalBalance.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: AppSize.m.sp),
+              ),
+              SizedBox(width: 8.w),
               SizedBox(
-                height: 20,
+                height: 20.h,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(color: AppColors.green),
                     color: AppColors.green.withValues(alpha: 0.1),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.trending_up, color: AppColors.green, size: 12),
-                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.trending_up,
+                        color: AppColors.green,
+                        size: 12.sp,
+                      ),
+                      SizedBox(width: 4.w),
                       Text(
                         '$incomeExpensePct%',
                         style: TextStyle(
                           color: AppColors.green,
-                          fontSize: AppSize.s,
+                          fontSize: AppSize.s.sp,
                         ),
                       ),
                     ],
@@ -95,101 +105,102 @@ class PopupMain extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
 
           // Bank/Cash info
           Row(
             children: [
-              Icon(Icons.account_balance_rounded, size: 16),
-              const SizedBox(width: 8),
+              Icon(Icons.account_balance_rounded, size: 16.sp),
+              SizedBox(width: 8.w),
               Text(
                 'Bank : ฿ ${bankBalance.toStringAsFixed(2)} / $bankPct%',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
             ],
           ),
           Row(
             children: [
-              Icon(Icons.account_balance_wallet, size: 16),
-              const SizedBox(width: 8),
+              Icon(Icons.account_balance_wallet, size: 16.sp),
+              SizedBox(width: 8.w),
               Text(
                 'Cash : ฿ ${cashBalance.toStringAsFixed(2)} / $cashPct%',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
 
           // Monthly data info
           Row(
             children: [
               Text(
                 'Monthly data: ',
-                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())}/${DateTime.now().year}',
-                style: TextStyle(fontSize: AppSize.s),
+                style: TextStyle(fontSize: AppSize.s.sp),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
 
           // Legend
           Row(
             children: [
               // Income indicator
               SizedBox(
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                     color: AppColors.green,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Income', style: TextStyle(fontSize: AppSize.xs)),
+                  Text('Income', style: TextStyle(fontSize: AppSize.xs.sp)),
                   Text(
                     '฿ ${monthlyIncome.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: AppSize.s),
+                    style: TextStyle(fontSize: AppSize.s.sp),
                   ),
                 ],
               ),
-              const SizedBox(width: 20),
+              SizedBox(width: 20.w),
 
               // Expense indicator
               SizedBox(
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                     color: AppColors.red,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Expense', style: TextStyle(fontSize: AppSize.xs)),
+                  Text('Expense', style: TextStyle(fontSize: AppSize.xs.sp)),
                   Text(
                     '฿ ${monthlyExpense.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: AppSize.s),
+                    style: TextStyle(fontSize: AppSize.s.sp),
                   ),
                 ],
               ),
             ],
           ),
+          SizedBox(height: 12.h),
 
           // Line chart
           SizedBox(
-            height: 60,
+            height: 60.h,
             width: double.infinity,
             child: LineChart(
               LineChartData(

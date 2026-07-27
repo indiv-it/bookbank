@@ -110,6 +110,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Container(
       width: 400,
@@ -117,8 +118,9 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
         maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
@@ -147,7 +149,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
               style: TextStyle(
                 fontSize: AppSize.l,
                 fontWeight: FontWeight.bold,
-                color: AppColors.black,
+                color: theme.colorScheme.onSurface,
               ),
             ),
 
@@ -156,18 +158,18 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
               controller: _nameController,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: AppColors.card,
+                fillColor: theme.colorScheme.surface,
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 8,
                   horizontal: 12,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: theme.colorScheme.outline),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: theme.colorScheme.outline),
                 ),
               ),
               style: TextStyle(height: 1.5, fontSize: AppSize.m),
@@ -198,10 +200,10 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? _selectedColor.withValues(alpha: 0.3)
-                            : AppColors.card,
+                            : theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: isSelected ? _selectedColor : AppColors.border,
+                          color: isSelected ? _selectedColor : theme.colorScheme.outline,
                           width: isSelected ? 2 : 1,
                         ),
                       ),
@@ -288,14 +290,14 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                 decoration: InputDecoration(
                   prefixText: '฿ ',
                   filled: true,
-                  fillColor: AppColors.card,
+                  fillColor: theme.colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: theme.colorScheme.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: theme.colorScheme.outline),
                   ),
                 ),
                 style: TextStyle(fontSize: AppSize.m, height: 1.2),
