@@ -1,5 +1,6 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListButton extends StatelessWidget {
   final String buttonKey;
@@ -22,7 +23,7 @@ class ListButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 170,
+      width: 160.w,
       color: theme.colorScheme.surface,
       child: TextButton(
         onPressed: function,

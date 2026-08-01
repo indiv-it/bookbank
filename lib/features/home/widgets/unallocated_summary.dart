@@ -129,7 +129,7 @@ class UnallocatedSummary extends StatelessWidget {
                   margin: EdgeInsets.only(top: 8.h),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                    color: theme.colorScheme.outline,
+                    color: AppColors.grey.withValues(alpha: 0.2),
                   ),
                   child: Row(
                     children: [
@@ -171,7 +171,7 @@ class UnallocatedSummary extends StatelessWidget {
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
-                        color: AppColors.grey,
+                        color: AppColors.grey.withValues(alpha: 0.2),
                       ),
                     ],
                   ),
@@ -203,7 +203,7 @@ class UnallocatedSummary extends StatelessWidget {
                 ),
                 MoneyNumber(
                   amount: unallocatedAmount,
-                  color: theme.colorScheme.outline,
+                  color: AppColors.grey.withValues(alpha: 0.2),
                   percentage: double.parse(pct),
                 ),
               ],

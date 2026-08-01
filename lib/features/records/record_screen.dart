@@ -154,7 +154,7 @@ class _RecordScreenState extends State<RecordScreen> {
                   24.w,
                   45.h,
                   24.w,
-                  24.h,
+                  130.h,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

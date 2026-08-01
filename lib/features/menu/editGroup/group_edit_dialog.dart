@@ -45,12 +45,12 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
   ];
 
   final List<Color> _availableColors = [
-    Colors.blue,
-    const Color.fromARGB(255, 8, 192, 14),
-    Colors.purple,
-    Colors.pink,
+    const Color.fromARGB(255, 2, 140, 253),
+    const Color.fromARGB(255, 5, 223, 13),
+    const Color.fromARGB(255, 217, 0, 255),
+    const Color.fromARGB(255, 255, 0, 85),
     Colors.red,
-    Colors.orange,
+    const Color.fromARGB(255, 255, 115, 0),
     Colors.teal,
     Colors.cyan,
     Colors.indigo,

@@ -72,6 +72,7 @@ class TitleInput extends StatelessWidget {
                 offset: Offset(70.w, 50.h),
                 color: theme.colorScheme.surface,
                 shape: RoundedRectangleBorder(
+                  side: BorderSide(color: theme.colorScheme.outline),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 onSelected: (String value) {

@@ -101,7 +101,7 @@ class DashboardSummary extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             // Divider
-            Divider(color: theme.colorScheme.outline),
+            Divider(color: theme.colorScheme.onSurfaceVariant),
             // Money Position
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +116,7 @@ class DashboardSummary extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 60.h,
-                  color: theme.colorScheme.outline,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 _buildBalanceItem(
                   context,

@@ -409,6 +409,7 @@ Future<void> showAddItemBottomSheet(
           decoration: BoxDecoration(
             color: theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+            border: Border.all(color: theme.colorScheme.onSurfaceVariant),
           ),
           padding: EdgeInsets.all(isTablet ? 24.r : 20.r),
           child: SingleChildScrollView(

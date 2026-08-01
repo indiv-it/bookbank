@@ -65,7 +65,7 @@ class Header extends StatelessWidget {
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
-                    side: BorderSide(color: theme.colorScheme.outline),
+                    side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
                   ),
                   onSelected: (String value) {
                     final menuItems = [

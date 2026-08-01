@@ -49,8 +49,8 @@ class _HomePageState extends State<HomePage> {
             Icon(
               icon,
               color: isSelected
-                  ? theme.colorScheme.surface
-                  : theme.colorScheme.outline,
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onSurfaceVariant,
               size: 23.sp,
             ),
             if (isSelected) ...[
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 width: 24.w,
                 height: 3.h,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
+                  color: theme.colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(1.5.r),
                 ),
               ),
@@ -80,10 +80,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: SafeArea(
         child: Container(
           height: 80.h,
-          margin: EdgeInsets.symmetric(
-            horizontal: 20.w,
-            vertical: 5.h,
-          ),
+          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -131,16 +128,16 @@ class _HomePageState extends State<HomePage> {
                     height: 70.h,
                     width: 70.w,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
+                      color: theme.colorScheme.onPrimary,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: theme.colorScheme.surfaceBright,
-                        width: 8,
+                        width: 10,
                       ),
                     ),
                     child: Icon(
                       Icons.add,
-                      color: theme.colorScheme.onSurface,
+                      color: theme.colorScheme.surfaceBright,
                       size: 24.sp,
                     ),
                   ),
