@@ -1,9 +1,9 @@
-import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
+import 'package:bookbank/features/charts/widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
-import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
+import 'package:bookbank/features/charts/widgets/category_pie_chart.dart';
 
 class DailySummaryCard extends StatelessWidget {
   final DateTime selectedDate;
@@ -50,7 +50,7 @@ class DailySummaryCard extends StatelessWidget {
             children: [
               Text(
                 'data for this day',
-                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Row(
                 children: [
@@ -68,7 +68,7 @@ class DailySummaryCard extends StatelessWidget {
                     child: Text(
                       dateFormat.format(selectedDate),
                       style: TextStyle(
-                        fontSize: AppSize.s.sp,
+                        fontSize: AppSize.xs.sp,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -129,7 +129,7 @@ class DailySummaryCard extends StatelessWidget {
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s.sp),
+            style: TextStyle(fontSize: AppSize.xs.sp),
           ),
           SizedBox(height: 16.h),
 

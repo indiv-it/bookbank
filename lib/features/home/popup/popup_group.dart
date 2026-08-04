@@ -71,8 +71,8 @@ class _PopupGroupState extends State<PopupGroup> {
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close, size: 20.sp),
+                child: Icon(Icons.close, size: 24.sp),
               ),
             ],
           ),
@@ -133,7 +133,7 @@ class _PopupGroupState extends State<PopupGroup> {
           Row(
             children: [
               Text(
-                'This represents ',
+                'This is ',
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
@@ -141,7 +141,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 style: TextStyle(fontSize: AppSize.s.sp),
               ),
               Text(
-                ' of the total amount.',
+                ' out of the total',
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
             ],
@@ -154,11 +154,11 @@ class _PopupGroupState extends State<PopupGroup> {
               children: [
                 Row(
                   children: [
-                    Text('Target', style: TextStyle(fontSize: AppSize.s.sp)),
+                    Text('Target', style: TextStyle(fontSize: AppSize.xs.sp)),
                     const Spacer(),
                     Text(
                       '฿ ${widget.savingsGoalAmount?.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: AppSize.s.sp),
+                      style: TextStyle(fontSize: AppSize.xs.sp),
                     ),
                   ],
                 ),
@@ -207,9 +207,17 @@ class _PopupGroupState extends State<PopupGroup> {
                 ),
               ),
               SizedBox(width: 6.w),
-              Text(
-                'Income: ฿ ${totalIncome.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: AppSize.s.sp),
+              Row(
+                children: [
+                  Text(
+                    'Income: ',
+                    style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                  ),
+                  Text(
+                    '฿ ${totalIncome.toStringAsFixed(2)}',
+                    style: TextStyle(fontSize: AppSize.xs.sp),
+                  ),
+                ],
               ),
             ],
           ),
@@ -227,8 +235,12 @@ class _PopupGroupState extends State<PopupGroup> {
               ),
               SizedBox(width: 6.w),
               Text(
-                'Expense: ฿ ${totalExpense.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: AppSize.s.sp),
+                    'Expense: ',
+                    style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                  ),
+              Text(
+                '฿ ${totalExpense.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
           ),

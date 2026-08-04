@@ -22,12 +22,12 @@ class BuildSummaryItem extends StatelessWidget {
       children: [
         Icon(icon, size: AppSize.xl.sp),
         SizedBox(height: 4.h),
-        Text(title, style: TextStyle(fontSize: AppSize.s.sp)),
+        Text(title, style: TextStyle(fontSize: AppSize.xs.sp)),
         SizedBox(height: 4.h),
         Text(
           '฿${amount.toStringAsFixed(2)}',
           style: TextStyle(
-            fontSize: AppSize.s.sp,
+            fontSize: AppSize.xs.sp,
             fontWeight: FontWeight.bold,
             color: color,
           ),

@@ -46,8 +46,8 @@ class PopupMain extends StatelessWidget {
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,17 +55,17 @@ class PopupMain extends StatelessWidget {
         children: [
           // Header / Exit button
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text('Total balance', style: TextStyle(fontSize: AppSize.xs.sp)),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close, size: 20.sp),
+                child: Icon(Icons.close, size: 24.sp),
               ),
             ],
           ),
-          Text('Total balance', style: TextStyle(fontSize: AppSize.s.sp)),
 
           // Balance display
           Row(
@@ -89,14 +89,14 @@ class PopupMain extends StatelessWidget {
                       Icon(
                         Icons.trending_up,
                         color: AppColors.green,
-                        size: 12.sp,
+                        size: 11.sp,
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         '$incomeExpensePct%',
                         style: TextStyle(
                           color: AppColors.green,
-                          fontSize: AppSize.s.sp,
+                          fontSize: 11.sp,
                         ),
                       ),
                     ],
@@ -114,7 +114,7 @@ class PopupMain extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 'Bank : ฿ ${bankBalance.toStringAsFixed(2)} / $bankPct%',
-                style: TextStyle(fontSize: AppSize.s.sp),
+                style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
           ),
@@ -124,7 +124,7 @@ class PopupMain extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 'Cash : ฿ ${cashBalance.toStringAsFixed(2)} / $cashPct%',
-                style: TextStyle(fontSize: AppSize.s.sp),
+                style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
           ),
@@ -135,11 +135,11 @@ class PopupMain extends StatelessWidget {
             children: [
               Text(
                 'Monthly data: ',
-                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())}/${DateTime.now().year}',
-                style: TextStyle(fontSize: AppSize.s.sp),
+                style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
           ),

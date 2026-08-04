@@ -249,14 +249,14 @@ class _RecordScreenState extends State<RecordScreen> {
                                   child: TextField(
                                     controller: _searchController,
                                     style: textTheme.bodySmall?.copyWith(
-                                      fontSize: 14.sp,
+                                      fontSize: 12.sp,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: 'Search',
                                       hintStyle: textTheme.bodySmall?.copyWith(
                                         color: theme.colorScheme.onSurface
                                             .withValues(alpha: 0.5),
-                                        fontSize: 14.sp,
+                                        fontSize: 12.sp,
                                       ),
                                       border: InputBorder.none,
                                       isDense: true,
@@ -319,7 +319,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                               ? theme.colorScheme.onSurface
                                               : theme.colorScheme.onSurface
                                                     .withValues(alpha: 0.5),
-                                          fontSize: 14.sp,
+                                          fontSize: 12.sp,
                                         ),
                                       ),
                                     ),
@@ -367,7 +367,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Amount',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
+                                      fontSize: 12.sp,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -378,7 +378,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Position',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
+                                      fontSize: 12.sp,
                                     ),
                                     textAlign: TextAlign.start,
                                   ),
@@ -389,7 +389,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'Date',
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
+                                      fontSize: 12.sp,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -397,7 +397,7 @@ class _RecordScreenState extends State<RecordScreen> {
                               ],
                             ),
                             SizedBox(height: 8.h),
-                            Divider(color: theme.colorScheme.outline, height: 1),
+                            Divider(color: theme.colorScheme.onSurfaceVariant, height: 1),
                             Expanded(
                               child: _isLoading
                                   ? const Center(

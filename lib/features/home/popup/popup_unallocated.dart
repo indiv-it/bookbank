@@ -69,8 +69,8 @@ class PopupUnallocated extends StatelessWidget {
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,18 +78,20 @@ class PopupUnallocated extends StatelessWidget {
         children: [
           // Title / Close button
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                'Unallocated Funds',
+                style: TextStyle(fontSize: AppSize.xs.sp),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Icon(Icons.close, size: 20.sp),
+                child: Icon(Icons.close, size: 24.sp),
               ),
             ],
           ),
-          Text('Unallocated Funds', style: TextStyle(fontSize: AppSize.s.sp)),
-          SizedBox(height: 8.h),
 
           // Money display
           Row(
@@ -112,7 +114,7 @@ class PopupUnallocated extends StatelessWidget {
                     '$pct%',
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s.sp,
+                      fontSize: AppSize.xs.sp,
                     ),
                   ),
                 ),
@@ -134,7 +136,7 @@ class PopupUnallocated extends StatelessWidget {
                 margin: EdgeInsets.only(top: 8.h),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                  color: theme.colorScheme.outline,
+                  color: AppColors.grey.withValues(alpha: 0.2),
                 ),
                 child: Row(
                   children: [
@@ -214,7 +216,7 @@ class PopupUnallocated extends StatelessWidget {
               ),
               GroupUnallocatedPopup(
                 title: 'Unallocated',
-                color: theme.colorScheme.outline,
+                color: AppColors.grey.withValues(alpha: 0.2),
                 amount: '฿ ${unallocatedAmount.toStringAsFixed(2)}',
                 percentage: '$pct%',
               ),

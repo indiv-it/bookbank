@@ -19,8 +19,8 @@ class MoneyNumber extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 10.w,
-          height: 10.h,
+          width: 8.w,
+          height: 8.h,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: color,
@@ -33,7 +33,7 @@ class MoneyNumber extends StatelessWidget {
           percentage != null
               ? '${percentage!.toStringAsFixed(1)}%'
               : amount.toString(),
-          style: TextStyle(fontSize: AppSize.s.sp),
+          style: TextStyle(fontSize: AppSize.xs.sp),
         ),
       ],
     );

@@ -1,5 +1,7 @@
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategorySelector extends StatelessWidget {
   final String? selectedGroup;
@@ -23,6 +25,7 @@ class CategorySelector extends StatelessWidget {
         Text(
           'Category',
           style: theme.textTheme.bodySmall?.copyWith(
+            fontSize: AppSize.xs.sp,
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),

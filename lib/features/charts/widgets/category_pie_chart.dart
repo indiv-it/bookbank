@@ -25,7 +25,7 @@ class CategoryPieChart extends StatelessWidget {
       return Center(
         child: Text(
           'Not enough data',
-          style: TextStyle(color: AppColors.grey, fontSize: AppSize.s.sp),
+          style: TextStyle(color: AppColors.grey, fontSize: AppSize.xs.sp),
         ),
       );
     }
@@ -71,7 +71,7 @@ class CategoryPieChart extends StatelessWidget {
                         children: [
                           Text(
                             categoryNames[category] ?? category,
-                            style: TextStyle(fontSize: AppSize.s.sp),
+                            style: TextStyle(fontSize: AppSize.xs.sp),
                           ),
                           Text(
                             '฿${amount.toStringAsFixed(0)}',
@@ -86,7 +86,7 @@ class CategoryPieChart extends StatelessWidget {
                     Text(
                       '${percentage.toStringAsFixed(1)}%',
                       style: TextStyle(
-                        fontSize: AppSize.s.sp,
+                        fontSize: AppSize.xs.sp,
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),
@@ -116,7 +116,7 @@ class CategoryPieChart extends StatelessWidget {
           color: color,
           radius: 50.r,
           titleStyle: TextStyle(
-            fontSize: 12.sp,
+            fontSize: 10.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),

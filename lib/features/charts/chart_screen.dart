@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 // Local Imports
-import 'package:bookbank/features/charts/dashboard_widgets/daily_summary_card.dart';
-import 'package:bookbank/features/charts/dashboard_widgets/monthly_chart.dart';
-import 'package:bookbank/features/charts/dashboard_widgets/yearly_chart.dart';
+import 'package:bookbank/features/charts/widgets/daily_summary_card.dart';
+import 'package:bookbank/features/charts/widgets/monthly_chart.dart';
+import 'package:bookbank/features/charts/widgets/yearly_chart.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 
@@ -416,6 +416,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           Text(
                             'View your statistics in detail.',
                             style: textTheme.bodySmall?.copyWith(
+                              fontSize: AppSize.xs.sp,
                               color: theme.colorScheme.onSurface.withValues(
                                 alpha: 0.5,
                               ),
@@ -434,14 +435,14 @@ class _ChartScreenState extends State<ChartScreen> {
                           'Total Balance',
                           style: textTheme.bodyLarge?.copyWith(
                             color: AppColors.grey,
-                            fontSize: AppSize.s,
+                            fontSize: AppSize.xs.sp,
                           ),
                         ),
                         Text(
                           '\$ ${_totalBalance.toStringAsFixed(2)}',
                           style: textTheme.bodyLarge?.copyWith(
-                            color: AppColors.black,
-                            fontSize: AppSize.l,
+                            color: theme.colorScheme.onSurface,
+                            fontSize: AppSize.l.sp,
                           ),
                         ),
                       ],

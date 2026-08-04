@@ -3,6 +3,7 @@ import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/menu/editGroup/group_edit_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditGroupSgreen extends StatefulWidget {
   const EditGroupSgreen({super.key});
@@ -81,25 +82,13 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
       padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(Icons.close),
-              ),
-            ],
-          ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -176,6 +165,19 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
                   );
                 },
               ),
+            ),
+            const SizedBox(height: 16),
+
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                minimumSize: Size(double.infinity, 40.h),
+                foregroundColor: theme.scaffoldBackgroundColor,
+                backgroundColor: theme.colorScheme.onSurface,
+              ),
+              child: Text('Close'),
             ),
         ],
       ),

@@ -170,8 +170,8 @@ class AppTheme {
       colorScheme: ColorScheme.dark(
         primary: AppColors.blue,
         secondary: AppColors.orange,
-        surface: const Color(0xFF101010),
-        surfaceBright: DarkColors.cardBg,
+        surface: const Color(0xFF202020),
+        surfaceBright: const Color(0xFF202020),
         outline: Colors.black,
         onSurfaceVariant: const Color.fromARGB(255, 81, 81, 81),
         error: DarkColors.red,

@@ -52,10 +52,10 @@ class ListButton extends StatelessWidget {
                         : theme.colorScheme.onSurface,
                   ),
                   const SizedBox(width: 8),
-                  Text(titel, style: TextStyle(fontSize: AppSize.s)),
+                  Text(titel, style: TextStyle(fontSize: AppSize.xs)),
                 ],
               )
-            : Text(titel, style: TextStyle(fontSize: AppSize.s)),
+            : Text(titel, style: TextStyle(fontSize: AppSize.xs)),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Theme / Database
 import '../../../core/theme/app_theme.dart';
@@ -57,13 +58,13 @@ Widget buildFilterTab({
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isSelected) ...[
-              Icon(icon, size: AppSize.m, color: theme.colorScheme.surface),
+              Icon(icon, size: AppSize.s, color: theme.colorScheme.surface),
               const SizedBox(width: 6),
             ],
             Text(
               label,
               style: TextStyle(
-                fontSize: AppSize.s,
+                fontSize: AppSize.xs,
                 color: isSelected ? theme.colorScheme.surface : AppColors.grey,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
@@ -91,7 +92,11 @@ Widget recondListView(IconData icon, String title, String data) {
 }
 
 /// Builds a single record row in the list.
-Widget buildRecordRow(BuildContext context, MyData item, void Function(String) onMenuAction) {
+Widget buildRecordRow(
+  BuildContext context,
+  MyData item,
+  void Function(String) onMenuAction,
+) {
   final theme = Theme.of(context);
   final isTransfer = item.moneyType == 'transfer';
   final isIncome = item.moneyType == 'income';
@@ -103,12 +108,10 @@ Widget buildRecordRow(BuildContext context, MyData item, void Function(String) o
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: theme.colorScheme.outline, width: 1),
         ),
         child: Row(
           children: [
@@ -148,23 +151,19 @@ Widget buildRecordRow(BuildContext context, MyData item, void Function(String) o
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isTransfer ? 'Alternate' : '${item.title}',
+                    '฿ ${item.amount.toStringAsFixed(2)}',
                     style: TextStyle(
-                      fontSize: AppSize.xs,
-                      fontWeight: FontWeight.w600,
+                      fontSize: AppSize.s - 1,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        '฿ ${item.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontSize: AppSize.m - 1,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    isTransfer ? 'Alternate' : '${item.title}',
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
                   ),
                 ],
               ),
@@ -178,7 +177,7 @@ Widget buildRecordRow(BuildContext context, MyData item, void Function(String) o
                     ? 'Income'
                     : 'Expense',
                 style: TextStyle(
-                  fontSize: AppSize.xs,
+                  fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
                   color: AppColors.grey,
                 ),
@@ -190,7 +189,7 @@ Widget buildRecordRow(BuildContext context, MyData item, void Function(String) o
               child: Text(
                 formatDisplayDate(item.date),
                 style: TextStyle(
-                  fontSize: AppSize.xs,
+                  fontSize: 10.sp,
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 textAlign: TextAlign.end,
@@ -256,6 +255,7 @@ Widget buildRecordRow(BuildContext context, MyData item, void Function(String) o
           ],
         ),
       ),
+      const Divider(height: 1),
     ],
   );
 }

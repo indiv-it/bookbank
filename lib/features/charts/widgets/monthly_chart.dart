@@ -1,10 +1,10 @@
-import 'package:bookbank/features/charts/dashboard_widgets/_build_summary_item.dart';
+import 'package:bookbank/features/charts/widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
-import 'package:bookbank/features/charts/dashboard_widgets/category_pie_chart.dart';
+import 'package:bookbank/features/charts/widgets/category_pie_chart.dart';
 
 class MonthlyChart extends StatelessWidget {
   final int selectedYear;
@@ -58,7 +58,7 @@ class MonthlyChart extends StatelessWidget {
             children: [
               Text(
                 'Data for the month',
-                style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Row(
                 children: [
@@ -74,7 +74,7 @@ class MonthlyChart extends StatelessWidget {
                   ),
                   Text(
                     monthFormat.format(selectedDate),
-                    style: TextStyle(fontSize: AppSize.s.sp),
+                    style: TextStyle(fontSize: AppSize.xs.sp),
                   ),
                   IconButton(
                     icon: Icon(Icons.chevron_right, size: 20.sp),
@@ -188,7 +188,7 @@ class MonthlyChart extends StatelessWidget {
                 lineTouchData: LineTouchData(
                   enabled: true,
                   touchTooltipData: LineTouchTooltipData(
-                    getTooltipColor: (touchedSpot) => AppColors.black,
+                    getTooltipColor: (touchedSpot) => AppColors.red,
                     getTooltipItems: (touchedSpots) {
                       return touchedSpots.map((spot) {
                         return LineTooltipItem(
@@ -211,7 +211,7 @@ class MonthlyChart extends StatelessWidget {
           // Category title
           Text(
             'Income and expenses by category',
-            style: TextStyle(fontSize: AppSize.s.sp),
+            style: TextStyle(fontSize: AppSize.xs.sp),
           ),
           SizedBox(height: 16.h),
 

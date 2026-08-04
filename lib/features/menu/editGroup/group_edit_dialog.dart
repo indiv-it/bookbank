@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
@@ -104,6 +105,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
         listen: false,
       );
       await groupProvider.updateGroupSettings(updatedSettings);
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop(true);
     }
   }
@@ -119,8 +121,8 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
       ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
@@ -165,11 +167,15 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: theme.colorScheme.outline),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: theme.colorScheme.outline),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
               style: TextStyle(height: 1.5, fontSize: AppSize.m),
@@ -177,9 +183,9 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             SizedBox(height: 16),
 
             // Icon Selection
-            Text('Icon', style: TextStyle(fontSize: 14)),
+            Text('Icon', style: TextStyle(fontSize: AppSize.xs.sp)),
             SizedBox(height: 8),
-            Container(
+            SizedBox(
               height: 35,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -203,7 +209,9 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                             : theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: isSelected ? _selectedColor : theme.colorScheme.outline,
+                          color: isSelected
+                              ? _selectedColor
+                              : theme.colorScheme.onSurfaceVariant,
                           width: isSelected ? 2 : 1,
                         ),
                       ),
@@ -216,16 +224,17 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             SizedBox(height: 16),
 
             // Color Selection
-            Text('Color', style: TextStyle(fontSize: AppSize.m)),
+            Text('Color', style: TextStyle(fontSize: AppSize.xs.sp)),
             SizedBox(height: 8),
-            Container(
+            SizedBox(
               height: 35,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: _availableColors.length,
                 itemBuilder: (context, index) {
                   final color = _availableColors[index];
-                  final isSelected = color.value == _selectedColor.value;
+                  final isSelected =
+                      color.toARGB32() == _selectedColor.toARGB32();
                   return GestureDetector(
                     onTap: () {
                       setState(() {
@@ -259,7 +268,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
               children: [
                 Text(
                   'Enable Savings Goal',
-                  style: TextStyle(fontSize: AppSize.m),
+                  style: TextStyle(fontSize: AppSize.xs.sp),
                 ),
                 Transform.scale(
                   scale: 0.8,
@@ -271,6 +280,21 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                       });
                     },
                     activeThumbColor: _selectedColor,
+                    inactiveTrackColor: theme.colorScheme.surface,
+                    trackOutlineColor: WidgetStateProperty.resolveWith((
+                      states,
+                    ) {
+                      if (states.contains(WidgetState.selected)) {
+                        return _selectedColor;
+                      }
+                      return theme.colorScheme.onSurfaceVariant;
+                    }),
+                    thumbColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return _selectedColor;
+                      }
+                      return theme.colorScheme.onSurfaceVariant;
+                    }),
                   ),
                 ),
               ],
@@ -281,23 +305,24 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             if (_savingsGoalEnabled) ...[
               Text(
                 'Savings Goal Amount',
-                style: TextStyle(fontSize: AppSize.s, color: AppColors.grey),
+                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               SizedBox(height: 8),
               TextField(
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  prefixText: '฿ ',
+                  prefixText: '฿ ', 
+                  prefixStyle: TextStyle(color: theme.colorScheme.onPrimary),
                   filled: true,
                   fillColor: theme.colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.colorScheme.outline),
+                    borderSide: BorderSide(color: theme.colorScheme.onSurfaceVariant),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.colorScheme.outline),
+                    borderSide: BorderSide(color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ),
                 style: TextStyle(fontSize: AppSize.m, height: 1.2),

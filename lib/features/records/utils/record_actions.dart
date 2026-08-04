@@ -21,43 +21,46 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header / Exit button
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: isIncome
+                            ? AppColors.green
+                            : item.moneyType == 'transfer'
+                            ? AppColors.orange
+                            : AppColors.red,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${item.moneyType == 'transfer' ? 'Alternative' : item.title}',
+                    style: TextStyle(fontSize: AppSize.s),
+                  ),
+                ],
+              ),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
                 child: Icon(Icons.close),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 10,
-                height: 10,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: isIncome
-                        ? AppColors.green
-                        : item.moneyType == 'transfer'
-                        ? AppColors.orange
-                        : AppColors.red,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '${item.moneyType == 'transfer' ? 'Alternative' : item.title}',
-                style: TextStyle(fontSize: AppSize.s),
               ),
             ],
           ),
@@ -173,7 +176,10 @@ Future<void> deleteRecord(
               Expanded(
                 child: Text(
                   'Deleted successfully',
-                  style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],

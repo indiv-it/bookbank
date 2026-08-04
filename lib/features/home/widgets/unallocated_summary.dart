@@ -86,7 +86,7 @@ class UnallocatedSummary extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 80.h,
+        height: 82.h,
         margin: EdgeInsets.symmetric(vertical: 11.h),
         padding: EdgeInsets.all(12.r),
         decoration: BoxDecoration(
@@ -102,22 +102,28 @@ class UnallocatedSummary extends StatelessWidget {
                 Text(
                   "Unallocated ",
                   style: textTheme.bodySmall?.copyWith(
+                    fontSize: AppSize.xs.sp,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
                 Text(
                   '฿ ${unallocatedAmount.toStringAsFixed(2)}',
-                  style: textTheme.bodySmall,
+                  style: textTheme.bodySmall?.copyWith(
+                    fontSize: AppSize.s.sp,
+                  ),
                 ),
                 Text(
                   ' from ',
                   style: textTheme.bodySmall?.copyWith(
+                    fontSize: AppSize.xs.sp,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
                 Text(
                   '฿ ${totalBalance.toStringAsFixed(2)}',
-                  style: textTheme.bodySmall,
+                  style: textTheme.bodySmall?.copyWith(
+                    fontSize: AppSize.s.sp,
+                  ),
                 ),
               ],
             ),
