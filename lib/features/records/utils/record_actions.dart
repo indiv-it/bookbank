@@ -1,5 +1,6 @@
 import 'package:bookbank/features/records/widgets/record_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // Screens
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
@@ -8,6 +9,7 @@ import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 import '../../../data/database.dart';
 import '../../../data/db_helper.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../features/menu/editGroup/providers/group_settings_provider.dart';
 
 /// Shows the record details dialog.
 Future<void> viewRecord(BuildContext context, MyData item) async {
@@ -16,6 +18,24 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
 
   final fromLabel = item.moneyList == 'bank' ? 'Bank' : 'Cash';
   final toLabel = item.moneyGroup == 'bank' ? 'Bank' : 'Cash';
+
+  // Get group settings to display dynamic group name
+  final groupSettings = context.read<GroupSettingsProvider>().groupSettings;
+
+  String getGroupName(String groupId) {
+    final settings = groupSettings.firstWhere(
+      (s) => s.groupId == groupId,
+      orElse: () => GroupSettings(
+        groupId: groupId,
+        groupName: groupId,
+        iconCodePoint: Icons.add.codePoint,
+        colorValue: Colors.grey.toARGB32(),
+        savingsGoalEnabled: false,
+        savingsGoalAmount: 0,
+      ),
+    );
+    return settings.groupName;
+  }
 
   await showDialog<void>(
     context: context,
@@ -98,7 +118,7 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
           recondListView(
             Icons.group_outlined,
             'Group',
-            item.moneyType == 'transfer' ? '' : item.moneyGroup,
+            item.moneyType == 'transfer' ? '' : getGroupName(item.moneyGroup),
           ),
           const SizedBox(height: 8),
           recondListView(Icons.date_range, 'Date', item.date.toString()),
@@ -127,17 +147,27 @@ Future<void> deleteRecord(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+      ),
       title: const Text('Delete'),
       content: const Text('Are you sure you want to delete this record?'),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          ),
         ),
-        TextButton(
+        FilledButton(
           onPressed: () => Navigator.pop(context, true),
-          child: Text('Delete', style: TextStyle(color: AppColors.red)),
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.red,
+            foregroundColor: AppColors.card,
+          ),
+          child: const Text('Delete'),
         ),
       ],
     ),
@@ -158,18 +188,20 @@ Future<void> deleteRecord(
           left: 16,
           right: 16,
         ),
-        backgroundColor: theme.colorScheme.surface,
+        backgroundColor: AppColors.green,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: Container(
           decoration: BoxDecoration(
-            border: Border(left: BorderSide(color: AppColors.green, width: 3)),
+            border: Border(
+              left: BorderSide(color: AppColors.background, width: 3),
+            ),
           ),
           padding: EdgeInsets.only(left: 8),
           child: Row(
             children: [
               Icon(
                 Icons.check_circle_outline,
-                color: AppColors.green,
+                color: AppColors.background,
                 size: 24,
               ),
               SizedBox(width: 12),

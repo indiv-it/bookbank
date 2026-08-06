@@ -89,3 +89,68 @@ class GroupSettings {
     );
   }
 }
+
+class NoteModel {
+  NoteModel({
+    this.id,
+    required this.title,
+    required this.content,
+    required this.colorValue,
+    required this.date,
+    this.category = 'ทั่วไป',
+    this.isPinned = false,
+  });
+
+  int? id;
+  String title;
+  String content;
+  int colorValue;
+  String date;
+  String category;
+  bool isPinned;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'content': content,
+      'colorValue': colorValue,
+      'date': date,
+      'category': category,
+      'isPinned': isPinned ? 1 : 0,
+    };
+  }
+
+  factory NoteModel.fromMap(Map<String, dynamic> map) {
+    return NoteModel(
+      id: map['id'] as int?,
+      title: (map['title'] as String?) ?? '',
+      content: (map['content'] as String?) ?? '',
+      colorValue: (map['colorValue'] as int?) ?? 0xFF2196F3,
+      date: (map['date'] as String?) ?? '',
+      category: (map['category'] as String?) ?? 'ทั่วไป',
+      isPinned: (map['isPinned'] as int?) == 1,
+    );
+  }
+
+  NoteModel copyWith({
+    int? id,
+    String? title,
+    String? content,
+    int? colorValue,
+    String? date,
+    String? category,
+    bool? isPinned,
+  }) {
+    return NoteModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      colorValue: colorValue ?? this.colorValue,
+      date: date ?? this.date,
+      category: category ?? this.category,
+      isPinned: isPinned ?? this.isPinned,
+    );
+  }
+}
+

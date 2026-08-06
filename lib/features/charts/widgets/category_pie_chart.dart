@@ -39,7 +39,7 @@ class CategoryPieChart extends StatelessWidget {
             height: 150.h,
             child: PieChart(
               PieChartData(
-                sectionsSpace: 2,
+                sectionsSpace: 3,
                 centerSpaceRadius: 10.r,
                 sections: _buildPieSections(),
               ),
@@ -63,7 +63,7 @@ class CategoryPieChart extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 8.h),
                 child: Row(
                   children: [
-                    Icon(icon, color: color, size: 20.sp),
+                    Icon(icon, color: color, size: 18.sp),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Column(

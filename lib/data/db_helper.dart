@@ -27,13 +27,13 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
 
-  /// สร้างตาราง transactions ในฐานข้อมูล
+  /// สร้างตารางในฐานข้อมูล
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE transactions(
@@ -55,6 +55,17 @@ class DatabaseHelper {
         colorValue INTEGER NOT NULL,
         savingsGoalEnabled INTEGER NOT NULL DEFAULT 0,
         savingsGoalAmount REAL NOT NULL DEFAULT 0
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE notes(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        colorValue INTEGER NOT NULL,
+        date TEXT NOT NULL,
+        category TEXT NOT NULL DEFAULT 'ทั่วไป',
+        isPinned INTEGER NOT NULL DEFAULT 0
       )
     ''');
     // Insert default group settings
@@ -82,6 +93,19 @@ class DatabaseHelper {
         )
       ''');
       await _insertDefaultGroupSettings(db);
+    }
+    if (oldVersion < 5) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS notes(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT NOT NULL,
+          content TEXT NOT NULL,
+          colorValue INTEGER NOT NULL,
+          date TEXT NOT NULL,
+          category TEXT NOT NULL DEFAULT 'ทั่วไป',
+          isPinned INTEGER NOT NULL DEFAULT 0
+        )
+      ''');
     }
   }
 
@@ -204,4 +228,56 @@ class DatabaseHelper {
       whereArgs: [settings.id],
     );
   }
+
+  // ─── Note Operations ──────────────────────────────────────────────────────────
+
+  /// แทรกบันทึกใหม่
+  Future<int> insertNote(NoteModel note) async {
+    final db = await database;
+    return await db.insert(
+      'notes',
+      note.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// ดึงบันทึกทั้งหมด เรียงลำดับจากปักหมุดก่อนและไอดีล่าสุด
+  Future<List<NoteModel>> getAllNotes() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'notes',
+      orderBy: 'isPinned DESC, id DESC',
+    );
+    return maps.map((map) => NoteModel.fromMap(map)).toList();
+  }
+
+  /// อัปเดตบันทึก
+  Future<int> updateNote(NoteModel note) async {
+    final db = await database;
+    if (note.id == null) return 0;
+    return await db.update(
+      'notes',
+      note.toMap(),
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
+  }
+
+  /// ลบบันทึกตาม id
+  Future<int> deleteNote(int id) async {
+    final db = await database;
+    return await db.delete('notes', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// สลับสถานะปักหมุดบันทึก
+  Future<int> toggleNotePin(int id, bool isPinned) async {
+    final db = await database;
+    return await db.update(
+      'notes',
+      {'isPinned': isPinned ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }
+

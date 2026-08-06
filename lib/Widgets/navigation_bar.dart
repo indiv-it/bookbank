@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bookbank/features/home/home_screen.dart';
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 import 'package:bookbank/features/records/record_screen.dart';
+import 'package:bookbank/features/notebook/noteBook_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     RecordScreen(key: _recordKey),
     const Scaffold(body: Center(child: Text('Add'))),
     ChartScreen(),
-    const Scaffold(body: Center(child: Text('Edit'))),
+    NoteBookScreen(),
   ];
 
   // Build navigation item

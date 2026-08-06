@@ -327,7 +327,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           left: 16.w,
                           right: 16.w,
                         ),
-                        backgroundColor: theme.colorScheme.surface,
+                        backgroundColor: AppColors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -335,7 +335,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           decoration: BoxDecoration(
                             border: Border(
                               left: BorderSide(
-                                color: AppColors.green,
+                                color: AppColors.background,
                                 width: 3,
                               ),
                             ),
@@ -345,7 +345,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             children: [
                               Icon(
                                 Icons.check_circle_outline,
-                                color: Colors.green,
+                                color: AppColors.background,
                                 size: isTablet ? 24.sp : 20.sp,
                               ),
                               SizedBox(width: 12.w),

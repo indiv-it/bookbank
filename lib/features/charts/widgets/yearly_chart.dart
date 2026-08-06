@@ -172,7 +172,7 @@ class YearlyChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    getTooltipColor: (group) => AppColors.black,
+                    getTooltipColor: (group) => AppColors.red,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       final months = [
                         'Jan',

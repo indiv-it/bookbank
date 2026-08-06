@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:bookbank/Widgets/navigation_bar.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/features/notebook/providers/note_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => GroupSettingsProvider()),
             ChangeNotifierProvider(create: (_) => ThemeProvider()),
+            ChangeNotifierProvider(create: (_) => NoteProvider()),
           ],
           child: Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
