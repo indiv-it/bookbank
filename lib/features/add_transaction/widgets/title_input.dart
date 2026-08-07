@@ -83,8 +83,8 @@ class TitleInput extends StatelessWidget {
                         'Food',
                         'Transport',
                         'Shopping',
-                        'Bills',
                         'Entertainment',
+                        'Bills',
                       ]
                       .map(
                         (item) => PopupMenuItem<String>(

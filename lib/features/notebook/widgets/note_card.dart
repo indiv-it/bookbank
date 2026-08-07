@@ -30,7 +30,7 @@ class NoteCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(
           color: note.isPinned
-              ? theme.colorScheme.primary.withValues(alpha: 0.6)
+              ? theme.colorScheme.onSurface.withValues(alpha: 0.8)
               : theme.colorScheme.outline,
           width: note.isPinned ? 1.5 : 1.0,
         ),
@@ -77,13 +77,13 @@ class NoteCard extends StatelessWidget {
                       note.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
                       size: 18.sp,
                       color: note.isPinned
-                          ? theme.colorScheme.primary
+                          ? theme.colorScheme.onSurface
                           : theme.colorScheme.onSurfaceVariant,
                     ),
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.all(4.w),
                     onPressed: onTogglePin,
-                    tooltip: note.isPinned ? 'ยกเลิกการปักหมุด' : 'ปักหมุด',
+                    tooltip: note.isPinned ? 'Unpin' : 'Pin',
                   ),
                   SizedBox(width: 4.w),
                   PopupMenuButton<String>(
@@ -108,7 +108,7 @@ class NoteCard extends StatelessWidget {
                           children: [
                             Icon(Icons.edit_outlined, size: 16.sp),
                             SizedBox(width: 8.w),
-                            Text('แก้ไข', style: TextStyle(fontSize: 13.sp)),
+                            Text('Edit', style: TextStyle(fontSize: 13.sp)),
                           ],
                         ),
                       ),
@@ -118,7 +118,7 @@ class NoteCard extends StatelessWidget {
                           children: [
                             Icon(Icons.delete_outline, color: theme.colorScheme.error, size: 16.sp),
                             SizedBox(width: 8.w),
-                            Text('ลบ', style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
+                            Text('Delete', style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
                           ],
                         ),
                       ),

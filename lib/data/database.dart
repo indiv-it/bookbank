@@ -97,7 +97,7 @@ class NoteModel {
     required this.content,
     required this.colorValue,
     required this.date,
-    this.category = 'ทั่วไป',
+    this.category = 'General',
     this.isPinned = false,
   });
 
@@ -128,7 +128,7 @@ class NoteModel {
       content: (map['content'] as String?) ?? '',
       colorValue: (map['colorValue'] as int?) ?? 0xFF2196F3,
       date: (map['date'] as String?) ?? '',
-      category: (map['category'] as String?) ?? 'ทั่วไป',
+      category: (map['category'] as String?) ?? 'General',
       isPinned: (map['isPinned'] as int?) == 1,
     );
   }

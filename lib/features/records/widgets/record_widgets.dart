@@ -126,10 +126,10 @@ Widget buildRecordRow(
                   width: 1,
                 ),
                 color: isIncome
-                    ? AppColors.green.withValues(alpha: 0.2)
+                    ? AppColors.green.withValues(alpha: 0.3)
                     : isTransfer
-                    ? AppColors.amber.withValues(alpha: 0.2)
-                    : AppColors.red.withValues(alpha: 0.2),
+                    ? AppColors.amber.withValues(alpha: 0.3)
+                    : AppColors.red.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(

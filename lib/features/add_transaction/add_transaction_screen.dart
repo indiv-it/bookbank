@@ -354,7 +354,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   widget.existingItem == null
                                       ? 'Added successfully'
                                       : 'Updated successfully',
-                                  style: textTheme.bodySmall?.copyWith(
+                                  style: TextStyle(
+                                    color: AppColors.background,
                                     fontSize: isTablet ? 16.sp : 14.sp,
                                   ),
                                 ),

@@ -64,7 +64,7 @@ class DatabaseHelper {
         content TEXT NOT NULL,
         colorValue INTEGER NOT NULL,
         date TEXT NOT NULL,
-        category TEXT NOT NULL DEFAULT 'ทั่วไป',
+        category TEXT NOT NULL DEFAULT 'General',
         isPinned INTEGER NOT NULL DEFAULT 0
       )
     ''');
@@ -102,7 +102,7 @@ class DatabaseHelper {
           content TEXT NOT NULL,
           colorValue INTEGER NOT NULL,
           date TEXT NOT NULL,
-          category TEXT NOT NULL DEFAULT 'ทั่วไป',
+          category TEXT NOT NULL DEFAULT 'General',
           isPinned INTEGER NOT NULL DEFAULT 0
         )
       ''');

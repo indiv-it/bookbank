@@ -34,19 +34,25 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),
+          side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
         ),
         title: Row(
           children: [
             Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
             SizedBox(width: 8.w),
-            const Text('ยืนยันการลบ'),
+            const Text('Confirm Delete'),
           ],
         ),
-        content: Text('คุณต้องการลบบันทึก "${note.title}" ใช่หรือไม่?'),
+        content: Text(
+          'Are you sure you want to delete the note "${note.title}"?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ยกเลิก'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -55,9 +61,48 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                 final success = await noteProvider.deleteNote(note.id!);
                 if (success && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('ลบบันทึกเรียบร้อยแล้ว'),
-                      duration: Duration(seconds: 2),
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      margin: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      backgroundColor: AppColors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      content: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: AppColors.background,
+                              width: 3,
+                            ),
+                          ),
+                        ),
+                        padding: EdgeInsets.only(left: 8.w),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: AppColors.background,
+                              size: 24.sp,
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Text(
+                                'Note deleted successfully',
+                                style: TextStyle(
+                                  color: AppColors.background,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 }
@@ -67,7 +112,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
               backgroundColor: theme.colorScheme.error,
               foregroundColor: theme.colorScheme.onError,
             ),
-            child: const Text('ลบ'),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -83,6 +128,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
+          side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
         ),
         child: Container(
           padding: EdgeInsets.all(20.w),
@@ -154,7 +200,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
 
               // Date
               Text(
-                'บันทึกเมื่อ: ${note.date}',
+                'Recorded on : ${note.date}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: theme.colorScheme.onSurfaceVariant,
@@ -191,7 +237,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                       size: 18.sp,
                     ),
                     label: Text(
-                      'ลบ',
+                      'Delete',
                       style: TextStyle(color: theme.colorScheme.error),
                     ),
                     style: OutlinedButton.styleFrom(
@@ -205,7 +251,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                       NoteEditorDialog.show(context, noteToEdit: note);
                     },
                     icon: Icon(Icons.edit, size: 18.sp),
-                    label: const Text('แก้ไข'),
+                    label: const Text('Edit'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,
@@ -228,13 +274,13 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
 
     return Scaffold(
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 120.h), // Clear bottom navigation bar
+        padding: EdgeInsets.only(bottom: 120.h), // Lower bottom navigation bar
         child: FloatingActionButton.extended(
           onPressed: () => NoteEditorDialog.show(context),
           backgroundColor: theme.colorScheme.onSurface,
           foregroundColor: theme.scaffoldBackgroundColor,
-          icon: Icon(Icons.add, size: 18.sp),
           label: Text('Add', style: TextStyle(fontSize: AppSize.xs.sp)),
+          icon: Icon(Icons.add, size: 18.sp),
         ),
       ),
       body: SafeArea(
@@ -266,7 +312,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                             ),
                           ),
                           Text(
-                            'สมุดบันทึกค่าใช้จ่ายและข้อความ',
+                            'Personal notes and reminders',
                             style: TextStyle(
                               fontSize: AppSize.xs.sp,
                               color: theme.colorScheme.onSurfaceVariant,

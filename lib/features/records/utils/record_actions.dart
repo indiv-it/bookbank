@@ -1,5 +1,6 @@
 import 'package:bookbank/features/records/widgets/record_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 // Screens
@@ -143,22 +144,29 @@ Future<void> deleteRecord(
   MyData item,
   VoidCallback onDeleted,
 ) async {
+  final theme = Theme.of(context);
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
       ),
-      title: const Text('Delete'),
+      title: Row(
+        children: [
+          Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
+          const SizedBox(width: 8),
+          const Text('Delete'),
+        ],
+      ),
       content: const Text('Are you sure you want to delete this record?'),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
           child: Text(
             'Cancel',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            style: TextStyle(color: theme.colorScheme.onSurface),
           ),
         ),
         FilledButton(
@@ -178,7 +186,6 @@ Future<void> deleteRecord(
   await DatabaseHelper.instance.deleteData(item.id!);
   onDeleted();
   if (context.mounted) {
-    final theme = Theme.of(context);
     // Show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -209,8 +216,8 @@ Future<void> deleteRecord(
                 child: Text(
                   'Deleted successfully',
                   style: TextStyle(
-                    fontSize: 16,
-                    color: theme.colorScheme.onSurface,
+                    fontSize: 14.sp,
+                    color: AppColors.background,
                   ),
                 ),
               ),

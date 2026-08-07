@@ -9,18 +9,34 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
+    final theme = Theme.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Icon(Icons.add, size: 16.sp),
-        SizedBox(width: 4.w),
-        Text(
-          'Add List',
-          style: textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: isTablet ? 18.sp : 16.sp,
+        Center(
+          child: Container(
+            width: 40.w,
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+              borderRadius: BorderRadius.circular(2.r),
+            ),
           ),
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add, size: 16.sp),
+            SizedBox(width: 4.w),
+            Text(
+              'Add List',
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: isTablet ? 18.sp : 16.sp,
+              ),
+            ),
+          ],
         ),
       ],
     );

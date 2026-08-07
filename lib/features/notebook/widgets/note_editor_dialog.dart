@@ -1,3 +1,4 @@
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -49,7 +50,7 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
     final note = widget.noteToEdit;
     _titleController = TextEditingController(text: note?.title ?? '');
     _contentController = TextEditingController(text: note?.content ?? '');
-    _selectedCategory = note?.category ?? 'ทั่วไป';
+    _selectedCategory = note?.category ?? 'General';
     _selectedColorValue = note?.colorValue ?? _colorPalette[0];
   }
 
@@ -98,10 +99,44 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              widget.noteToEdit != null
-                  ? 'อัปเดตบันทึกเรียบร้อย'
-                  : 'บันทึกเรียบร้อย',
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
+              left: 16.w,
+              right: 16.w,
+            ),
+            backgroundColor: AppColors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(color: AppColors.background, width: 3),
+                ),
+              ),
+              padding: EdgeInsets.only(left: 8.w),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: AppColors.background,
+                    size: 24.sp,
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      widget.noteToEdit == null
+                          ? 'Added successfully'
+                          : 'Updated successfully',
+                      style: TextStyle(
+                        color: AppColors.background,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             duration: const Duration(seconds: 2),
           ),
@@ -338,7 +373,7 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                           border: isSelected
                               ? Border.all(
                                   color: theme.colorScheme.onSurface,
-                                  width: 2.5,
+                                  width: 1.5,
                                 )
                               : null,
                           boxShadow: [
