@@ -11,14 +11,18 @@ import '../../../data/database.dart';
 import '../../../data/db_helper.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 /// Shows the record details dialog.
 Future<void> viewRecord(BuildContext context, MyData item) async {
   final isIncome = item.moneyType == 'income';
   final isTransfer = item.moneyType == 'transfer';
 
-  final fromLabel = item.moneyList == 'bank' ? 'Bank' : 'Cash';
-  final toLabel = item.moneyGroup == 'bank' ? 'Bank' : 'Cash';
+  final locProvider = context.read<LocalizationProvider>();
+  final loc = locProvider.loc;
+
+  final fromLabel = item.moneyList == 'bank' ? loc.bank : loc.cash;
+  final toLabel = item.moneyGroup == 'bank' ? loc.bank : loc.cash;
 
   // Get group settings to display dynamic group name
   final groupSettings = context.read<GroupSettingsProvider>().groupSettings;
@@ -72,7 +76,7 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '${item.moneyType == 'transfer' ? 'Alternative' : item.title}',
+                    '${item.moneyType == 'transfer' ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? ''))}',
                     style: TextStyle(fontSize: AppSize.s),
                   ),
                 ],
@@ -86,7 +90,7 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
             ],
           ),
           Text(
-            '฿${item.amount.toStringAsFixed(0)}',
+            locProvider.formatAmount(item.amount.toDouble()),
             style: TextStyle(fontSize: AppSize.l),
           ),
           const SizedBox(height: 16),
@@ -96,33 +100,33 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
                 : item.moneyType == 'transfer'
                 ? Icons.swap_horiz
                 : Icons.trending_down,
-            'Money List',
+            loc.moneyListLabel,
             isIncome
-                ? 'Income'
+                ? loc.income
                 : item.moneyType == 'transfer'
-                ? 'Alternative'
-                : 'Expense',
+                ? loc.alternate
+                : loc.expense,
           ),
           const SizedBox(height: 8),
           recondListView(
             item.moneyList == 'bank'
                 ? Icons.account_balance
                 : Icons.account_balance_wallet,
-            'Money Position',
+            loc.moneyPositionLabel,
             isTransfer
                 ? '$fromLabel → $toLabel'
                 : item.moneyList == 'bank'
-                ? 'Bank'
-                : 'Cash',
+                ? loc.bank
+                : loc.cash,
           ),
           const SizedBox(height: 8),
           recondListView(
             Icons.group_outlined,
-            'Group',
+            loc.group,
             item.moneyType == 'transfer' ? '' : getGroupName(item.moneyGroup),
           ),
           const SizedBox(height: 8),
-          recondListView(Icons.date_range, 'Date', item.date.toString()),
+          recondListView(Icons.date_range, loc.dateLabel, item.date.toString()),
         ],
       ),
     ),
@@ -145,6 +149,8 @@ Future<void> deleteRecord(
   VoidCallback onDeleted,
 ) async {
   final theme = Theme.of(context);
+  final loc = context.read<LocalizationProvider>().loc;
+
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
@@ -157,15 +163,15 @@ Future<void> deleteRecord(
         children: [
           Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
           const SizedBox(width: 8),
-          const Text('Delete'),
+          Text(loc.delete),
         ],
       ),
-      content: const Text('Are you sure you want to delete this record?'),
+      content: Text(loc.deleteConfirm),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
           child: Text(
-            'Cancel',
+            loc.cancel,
             style: TextStyle(color: theme.colorScheme.onSurface),
           ),
         ),
@@ -175,7 +181,7 @@ Future<void> deleteRecord(
             backgroundColor: AppColors.red,
             foregroundColor: AppColors.card,
           ),
-          child: const Text('Delete'),
+          child: Text(loc.delete),
         ),
       ],
     ),
@@ -186,7 +192,7 @@ Future<void> deleteRecord(
   await DatabaseHelper.instance.deleteData(item.id!);
   onDeleted();
   if (context.mounted) {
-    // Show snackbar
+    final loc2 = context.read<LocalizationProvider>().loc;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -214,7 +220,7 @@ Future<void> deleteRecord(
               SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Deleted successfully',
+                  loc2.deletedSuccess,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: AppColors.background,

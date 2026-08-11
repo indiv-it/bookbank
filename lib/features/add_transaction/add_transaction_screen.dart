@@ -17,6 +17,7 @@ import 'package:bookbank/features/add_transaction/widgets/save_button.dart';
 import 'package:bookbank/Widgets/inWell.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   final MyData? existingItem;
@@ -94,6 +95,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     return Consumer<GroupSettingsProvider>(
       builder: (context, groupProvider, child) {
         final groupSettings = groupProvider.groupSettings;
+        final locProvider = Provider.of<LocalizationProvider>(context);
+        final loc = locProvider.loc;
 
         final Map<String, String> categoryNames = {
           'Group1': groupSettings
@@ -171,7 +174,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         onChanged: (value) {
                           setState(() {
                             _amountError = value.isEmpty
-                                ? '*Please enter an amount'
+                                ? loc.pleaseEnterAmount
                                 : null;
                           });
                         },
@@ -217,7 +220,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Date',
+                                    loc.date,
                                     style: textTheme.bodySmall?.copyWith(
                                       color: theme.colorScheme.onSurface
                                           .withValues(alpha: 0.5),
@@ -272,7 +275,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
                     if (_amountController.text.isEmpty) {
                       setState(() {
-                        _amountError = '*Please enter an amount';
+                        _amountError = loc.pleaseEnterAmount;
                       });
                       return;
                     }
@@ -352,8 +355,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               Expanded(
                                 child: Text(
                                   widget.existingItem == null
-                                      ? 'Added successfully'
-                                      : 'Updated successfully',
+                                      ? loc.addedSuccess
+                                      : loc.updatedSuccess,
                                   style: TextStyle(
                                     color: AppColors.background,
                                     fontSize: isTablet ? 16.sp : 14.sp,

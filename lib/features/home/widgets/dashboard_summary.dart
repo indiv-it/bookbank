@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/features/home/popup/popup_main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class DashboardSummary extends StatelessWidget {
   final double totalBalance;
@@ -30,7 +32,8 @@ class DashboardSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
 
     return GestureDetector(
       onTap: () {
@@ -72,9 +75,12 @@ class DashboardSummary extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Total balance", style: textTheme.bodySmall),
                     Text(
-                      "\$ ${totalBalance.toStringAsFixed(2)}",
+                      loc.totalBalance,
+                      style: TextStyle(fontSize: AppSize.xs.sp),
+                    ),
+                    Text(
+                      locProvider.formatAmount(totalBalance),
                       style: TextStyle(fontSize: AppSize.l.sp),
                     ),
                   ],
@@ -109,9 +115,10 @@ class DashboardSummary extends StatelessWidget {
                 _buildBalanceItem(
                   context,
                   icon: Icons.account_balance_rounded,
-                  label: "Bank",
+                  label: loc.bank,
                   balance: bankBalance,
                   total: totalBalance,
+                  locProvider: locProvider,
                 ),
                 Container(
                   width: 1,
@@ -121,9 +128,10 @@ class DashboardSummary extends StatelessWidget {
                 _buildBalanceItem(
                   context,
                   icon: Icons.account_balance_wallet,
-                  label: "Cash",
+                  label: loc.cash,
                   balance: cashBalance,
                   total: totalBalance,
+                  locProvider: locProvider,
                 ),
               ],
             ),
@@ -139,6 +147,7 @@ class DashboardSummary extends StatelessWidget {
     required String label,
     required double balance,
     required double total,
+    required LocalizationProvider locProvider,
   }) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -162,7 +171,7 @@ class DashboardSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "\$ ${balance.toStringAsFixed(2)}",
+                locProvider.formatAmount(balance),
                 style: TextStyle(fontSize: AppSize.m.sp),
               ),
               Text(

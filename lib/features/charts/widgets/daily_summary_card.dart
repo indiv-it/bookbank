@@ -2,8 +2,10 @@ import 'package:bookbank/features/charts/widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/widgets/category_pie_chart.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class DailySummaryCard extends StatelessWidget {
   final DateTime selectedDate;
@@ -33,6 +35,7 @@ class DailySummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final DateFormat dateFormat = DateFormat('dd MMM yyyy');
+    final loc = Provider.of<LocalizationProvider>(context).loc;
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -49,7 +52,7 @@ class DailySummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'data for this day',
+                loc.dataForDay,
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Row(
@@ -102,19 +105,19 @@ class DailySummaryCard extends StatelessWidget {
             children: [
               BuildSummaryItem(
                 icon: Icons.trending_up,
-                title: 'Income',
+                title: loc.income,
                 amount: dailyIncome,
                 color: AppColors.green,
               ),
               BuildSummaryItem(
                 icon: Icons.trending_down,
-                title: 'Expense',
+                title: loc.expense,
                 amount: dailyExpense,
                 color: AppColors.red,
               ),
               BuildSummaryItem(
                 icon: Icons.account_balance_wallet,
-                title: 'Net',
+                title: loc.net,
                 amount: dailyNet,
                 color: dailyNet >= 0 ? AppColors.green : AppColors.red,
               ),
@@ -128,7 +131,7 @@ class DailySummaryCard extends StatelessWidget {
 
           // Category title
           Text(
-            'Income and expenses by category',
+            loc.incomeExpenseByCategory,
             style: TextStyle(fontSize: AppSize.xs.sp),
           ),
           SizedBox(height: 16.h),

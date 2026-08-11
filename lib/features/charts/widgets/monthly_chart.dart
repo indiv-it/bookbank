@@ -2,9 +2,10 @@ import 'package:bookbank/features/charts/widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/widgets/category_pie_chart.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class MonthlyChart extends StatelessWidget {
   final int selectedYear;
@@ -39,8 +40,25 @@ class MonthlyChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final DateFormat monthFormat = DateFormat('MMM yyyy');
-    final DateTime selectedDate = DateTime(selectedYear, selectedMonth);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
+    
+    // Use localized date format based on selected language
+    final months = [
+      loc.monthJan,
+      loc.monthFeb,
+      loc.monthMar,
+      loc.monthApr,
+      loc.monthMay,
+      loc.monthJun,
+      loc.monthJul,
+      loc.monthAug,
+      loc.monthSep,
+      loc.monthOct,
+      loc.monthNov,
+      loc.monthDec,
+    ];
+    final monthFormatString = '${months[selectedMonth - 1]} $selectedYear';
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -57,7 +75,7 @@ class MonthlyChart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Data for the month',
+                loc.monthlyData,
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Row(
@@ -73,7 +91,7 @@ class MonthlyChart extends StatelessWidget {
                     },
                   ),
                   Text(
-                    monthFormat.format(selectedDate),
+                    monthFormatString,
                     style: TextStyle(fontSize: AppSize.xs.sp),
                   ),
                   IconButton(
@@ -97,19 +115,19 @@ class MonthlyChart extends StatelessWidget {
             children: [
               BuildSummaryItem(
                 icon: Icons.trending_up,
-                title: 'Income',
+                title: loc.income,
                 amount: monthlyIncome,
                 color: AppColors.green,
               ),
               BuildSummaryItem(
                 icon: Icons.trending_down,
-                title: 'Expense',
+                title: loc.expense,
                 amount: monthlyExpense,
                 color: AppColors.red,
               ),
               BuildSummaryItem(
                 icon: Icons.account_balance_wallet,
-                title: 'Net',
+                title: loc.net,
                 amount: monthlyNet,
                 color: monthlyNet >= 0 ? AppColors.green : AppColors.red,
               ),
@@ -171,7 +189,7 @@ class MonthlyChart extends StatelessWidget {
                       interval: _calculateInterval(spots),
                       getTitlesWidget: (value, meta) {
                         return Text(
-                          '฿${value.toInt()}',
+                          locProvider.formatAmount(value),
                           style: TextStyle(fontSize: AppSize.xs.sp),
                         );
                       },
@@ -192,7 +210,7 @@ class MonthlyChart extends StatelessWidget {
                     getTooltipItems: (touchedSpots) {
                       return touchedSpots.map((spot) {
                         return LineTooltipItem(
-                          '฿${spot.y.toStringAsFixed(2)}',
+                          locProvider.formatAmount(spot.y),
                           TextStyle(color: Colors.white, fontSize: 12.sp),
                         );
                       }).toList();
@@ -210,7 +228,7 @@ class MonthlyChart extends StatelessWidget {
 
           // Category title
           Text(
-            'Income and expenses by category',
+            loc.incomeExpenseByCategory,
             style: TextStyle(fontSize: AppSize.xs.sp),
           ),
           SizedBox(height: 16.h),

@@ -2,8 +2,10 @@ import 'package:bookbank/features/charts/widgets/_build_summary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/charts/widgets/category_pie_chart.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class YearlyChart extends StatelessWidget {
   final int selectedYear;
@@ -36,6 +38,8 @@ class YearlyChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -52,7 +56,7 @@ class YearlyChart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Data for the year',
+                loc.dataForDay, // Or year data
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Row(
@@ -77,19 +81,19 @@ class YearlyChart extends StatelessWidget {
             children: [
               BuildSummaryItem(
                 icon: Icons.trending_up,
-                title: 'Income',
+                title: loc.income,
                 amount: yearlyIncome,
                 color: AppColors.green,
               ),
               BuildSummaryItem(
                 icon: Icons.trending_down,
-                title: 'Expense',
+                title: loc.expense,
                 amount: yearlyExpense,
                 color: AppColors.red,
               ),
               BuildSummaryItem(
                 icon: Icons.account_balance_wallet,
-                title: 'Net',
+                title: loc.net,
                 amount: yearlyNet,
                 color: yearlyNet >= 0 ? AppColors.green : AppColors.red,
               ),
@@ -155,7 +159,7 @@ class YearlyChart extends StatelessWidget {
                       interval: _calculateInterval(spots),
                       getTitlesWidget: (value, meta) {
                         return Text(
-                          '฿${value.toInt()}',
+                          locProvider.formatAmount(value),
                           style: TextStyle(fontSize: AppSize.xs.sp),
                         );
                       },
@@ -175,25 +179,25 @@ class YearlyChart extends StatelessWidget {
                     getTooltipColor: (group) => AppColors.red,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       final months = [
-                        'Jan',
-                        'Feb',
-                        'Mar',
-                        'Apr',
-                        'May',
-                        'Jun',
-                        'Jul',
-                        'Aug',
-                        'Sep',
-                        'Oct',
-                        'Nov',
-                        'Dec',
+                        loc.monthJan,
+                        loc.monthFeb,
+                        loc.monthMar,
+                        loc.monthApr,
+                        loc.monthMay,
+                        loc.monthJun,
+                        loc.monthJul,
+                        loc.monthAug,
+                        loc.monthSep,
+                        loc.monthOct,
+                        loc.monthNov,
+                        loc.monthDec,
                       ];
                       return BarTooltipItem(
                         '${months[group.x.toInt() - 1]}\n',
                         TextStyle(color: Colors.white, fontSize: 12.sp),
                         children: [
                           TextSpan(
-                            text: '฿${rod.toY.toStringAsFixed(2)}',
+                            text: locProvider.formatAmount(rod.toY),
                             style: TextStyle(color: Colors.white, fontSize: 12.sp),
                           ),
                         ],
@@ -212,7 +216,7 @@ class YearlyChart extends StatelessWidget {
 
           // Category title
           Text(
-            'Income and expenses by category',
+            loc.incomeExpenseByCategory,
             style: TextStyle(fontSize: AppSize.xs.sp),
           ),
           SizedBox(height: 16.h),

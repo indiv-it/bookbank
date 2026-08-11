@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class EmptyNotesView extends StatelessWidget {
   final VoidCallback onAddNote;
@@ -12,6 +14,8 @@ class EmptyNotesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
 
     return Center(
       child: Padding(
@@ -34,7 +38,7 @@ class EmptyNotesView extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'No records.',
+              loc.noRecord,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -43,7 +47,7 @@ class EmptyNotesView extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Start recording memories or important notes easily by clicking the add note button below.',
+              loc.addNotePrompt,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 12.sp,

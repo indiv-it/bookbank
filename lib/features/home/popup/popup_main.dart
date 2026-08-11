@@ -1,9 +1,11 @@
 import 'package:bookbank/Widgets/lieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../../core/theme/app_theme.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
+import 'package:bookbank/core/localization/app_localizations.dart';
 
 // ----- Display Widget -----
 class PopupMain extends StatelessWidget {
@@ -28,9 +30,30 @@ class PopupMain extends StatelessWidget {
     required this.spots,
   });
 
+  String _getMonthName(int month, AppLocalizations loc) {
+    final months = [
+      loc.monthJan,
+      loc.monthFeb,
+      loc.monthMar,
+      loc.monthApr,
+      loc.monthMay,
+      loc.monthJun,
+      loc.monthJul,
+      loc.monthAug,
+      loc.monthSep,
+      loc.monthOct,
+      loc.monthNov,
+      loc.monthDec,
+    ];
+    return months[month - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
+
     final bankPct = totalBalance != 0
         ? (bankBalance / totalBalance * 100).toStringAsFixed(1)
         : '0.0';
@@ -57,7 +80,7 @@ class PopupMain extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total balance', style: TextStyle(fontSize: AppSize.xs.sp)),
+              Text(loc.totalBalance, style: TextStyle(fontSize: AppSize.xs.sp)),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -71,7 +94,7 @@ class PopupMain extends StatelessWidget {
           Row(
             children: [
               Text(
-                '฿ ${totalBalance.toStringAsFixed(2)}',
+                locProvider.formatAmount(totalBalance),
                 style: TextStyle(fontSize: AppSize.m.sp),
               ),
               SizedBox(width: 8.w),
@@ -113,7 +136,7 @@ class PopupMain extends StatelessWidget {
               Icon(Icons.account_balance_rounded, size: 16.sp),
               SizedBox(width: 8.w),
               Text(
-                'Bank : ฿ ${bankBalance.toStringAsFixed(2)} / $bankPct%',
+                '${loc.bank} : ${locProvider.formatAmount(bankBalance)} / $bankPct%',
                 style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
@@ -123,7 +146,7 @@ class PopupMain extends StatelessWidget {
               Icon(Icons.account_balance_wallet, size: 16.sp),
               SizedBox(width: 8.w),
               Text(
-                'Cash : ฿ ${cashBalance.toStringAsFixed(2)} / $cashPct%',
+                '${loc.cash} : ${locProvider.formatAmount(cashBalance)} / $cashPct%',
                 style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
@@ -134,11 +157,14 @@ class PopupMain extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Monthly data: ',
-                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                '${loc.monthlyData}: ',
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: AppColors.grey,
+                ),
               ),
               Text(
-                '${DateFormat('MMMM').format(DateTime.now())}/${DateTime.now().year}',
+                '${_getMonthName(DateTime.now().month, loc)}/${DateTime.now().year}',
                 style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],
@@ -163,9 +189,9 @@ class PopupMain extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Income', style: TextStyle(fontSize: AppSize.xs.sp)),
+                  Text(loc.income, style: TextStyle(fontSize: AppSize.xs.sp)),
                   Text(
-                    '฿ ${monthlyIncome.toStringAsFixed(2)}',
+                    locProvider.formatAmount(monthlyIncome),
                     style: TextStyle(fontSize: AppSize.s.sp),
                   ),
                 ],
@@ -187,9 +213,9 @@ class PopupMain extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Expense', style: TextStyle(fontSize: AppSize.xs.sp)),
+                  Text(loc.expense, style: TextStyle(fontSize: AppSize.xs.sp)),
                   Text(
-                    '฿ ${monthlyExpense.toStringAsFixed(2)}',
+                    locProvider.formatAmount(monthlyExpense),
                     style: TextStyle(fontSize: AppSize.s.sp),
                   ),
                 ],

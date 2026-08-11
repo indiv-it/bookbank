@@ -4,6 +4,8 @@ import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/popup/popup_group_unallocated.dart';
 import 'package:bookbank/utils/calculations.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class PopupUnallocated extends StatelessWidget {
   final double totalIncome;
@@ -34,6 +36,9 @@ class PopupUnallocated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
+
     final pct = calculatePercentage(
       unallocatedAmount,
       totalIncome,
@@ -81,7 +86,7 @@ class PopupUnallocated extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Unallocated Funds',
+                loc.unallocatedFunds,
                 style: TextStyle(fontSize: AppSize.xs.sp),
               ),
               InkWell(
@@ -97,7 +102,7 @@ class PopupUnallocated extends StatelessWidget {
           Row(
             children: [
               Text(
-                '฿ ${unallocatedAmount.toStringAsFixed(2)}',
+                locProvider.formatAmount(unallocatedAmount),
                 style: TextStyle(fontSize: AppSize.m.sp),
               ),
               SizedBox(width: 8.w),
@@ -125,7 +130,7 @@ class PopupUnallocated extends StatelessWidget {
 
           // All money in the group
           Text(
-            'All money in the group',
+            loc.allMoneyInGroup,
             style: TextStyle(fontSize: AppSize.s.sp, color: AppColors.grey),
           ),
           LayoutBuilder(
@@ -193,31 +198,31 @@ class PopupUnallocated extends StatelessWidget {
               GroupUnallocatedPopup(
                 title: 'Group 1',
                 color: group1Color,
-                amount: '฿ ${group1Amount.toStringAsFixed(2)}',
+                amount: locProvider.formatAmount(group1Amount),
                 percentage: '$p1%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 2',
                 color: group2Color,
-                amount: '฿ ${group2Amount.toStringAsFixed(2)}',
+                amount: locProvider.formatAmount(group2Amount),
                 percentage: '$p2%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 3',
                 color: group3Color,
-                amount: '฿ ${group3Amount.toStringAsFixed(2)}',
+                amount: locProvider.formatAmount(group3Amount),
                 percentage: '$p3%',
               ),
               GroupUnallocatedPopup(
                 title: 'Group 4',
                 color: group4Color,
-                amount: '฿ ${group4Amount.toStringAsFixed(2)}',
+                amount: locProvider.formatAmount(group4Amount),
                 percentage: '$p4%',
               ),
               GroupUnallocatedPopup(
-                title: 'Unallocated',
+                title: loc.unallocated,
                 color: AppColors.grey.withValues(alpha: 0.2),
-                amount: '฿ ${unallocatedAmount.toStringAsFixed(2)}',
+                amount: locProvider.formatAmount(unallocatedAmount),
                 percentage: '$pct%',
               ),
             ],

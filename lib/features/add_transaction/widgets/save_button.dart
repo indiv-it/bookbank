@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class SaveButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -14,6 +16,7 @@ class SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
+    final loc = Provider.of<LocalizationProvider>(context).loc;
 
     return FilledButton(
       onPressed: onPressed,
@@ -34,7 +37,7 @@ class SaveButton extends StatelessWidget {
           Icon(Icons.add, size: isTablet ? 24.sp : 20.sp),
           SizedBox(width: 10.w),
           Text(
-            'Save',
+            loc.save,
             style: TextStyle(fontSize: isTablet ? 18.sp : 16.sp),
           ),
         ],

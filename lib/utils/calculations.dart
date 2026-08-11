@@ -8,142 +8,144 @@ class FinancialCalculations {
   FinancialCalculations(this.transactions);
 
   // รายรับเงินในบัญชี + transfer ที่เข้า bank (moneyGroup='bank')
-  int filterBankIncome() {
-    int sum = 0;
+  double filterBankIncome() {
+    double sum = 0;
     for (var element in transactions) {
       if (element.moneyType == 'income' && element.moneyList == 'bank') {
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       } else if (element.moneyType == 'transfer' &&
           element.moneyGroup == 'bank') {
         // transfer เข้า bank → เพิ่มยอด bank
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       }
     }
     return sum;
   }
 
   // รายจ่ายเงินในบัญชี + transfer ที่ออกจาก bank (moneyList='bank')
-  int filterBankExpense() {
-    int sum = 0;
+  double filterBankExpense() {
+    double sum = 0;
     for (var element in transactions) {
       if (element.moneyType == 'expense' && element.moneyList == 'bank') {
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       } else if (element.moneyType == 'transfer' &&
           element.moneyList == 'bank') {
         // transfer ออกจาก bank → ลดยอด bank
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       }
     }
     return sum;
   }
 
   // รายรับเงินสด + transfer ที่เข้า cash (moneyGroup='cash')
-  int filterCashIncome() {
-    int sum = 0;
+  double filterCashIncome() {
+    double sum = 0;
     for (var element in transactions) {
       if (element.moneyType == 'income' && element.moneyList == 'cash') {
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       } else if (element.moneyType == 'transfer' &&
           element.moneyGroup == 'cash') {
         // transfer เข้า cash → เพิ่มยอด cash
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       }
     }
     return sum;
   }
 
   // รายจ่ายเงินสด + transfer ที่ออกจาก cash (moneyList='cash')
-  int filterCashExpense() {
-    int sum = 0;
+  double filterCashExpense() {
+    double sum = 0;
     for (var element in transactions) {
       if (element.moneyType == 'expense' && element.moneyList == 'cash') {
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       } else if (element.moneyType == 'transfer' &&
           element.moneyList == 'cash') {
         // transfer ออกจาก cash → ลดยอด cash
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       }
     }
     return sum;
   }
 
   // รายรับตามกลุ่ม
-  int groupIncome(String group) {
+  double groupIncome(String group) {
     return transactions
         .where((e) => e.moneyGroup == group && e.moneyType == 'income')
         .fold(
-          0,
-          (previousValue, element) => previousValue + element.amount.toInt(),
+          0.0,
+          (previousValue, element) =>
+              previousValue + element.amount.toDouble(),
         );
   }
 
   // รายจ่ายตามกลุ่ม
-  int groupExpense(String group) {
+  double groupExpense(String group) {
     return transactions
         .where((e) => e.moneyGroup == group && e.moneyType == 'expense')
         .fold(
-          0,
-          (previousValue, element) => previousValue + element.amount.toInt(),
+          0.0,
+          (previousValue, element) =>
+              previousValue + element.amount.toDouble(),
         );
   }
 
   // รวมรายรับตามกลุ่มทั้งหมด
-  int incomeGroupTotal() {
+  double incomeGroupTotal() {
     return transactions
         .where((e) => e.moneyType == 'income' && e.moneyGroup.isNotEmpty)
-        .fold(0, (sum, e) => sum + e.amount.toInt());
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
   // รวมรายจ่ายตามกลุ่มทั้งหมด
-  int expenseGroupTotal() {
+  double expenseGroupTotal() {
     return transactions
         .where((e) => e.moneyType == 'expense' && e.moneyGroup.isNotEmpty)
-        .fold(0, (sum, e) => sum + e.amount.toInt());
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
   // รวมเงินในบัญชี
-  int sumBank() {
+  double sumBank() {
     return filterBankIncome() - filterBankExpense();
   }
 
   // รวมเงินสด
-  int sumCash() {
+  double sumCash() {
     return filterCashIncome() - filterCashExpense();
   }
 
   // รวมรายรับทั้งหมด (ไม่รวม transfer)
-  int income() {
-    int sum = 0;
+  double income() {
+    double sum = 0;
     for (var element in transactions) {
       if (element.moneyType == 'income') {
-        sum += element.amount.toInt();
+        sum += element.amount.toDouble();
       }
     }
     return sum;
   }
 
   // รวมรายจ่ายทั้งหมด
-  int expense() {
+  double expense() {
     return filterBankExpense() + filterCashExpense();
   }
 
   // รวมเงินคงเหลือทั้งหมด
-  int sumAll() {
+  double sumAll() {
     return sumBank() + sumCash();
   }
 
   // รวมเงินคงเหลือตามกลุ่ม
-  int sumGroup(String group) {
+  double sumGroup(String group) {
     return groupIncome(group) - groupExpense(group);
   }
 
   // รวมเงินคงเหลือตามกลุ่มทั้งหมด
-  int sumGroupAll() {
+  double sumGroupAll() {
     return incomeGroupTotal() - expenseGroupTotal();
   }
 
   // ส่วนต่าง
-  int gap() {
+  double gap() {
     return sumAll() - sumGroupAll();
   }
 

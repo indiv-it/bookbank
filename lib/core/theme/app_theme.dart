@@ -4,11 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ─── Font Sizes ───────────────────────────────────────────────────────────────
 
 class AppSize {
-  static const double xs = 12;
-  static const double sm = 14;
-  static const double base = 16;
-  static const double xl = 20;
-  static const double xxl = 24;
+  static const double xs = 11;
+  static const double sm = 12;
+  static const double base = 14;
+  static const double xl = 18;
+  static const double xxl = 22;
 
   // Aliases สำหรับ backward-compatibility กับ code เดิม
   static const double s = sm;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class AmountInput extends StatelessWidget {
   final TextEditingController controller;
@@ -24,13 +26,15 @@ class AmountInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final locProvider = context.watch<LocalizationProvider>();
+    final loc = locProvider.loc;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Amount',
+          loc.amount,
           style: textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontSize: isTablet ? 14.sp : 12.sp,
@@ -48,7 +52,7 @@ class AmountInput extends StatelessWidget {
             children: [
               SizedBox(width: 16.w),
               Text(
-                '฿',
+                locProvider.currencySymbol,
                 style: textTheme.bodyMedium?.copyWith(
                   fontSize: isTablet ? 18.sp : 16.sp,
                 ),

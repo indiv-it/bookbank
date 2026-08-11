@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class TransferMode extends StatelessWidget {
   final String transferFrom;
@@ -19,6 +21,10 @@ class TransferMode extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
+    final loc = Provider.of<LocalizationProvider>(context).loc;
+
+    final fromDisplay = transferFrom == 'Bank' ? loc.bank : loc.cash;
+    final toDisplay = transferTo == 'Bank' ? loc.bank : loc.cash;
 
     return Column(
       children: [
@@ -26,7 +32,7 @@ class TransferMode extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              transferFrom,
+              fromDisplay,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: isTablet ? 18.sp : 16.sp,
@@ -41,7 +47,7 @@ class TransferMode extends StatelessWidget {
               ),
             ),
             Text(
-              transferTo,
+              toDisplay,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: isTablet ? 18.sp : 16.sp,
@@ -84,7 +90,7 @@ class TransferMode extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Bank',
+                      loc.bank,
                       style: TextStyle(fontSize: isTablet ? 16.sp : 14.sp),
                     ),
                   ),
@@ -107,7 +113,7 @@ class TransferMode extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Cash',
+                      loc.cash,
                       style: TextStyle(fontSize: isTablet ? 16.sp : 14.sp),
                     ),
                   ),

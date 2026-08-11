@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:bookbank/data/database.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class NoteCard extends StatelessWidget {
   final NoteModel note;
@@ -21,6 +23,7 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = context.watch<LocalizationProvider>().loc;
     final cardColor = Color(note.colorValue);
 
     return Card(
@@ -83,7 +86,7 @@ class NoteCard extends StatelessWidget {
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.all(4.w),
                     onPressed: onTogglePin,
-                    tooltip: note.isPinned ? 'Unpin' : 'Pin',
+                    tooltip: note.isPinned ? loc.unpin : loc.pin,
                   ),
                   SizedBox(width: 4.w),
                   PopupMenuButton<String>(
@@ -108,7 +111,7 @@ class NoteCard extends StatelessWidget {
                           children: [
                             Icon(Icons.edit_outlined, size: 16.sp),
                             SizedBox(width: 8.w),
-                            Text('Edit', style: TextStyle(fontSize: 13.sp)),
+                            Text(loc.edit, style: TextStyle(fontSize: 13.sp)),
                           ],
                         ),
                       ),
@@ -118,7 +121,7 @@ class NoteCard extends StatelessWidget {
                           children: [
                             Icon(Icons.delete_outline, color: theme.colorScheme.error, size: 16.sp),
                             SizedBox(width: 8.w),
-                            Text('Delete', style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
+                            Text(loc.delete, style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
                           ],
                         ),
                       ),

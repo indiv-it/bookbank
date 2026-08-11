@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -10,6 +12,7 @@ class Header extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     final theme = Theme.of(context);
+    final loc = Provider.of<LocalizationProvider>(context).loc;
 
     return Column(
       children: [
@@ -30,7 +33,7 @@ class Header extends StatelessWidget {
             Icon(Icons.add, size: 16.sp),
             SizedBox(width: 4.w),
             Text(
-              'Add List',
+              loc.addList,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: isTablet ? 18.sp : 16.sp,

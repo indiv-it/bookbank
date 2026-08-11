@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class NoteProvider extends ChangeNotifier {
   List<NoteModel> _notes = [];
   bool _isLoading = false;
   String _searchQuery = '';
-  String _selectedCategory = 'All';
+  String _selectedCategory = 'All'; // Internal key for "All" category
 
   List<NoteModel> get notes => _notes;
   bool get isLoading => _isLoading;
   String get searchQuery => _searchQuery;
   String get selectedCategory => _selectedCategory;
 
-  final List<String> categories = [
-    'All',
-    'General',
-    'Finance',
-    'Goals',
-  ];
+  // Get localized category names for display
+  List<String> getCategories(LocalizationProvider loc) {
+    return [
+      loc.loc.categoryAll,
+      loc.loc.categoryGeneral,
+      loc.loc.categoryFinance,
+      loc.loc.categoryGoals,
+    ];
+  }
+
+  // Get internal category key from localized name
+  String getCategoryKey(String localizedCategory, LocalizationProvider loc) {
+    final categories = getCategories(loc);
+    if (localizedCategory == categories[0]) return 'All';
+    if (localizedCategory == categories[1]) return 'General';
+    if (localizedCategory == categories[2]) return 'Finance';
+    if (localizedCategory == categories[3]) return 'Goals';
+    return localizedCategory; // fallback
+  }
 
   NoteProvider() {
     loadNotes();
@@ -54,6 +68,26 @@ class NoteProvider extends ChangeNotifier {
     }).toList();
   }
 
+  /// ค้นหาตามคำค้นและหมวดหมู่ (with localized categories)
+  List<NoteModel> getFilteredNotesWithLocalization(LocalizationProvider loc) {
+    // Convert selected localized category to internal key
+    final selectedCategoryKey = getCategoryKey(_selectedCategory, loc);
+    
+    return _notes.where((note) {
+      final matchesSearch =
+          _searchQuery.isEmpty ||
+          note.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          note.content.toLowerCase().contains(_searchQuery.toLowerCase());
+
+      // Handle both internal keys and localized names in database
+      final noteCategoryKey = getCategoryKey(note.category, loc);
+      final matchesCategory =
+          selectedCategoryKey == 'All' || noteCategoryKey == selectedCategoryKey;
+
+      return matchesSearch && matchesCategory;
+    }).toList();
+  }
+
   /// เปลี่ยนคำค้นหา
   void setSearchQuery(String query) {
     _searchQuery = query;
@@ -61,8 +95,15 @@ class NoteProvider extends ChangeNotifier {
   }
 
   /// เปลี่ยนหมวดหมู่ที่เลือก
-  void setCategory(String category) {
-    _selectedCategory = category;
+  void setCategory(String category, [LocalizationProvider? loc]) {
+    if (loc != null) {
+      // Store the localized category name
+      // _selectedCategory = category;
+      _selectedCategory = getCategoryKey(category, loc);
+    } else {
+      // Store the internal key directly
+      _selectedCategory = category;
+    }
     notifyListeners();
   }
 

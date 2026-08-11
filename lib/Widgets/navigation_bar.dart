@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> get pages => [
     HomeScreen(key: _homeKey),
     RecordScreen(key: _recordKey),
-    const Scaffold(body: Center(child: Text('Add'))),
+    const AddTransactionScreen(),
     ChartScreen(),
     NoteBookScreen(),
   ];

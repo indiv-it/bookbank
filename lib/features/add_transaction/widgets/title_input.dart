@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class TitleInput extends StatelessWidget {
   final TextEditingController controller;
@@ -11,6 +13,7 @@ class TitleInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final loc = context.watch<LocalizationProvider>().loc;
     final isTablet = ResponsiveBreakpoints.of(context).isTablet;
     final isDesktop = ResponsiveBreakpoints.of(context).isDesktop;
 
@@ -20,7 +23,7 @@ class TitleInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Title',
+          loc.title,
           style: textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontSize: isTablet ? 14.sp : 12.sp,
@@ -49,7 +52,7 @@ class TitleInput extends StatelessWidget {
                     fontSize: isTablet ? 16.sp : 14.sp,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Title',
+                    labelText: loc.title,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     labelStyle: textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
@@ -80,11 +83,11 @@ class TitleInput extends StatelessWidget {
                 },
                 itemBuilder: (BuildContext context) {
                   return [
-                        'Food',
-                        'Transport',
-                        'Shopping',
-                        'Entertainment',
-                        'Bills',
+                        loc.categoryFood,
+                        loc.categoryTransport,
+                        loc.categoryShopping,
+                        loc.categoryEntertainment,
+                        loc.categoryBills,
                       ]
                       .map(
                         (item) => PopupMenuItem<String>(

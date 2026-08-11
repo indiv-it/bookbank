@@ -9,6 +9,7 @@ import 'package:bookbank/features/records/utils/record_filter.dart';
 import 'package:bookbank/features/records/utils/record_utils.dart';
 import 'package:bookbank/features/records/widgets/record_widgets.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -68,8 +69,10 @@ class _RecordScreenState extends State<RecordScreen> {
     );
 
     if (query.isNotEmpty) {
+      final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
+      final loc = locProvider.loc;
       filtered = filtered.where((item) {
-        final name = getItemName(item).toLowerCase();
+        final name = getItemName(item, anonymousText: loc.anonymous).toLowerCase();
         return name.contains(query);
       }).toList();
     }
@@ -144,8 +147,9 @@ class _RecordScreenState extends State<RecordScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    return Consumer<GroupSettingsProvider>(
-      builder: (context, groupProvider, child) {
+    return Consumer2<GroupSettingsProvider, LocalizationProvider>(
+      builder: (context, groupProvider, locProvider, child) {
+        final loc = locProvider.loc;
         return Scaffold(
           body: LayoutBuilder(
             builder: (context, constraints) {
@@ -171,13 +175,13 @@ class _RecordScreenState extends State<RecordScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Record',
+                              loc.record,
                               style: textTheme.bodyMedium?.copyWith(
                                 fontSize: 16.sp,
                               ),
                             ),
                             Text(
-                              'Transaction History',
+                              loc.transactionHistory,
                               style: textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
@@ -208,17 +212,17 @@ class _RecordScreenState extends State<RecordScreen> {
                           _buildFilterTab(
                             value: RecordFilter.all,
                             icon: Icons.filter_list,
-                            label: 'All',
+                            label: loc.all,
                           ),
                           _buildFilterTab(
                             value: RecordFilter.income,
                             icon: Icons.trending_up,
-                            label: 'Income',
+                            label: loc.income,
                           ),
                           _buildFilterTab(
                             value: RecordFilter.expense,
                             icon: Icons.trending_down,
-                            label: 'Expense',
+                            label: loc.expense,
                           ),
                         ],
                       ),
@@ -252,7 +256,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                       fontSize: 12.sp,
                                     ),
                                     decoration: InputDecoration(
-                                      hintText: 'Search',
+                                      hintText: loc.search,
                                       hintStyle: textTheme.bodySmall?.copyWith(
                                         color: theme.colorScheme.onSurface
                                             .withValues(alpha: 0.5),
@@ -364,7 +368,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    'Amount',
+                                    loc.amount,
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12.sp,
@@ -375,7 +379,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
-                                    'Position',
+                                    loc.position,
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12.sp,
@@ -386,7 +390,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    'Date',
+                                    loc.date,
                                     style: textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12.sp,
@@ -406,7 +410,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                   : filtered.isEmpty
                                   ? Center(
                                       child: Text(
-                                        'No records found',
+                                        loc.noRecords,
                                         style: textTheme.bodySmall?.copyWith(
                                           color: theme.colorScheme.onSurface
                                               .withValues(alpha: 0.5),

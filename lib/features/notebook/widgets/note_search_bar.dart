@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:bookbank/features/notebook/providers/note_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class NoteSearchBar extends StatefulWidget {
   const NoteSearchBar({super.key});
@@ -29,6 +30,8 @@ class _NoteSearchBarState extends State<NoteSearchBar> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final noteProvider = Provider.of<NoteProvider>(context);
+    final loc = Provider.of<LocalizationProvider>(context);
+    final categories = noteProvider.getCategories(loc);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,14 +41,15 @@ class _NoteSearchBarState extends State<NoteSearchBar> {
           height: 34.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: noteProvider.categories.length,
+            itemCount: categories.length,
             separatorBuilder: (_, index) => SizedBox(width: 8.w),
             itemBuilder: (context, index) {
-              final category = noteProvider.categories[index];
-              final isSelected = noteProvider.selectedCategory == category;
+              final category = categories[index];
+              final categoryKey = noteProvider.getCategoryKey(category, loc);
+              final isSelected = noteProvider.selectedCategory == categoryKey;
 
               return GestureDetector(
-                onTap: () => noteProvider.setCategory(category),
+                onTap: () => noteProvider.setCategory(category, loc),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),

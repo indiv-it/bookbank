@@ -5,6 +5,7 @@ import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class GroupEditDialog extends StatefulWidget {
   final GroupSettings groupSettings;
@@ -113,7 +114,10 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = context.watch<LocalizationProvider>().loc;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final locProvider = Provider.of<LocalizationProvider>(context);
+
     return Container(
       width: 400,
       constraints: BoxConstraints(
@@ -147,7 +151,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             ),
 
             Text(
-              'Edit Group',
+              loc.editGroup,
               style: TextStyle(
                 fontSize: AppSize.l,
                 fontWeight: FontWeight.bold,
@@ -183,7 +187,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             SizedBox(height: 16),
 
             // Icon Selection
-            Text('Icon', style: TextStyle(fontSize: AppSize.xs.sp)),
+            Text(loc.icon, style: TextStyle(fontSize: AppSize.xs.sp)),
             SizedBox(height: 8),
             SizedBox(
               height: 35,
@@ -224,7 +228,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             SizedBox(height: 16),
 
             // Color Selection
-            Text('Color', style: TextStyle(fontSize: AppSize.xs.sp)),
+            Text(loc.color, style: TextStyle(fontSize: AppSize.xs.sp)),
             SizedBox(height: 8),
             SizedBox(
               height: 35,
@@ -267,7 +271,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Enable Savings Goal',
+                  loc.enableSavingsGoal,
                   style: TextStyle(fontSize: AppSize.xs.sp),
                 ),
                 Transform.scale(
@@ -304,7 +308,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             // Savings Goal Amount
             if (_savingsGoalEnabled) ...[
               Text(
-                'Savings Goal Amount',
+                loc.savingsGoalAmount,
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               SizedBox(height: 8),
@@ -312,7 +316,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  prefixText: '฿ ', 
+                  prefixText: '${locProvider.currencySymbol} ', 
                   prefixStyle: TextStyle(color: theme.colorScheme.onPrimary),
                   filled: true,
                   fillColor: theme.colorScheme.surface,
@@ -344,7 +348,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                   ),
                 ),
                 child: Text(
-                  'Save',
+                  loc.save,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

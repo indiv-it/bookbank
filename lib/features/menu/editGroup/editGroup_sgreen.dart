@@ -4,6 +4,8 @@ import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/menu/editGroup/group_edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class EditGroupSgreen extends StatefulWidget {
   const EditGroupSgreen({super.key});
@@ -19,24 +21,25 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
   final List<IconData> _availableIcons = [
     Icons.add,
     Icons.shopping_cart,
-    Icons.food_bank,
-    Icons.home,
-    Icons.directions_car,
-    Icons.flight,
-    Icons.movie,
-    Icons.music_note,
-    Icons.book,
-    Icons.sports_soccer,
-    Icons.health_and_safety,
-    Icons.work,
-    Icons.school,
-    Icons.pets,
-    Icons.restaurant,
-    Icons.coffee,
-    Icons.card_giftcard,
-    Icons.celebration,
-    Icons.favorite,
-    Icons.star,
+    Icons.home_rounded,
+    Icons.directions_car_rounded,
+    Icons.flight_rounded,
+    Icons.movie_rounded,
+    Icons.music_note_rounded,
+    Icons.bar_chart_rounded,
+    Icons.sports_soccer_rounded,
+    Icons.health_and_safety_rounded,
+    Icons.work_rounded,
+    Icons.school_rounded,
+    Icons.pets_rounded,
+    Icons.fastfood_rounded,
+    Icons.coffee_rounded,
+    Icons.card_giftcard_rounded,
+    Icons.celebration_rounded,
+    Icons.favorite_rounded,
+    Icons.filter_hdr_rounded,
+    Icons.fitness_center_rounded,
+    Icons.handyman_outlined,
   ];
 
   IconData _getIconFromCodePoint(int codePoint) {
@@ -76,6 +79,7 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = context.watch<LocalizationProvider>().loc;
     return Container(
       width: 400,
       constraints: BoxConstraints(maxHeight: 500),
@@ -94,7 +98,7 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
             children: [
               Icon(Icons.edit, size: AppSize.l),
               SizedBox(width: 8),
-              Text('Edit Groups', style: TextStyle(fontSize: AppSize.m)),
+              Text(loc.editGroup, style: TextStyle(fontSize: AppSize.m)),
             ],
           ),
           SizedBox(height: 16),
@@ -177,7 +181,7 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
                 foregroundColor: theme.scaffoldBackgroundColor,
                 backgroundColor: theme.colorScheme.onSurface,
               ),
-              child: Text('Close'),
+              child: Text(loc.cancel),
             ),
         ],
       ),

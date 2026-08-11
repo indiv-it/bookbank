@@ -7,6 +7,8 @@ import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class PopupGroup extends StatefulWidget {
   final String groupName;
@@ -57,6 +59,9 @@ class _PopupGroupState extends State<PopupGroup> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
+
     // สร้างข้อมูลกราฟสำหรับหมวดหมู่นี้
     final calc = FinancialCalculations(_transactions);
     final groupSpots = calc.generateMonthlySpotsForGroup(widget.groupId);
@@ -118,7 +123,7 @@ class _PopupGroupState extends State<PopupGroup> {
                         ),
                       ),
                       Text(
-                        '฿ ${net.toStringAsFixed(2)}',
+                        locProvider.formatAmount(net),
                         style: TextStyle(fontSize: AppSize.l.sp),
                       ),
                       SizedBox(height: 8.h),
@@ -133,7 +138,7 @@ class _PopupGroupState extends State<PopupGroup> {
           Row(
             children: [
               Text(
-                'This is ',
+                loc.thisIs,
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
@@ -141,7 +146,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 style: TextStyle(fontSize: AppSize.s.sp),
               ),
               Text(
-                ' out of the total',
+                loc.outOfTotal,
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
             ],
@@ -154,10 +159,10 @@ class _PopupGroupState extends State<PopupGroup> {
               children: [
                 Row(
                   children: [
-                    Text('Target', style: TextStyle(fontSize: AppSize.xs.sp)),
+                    Text(loc.target, style: TextStyle(fontSize: AppSize.xs.sp)),
                     const Spacer(),
                     Text(
-                      '฿ ${widget.savingsGoalAmount?.toStringAsFixed(2)}',
+                      locProvider.formatAmount(widget.savingsGoalAmount!),
                       style: TextStyle(fontSize: AppSize.xs.sp),
                     ),
                   ],
@@ -184,7 +189,7 @@ class _PopupGroupState extends State<PopupGroup> {
           Row(
             children: [
               Text(
-                'Monthly data: ',
+                '${loc.monthlyData}: ',
                 style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
               ),
               Text(
@@ -210,11 +215,11 @@ class _PopupGroupState extends State<PopupGroup> {
               Row(
                 children: [
                   Text(
-                    'Income: ',
+                    '${loc.income}: ',
                     style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
                   ),
                   Text(
-                    '฿ ${totalIncome.toStringAsFixed(2)}',
+                    locProvider.formatAmount(totalIncome),
                     style: TextStyle(fontSize: AppSize.xs.sp),
                   ),
                 ],
@@ -235,11 +240,11 @@ class _PopupGroupState extends State<PopupGroup> {
               ),
               SizedBox(width: 6.w),
               Text(
-                    'Expense: ',
+                    '${loc.expense}: ',
                     style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
                   ),
               Text(
-                '฿ ${totalExpense.toStringAsFixed(2)}',
+                locProvider.formatAmount(totalExpense),
                 style: TextStyle(fontSize: AppSize.xs.sp),
               ),
             ],

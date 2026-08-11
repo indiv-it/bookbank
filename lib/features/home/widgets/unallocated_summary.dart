@@ -1,10 +1,12 @@
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bookbank/features/home/popup/popup_unallocated.dart';
 import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/widgets/unallocated_number.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
+import 'package:bookbank/features/home/popup/popup_unallocated.dart';
 
 class UnallocatedSummary extends StatelessWidget {
   final double incomeTotal;
@@ -48,6 +50,8 @@ class UnallocatedSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
 
     final pureUnallocated =
         unallocatedAmount -
@@ -100,27 +104,27 @@ class UnallocatedSummary extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "Unallocated ",
+                  "${loc.unallocated} ",
                   style: textTheme.bodySmall?.copyWith(
                     fontSize: AppSize.xs.sp,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
                 Text(
-                  '฿ ${unallocatedAmount.toStringAsFixed(2)}',
+                  locProvider.formatAmount(unallocatedAmount),
                   style: textTheme.bodySmall?.copyWith(
                     fontSize: AppSize.s.sp,
                   ),
                 ),
                 Text(
-                  ' from ',
+                  ' ${loc.from} ',
                   style: textTheme.bodySmall?.copyWith(
                     fontSize: AppSize.xs.sp,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
                 Text(
-                  '฿ ${totalBalance.toStringAsFixed(2)}',
+                  locProvider.formatAmount(totalBalance),
                   style: textTheme.bodySmall?.copyWith(
                     fontSize: AppSize.s.sp,
                   ),

@@ -2,12 +2,14 @@ import 'package:intl/intl.dart';
 import '../../../data/database.dart';
 
 /// Returns the display name for a transaction item.
-String getItemName(MyData item) {
+String getItemName(MyData item, {String anonymousText = 'Anonymous'}) {
   final parts = <String>[];
   if (item.title != null &&
       item.title!.isNotEmpty &&
       item.title != 'Anonymous') {
     parts.add(item.title!);
+  } else if (item.title == 'Anonymous') {
+    parts.add(anonymousText);
   }
   if (item.moneyGroup.isNotEmpty) {
     parts.add(item.moneyGroup);

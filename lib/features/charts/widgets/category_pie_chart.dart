@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
+import 'package:intl/intl.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
+import 'package:provider/provider.dart';
 
 class CategoryPieChart extends StatelessWidget {
   final Map<String, double> categoryExpenses;
@@ -21,10 +24,12 @@ class CategoryPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
     if (totalExpense <= 0) {
       return Center(
         child: Text(
-          'Not enough data',
+          loc.notEnoughData,
           style: TextStyle(color: AppColors.grey, fontSize: AppSize.xs.sp),
         ),
       );
@@ -74,7 +79,7 @@ class CategoryPieChart extends StatelessWidget {
                             style: TextStyle(fontSize: AppSize.xs.sp),
                           ),
                           Text(
-                            '฿${amount.toStringAsFixed(0)}',
+                            '${locProvider.currencySymbol}${NumberFormat('#,##0.00').format(amount).replaceAll(RegExp(r'\.00$'), '')}',
                             style: TextStyle(
                               fontSize: AppSize.xs.sp,
                               color: AppColors.grey,
@@ -112,7 +117,7 @@ class CategoryPieChart extends StatelessWidget {
       sections.add(
         PieChartSectionData(
           value: value,
-          title: '${percentage.toStringAsFixed(0)}%',
+          title: '${percentage.toStringAsFixed(1)}%',
           color: color,
           radius: 50.r,
           titleStyle: TextStyle(

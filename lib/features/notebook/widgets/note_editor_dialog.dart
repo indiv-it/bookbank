@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/features/notebook/providers/note_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class NoteEditorDialog extends StatefulWidget {
   final NoteModel? noteToEdit;
@@ -29,7 +30,8 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
 
-  late String _selectedCategory;
+  String? _selectedCategory; // This stores the localized name for UI
+  String? _selectedCategoryKey; // This stores the internal key for database
   late int _selectedColorValue;
   bool _isSaving = false;
 
@@ -42,7 +44,36 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
     0xFF00BCD4, // Teal
   ];
 
-  final List<String> _categories = ['General', 'Finance', 'Goals'];
+  List<String> _categories(BuildContext context) {
+    final loc = context.watch<LocalizationProvider>().loc;
+    return [
+      loc.categoryGeneral,
+      loc.categoryFinance,
+      loc.categoryGoals,
+    ];
+  }
+
+  // Convert localized category name to internal key
+  String _getCategoryKey(String localizedCategory, BuildContext context) {
+    final loc = context.read<LocalizationProvider>().loc;
+    if (localizedCategory == loc.categoryGeneral) return 'General';
+    if (localizedCategory == loc.categoryFinance) return 'Finance';
+    if (localizedCategory == loc.categoryGoals) return 'Goals';
+    // If it's already an internal key, return it
+    if (localizedCategory == 'General' || localizedCategory == 'Finance' || localizedCategory == 'Goals') {
+      return localizedCategory;
+    }
+    return 'General'; // fallback
+  }
+
+  // Convert internal key to localized category name
+  String _getLocalizedCategory(String categoryKey, BuildContext context) {
+    final loc = context.read<LocalizationProvider>().loc;
+    if (categoryKey == 'General') return loc.categoryGeneral;
+    if (categoryKey == 'Finance') return loc.categoryFinance;
+    if (categoryKey == 'Goals') return loc.categoryGoals;
+    return loc.categoryGeneral; // fallback
+  }
 
   @override
   void initState() {
@@ -50,7 +81,8 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
     final note = widget.noteToEdit;
     _titleController = TextEditingController(text: note?.title ?? '');
     _contentController = TextEditingController(text: note?.content ?? '');
-    _selectedCategory = note?.category ?? 'General';
+    // Store the internal key from database
+    _selectedCategoryKey = note?.category;
     _selectedColorValue = note?.colorValue ?? _colorPalette[0];
   }
 
@@ -69,14 +101,18 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
     });
 
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+    final loc = Provider.of<LocalizationProvider>(context, listen: false).loc;
     final formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
+
+    // Convert localized category name to internal key for database
+    final categoryKey = _getCategoryKey(_selectedCategory!, context);
 
     bool success = false;
     if (widget.noteToEdit != null) {
       final updatedNote = widget.noteToEdit!.copyWith(
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
-        category: _selectedCategory,
+        category: categoryKey,
         colorValue: _selectedColorValue,
         date: formattedDate,
       );
@@ -85,7 +121,7 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
       success = await noteProvider.addNote(
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
-        category: _selectedCategory,
+        category: categoryKey,
         colorValue: _selectedColorValue,
         date: formattedDate,
       );
@@ -127,8 +163,8 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                   Expanded(
                     child: Text(
                       widget.noteToEdit == null
-                          ? 'Added successfully'
-                          : 'Updated successfully',
+                          ? loc.addedSuccess
+                          : loc.updatedSuccess,
                       style: TextStyle(
                         color: AppColors.background,
                         fontSize: 14.sp,
@@ -148,7 +184,16 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // final loc = context.watch<LocalizationProvider>().loc;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
+    
+    // Initialize selected category if not set (convert internal key to localized name)
+    if (_selectedCategory == null && _selectedCategoryKey != null) {
+      _selectedCategory = _getLocalizedCategory(_selectedCategoryKey!, context);
+    }
+    _selectedCategory ??= _categories(context)[0];
 
     return Container(
       padding: EdgeInsets.only(bottom: bottomInset),
@@ -184,12 +229,21 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.noteToEdit != null ? 'Edit Note' : 'Add Note',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          widget.noteToEdit != null ? Icons.edit : Icons.add,
+                          size: 24.sp,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.noteToEdit != null ? loc.editNote : loc.addNote,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -203,15 +257,15 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                 TextFormField(
                   controller: _titleController,
                   validator: (value) => value == null || value.trim().isEmpty
-                      ? 'Please enter a title'
+                      ? loc.enterTitle
                       : null,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: theme.colorScheme.onSurface,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Title',
-                    hintText: 'Enter note title...',
+                    labelText: loc.title,
+                    hintText: loc.enterNoteTitle,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
@@ -255,7 +309,7 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                 TextFormField(
                   controller: _contentController,
                   validator: (value) => value == null || value.trim().isEmpty
-                      ? 'Please enter note content'
+                      ? loc.enterContent
                       : null,
                   maxLines: 4,
                   style: TextStyle(
@@ -263,8 +317,8 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                     color: theme.colorScheme.onSurface,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Content',
-                    hintText: 'Enter note content...',
+                    labelText: loc.content,
+                    hintText: loc.enterNoteContent,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     alignLabelWithHint: true,
                     enabledBorder: OutlineInputBorder(
@@ -307,17 +361,16 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
 
                 // Category Selection
                 Text(
-                  'Category',
+                  loc.category,
                   style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                    fontSize: AppSize.s.sp,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Wrap(
                   spacing: 8.w,
-                  children: _categories.map((category) {
+                  children: _categories(context).map((category) {
                     final isSelected = _selectedCategory == category;
                     return ChoiceChip(
                       label: Text(category),
@@ -346,10 +399,9 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
 
                 // Color Selection
                 Text(
-                  'Select Color Tag',
+                  loc.noteColor,
                   style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                    fontSize: AppSize.s.sp,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
@@ -421,8 +473,8 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
                           )
                         : Text(
                             widget.noteToEdit != null
-                                ? 'Save Changes'
-                                : 'Create Note',
+                                ? loc.saveChanges
+                                : loc.createNote,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,

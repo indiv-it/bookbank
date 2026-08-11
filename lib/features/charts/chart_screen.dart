@@ -15,6 +15,7 @@ import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class ChartScreen extends StatefulWidget {
   const ChartScreen({super.key});
@@ -202,9 +203,10 @@ class _ChartScreenState extends State<ChartScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    return Consumer<GroupSettingsProvider>(
-      builder: (context, groupProvider, child) {
+    return Consumer2<GroupSettingsProvider, LocalizationProvider>(
+      builder: (context, groupProvider, locProvider, child) {
         final groupSettings = groupProvider.groupSettings;
+        final loc = locProvider.loc;
 
         final Map<String, IconData> categoryIcons = {
           'Group1': _getIconFromCodePoint(
@@ -408,13 +410,13 @@ class _ChartScreenState extends State<ChartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Dashboard',
+                            loc.dashboard,
                             style: textTheme.bodyLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'View your statistics in detail.',
+                            loc.viewStats,
                             style: textTheme.bodySmall?.copyWith(
                               fontSize: AppSize.xs.sp,
                               color: theme.colorScheme.onSurface.withValues(
@@ -432,14 +434,14 @@ class _ChartScreenState extends State<ChartScreen> {
                     child: Column(
                       children: [
                         Text(
-                          'Total Balance',
+                          loc.totalBalance,
                           style: textTheme.bodyLarge?.copyWith(
                             color: AppColors.grey,
                             fontSize: AppSize.xs.sp,
                           ),
                         ),
                         Text(
-                          '\$ ${_totalBalance.toStringAsFixed(2)}',
+                          locProvider.formatAmount(_totalBalance),
                           style: textTheme.bodyLarge?.copyWith(
                             color: theme.colorScheme.onSurface,
                             fontSize: AppSize.l.sp,

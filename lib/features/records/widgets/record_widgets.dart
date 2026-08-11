@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 // Theme / Database
 import '../../../core/theme/app_theme.dart';
 import '../../../data/database.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 // Functions
 import '../utils/record_utils.dart';
@@ -98,11 +100,13 @@ Widget buildRecordRow(
   void Function(String) onMenuAction,
 ) {
   final theme = Theme.of(context);
+  final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
+  final loc = locProvider.loc;
   final isTransfer = item.moneyType == 'transfer';
   final isIncome = item.moneyType == 'income';
 
-  final fromLabel = item.moneyList == 'bank' ? 'Bank' : 'Cash';
-  final toLabel = item.moneyGroup == 'bank' ? 'Bank' : 'Cash';
+  final fromLabel = item.moneyList == 'bank' ? loc.bank : loc.cash;
+  final toLabel = item.moneyGroup == 'bank' ? loc.bank : loc.cash;
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,14 +155,14 @@ Widget buildRecordRow(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '฿ ${item.amount.toStringAsFixed(2)}',
+                    locProvider.formatAmount(item.amount.toDouble()),
                     style: TextStyle(
                       fontSize: AppSize.s - 1,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    isTransfer ? 'Alternate' : '${item.title}',
+                    isTransfer ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? '')),
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w600,
@@ -174,8 +178,8 @@ Widget buildRecordRow(
                 isTransfer
                     ? '$fromLabel → $toLabel'
                     : isIncome
-                    ? 'Income'
-                    : 'Expense',
+                    ? loc.income
+                    : loc.expense,
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
@@ -216,7 +220,7 @@ Widget buildRecordRow(
                     children: [
                       Icon(Icons.visibility, size: AppSize.l),
                       const SizedBox(width: 8),
-                      Text('View', style: TextStyle(fontSize: AppSize.s)),
+                      Text(loc.view, style: TextStyle(fontSize: AppSize.s)),
                     ],
                   ),
                 ),
@@ -228,7 +232,7 @@ Widget buildRecordRow(
                       children: [
                         Icon(Icons.edit, size: AppSize.l),
                         const SizedBox(width: 8),
-                        Text('Edit', style: TextStyle(fontSize: AppSize.s)),
+                        Text(loc.edit, style: TextStyle(fontSize: AppSize.s)),
                       ],
                     ),
                   ),
@@ -241,7 +245,7 @@ Widget buildRecordRow(
                       Icon(Icons.delete, color: AppColors.red, size: AppSize.l),
                       const SizedBox(width: 8),
                       Text(
-                        'Delete',
+                        loc.delete,
                         style: TextStyle(
                           color: AppColors.red,
                           fontSize: AppSize.s,
@@ -266,7 +270,8 @@ class ViewMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('View');
+    final loc = context.watch<LocalizationProvider>().loc;
+    return Text(loc.view);
   }
 }
 
@@ -275,7 +280,8 @@ class EditMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Edit');
+    final loc = context.watch<LocalizationProvider>().loc;
+    return Text(loc.edit);
   }
 }
 
@@ -284,6 +290,7 @@ class DeleteMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Delete');
+    final loc = context.watch<LocalizationProvider>().loc;
+    return Text(loc.delete);
   }
 }

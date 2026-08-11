@@ -8,6 +8,7 @@ import 'package:bookbank/features/notebook/widgets/empty_notes_view.dart';
 import 'package:bookbank/features/notebook/widgets/note_card.dart';
 import 'package:bookbank/features/notebook/widgets/note_editor_dialog.dart';
 import 'package:bookbank/features/notebook/widgets/note_search_bar.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class NoteBookScreen extends StatefulWidget {
   const NoteBookScreen({super.key});
@@ -29,6 +30,8 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
     final theme = Theme.of(context);
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
 
+    final loc = Provider.of<LocalizationProvider>(context, listen: false).loc;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -40,17 +43,17 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
           children: [
             Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
             SizedBox(width: 8.w),
-            const Text('Confirm Delete'),
+            Text(loc.confirmDelete),
           ],
         ),
         content: Text(
-          'Are you sure you want to delete the note "${note.title}"?',
+          '${loc.confirmDeleteNote} "${note.title}"?',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Cancel',
+              loc.cancel,
               style: TextStyle(color: theme.colorScheme.onSurface),
             ),
           ),
@@ -92,7 +95,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                             SizedBox(width: 12.w),
                             Expanded(
                               child: Text(
-                                'Note deleted successfully',
+                                loc.noteDeleted,
                                 style: TextStyle(
                                   color: AppColors.background,
                                   fontSize: 14.sp,
@@ -112,7 +115,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
               backgroundColor: theme.colorScheme.error,
               foregroundColor: theme.colorScheme.onError,
             ),
-            child: const Text('Delete'),
+            child: Text(loc.delete),
           ),
         ],
       ),
@@ -122,6 +125,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
   void _showNoteDetailDialog(BuildContext context, NoteModel note) {
     final theme = Theme.of(context);
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+    final loc = Provider.of<LocalizationProvider>(context, listen: false).loc;
 
     showDialog(
       context: context,
@@ -200,7 +204,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
 
               // Date
               Text(
-                'Recorded on : ${note.date}',
+                '${loc.recordedOn} : ${note.date}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: theme.colorScheme.onSurfaceVariant,
@@ -237,7 +241,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                       size: 18.sp,
                     ),
                     label: Text(
-                      'Delete',
+                      loc.delete,
                       style: TextStyle(color: theme.colorScheme.error),
                     ),
                     style: OutlinedButton.styleFrom(
@@ -251,7 +255,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                       NoteEditorDialog.show(context, noteToEdit: note);
                     },
                     icon: Icon(Icons.edit, size: 18.sp),
-                    label: const Text('Edit'),
+                    label: Text(loc.edit),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,
@@ -270,7 +274,10 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final noteProvider = Provider.of<NoteProvider>(context);
-    final filteredNotes = noteProvider.filteredNotes;
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final filteredNotes = noteProvider.getFilteredNotesWithLocalization(locProvider);
+
+    final loc = locProvider.loc;
 
     return Scaffold(
       floatingActionButton: Padding(
@@ -279,7 +286,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
           onPressed: () => NoteEditorDialog.show(context),
           backgroundColor: theme.colorScheme.onSurface,
           foregroundColor: theme.scaffoldBackgroundColor,
-          label: Text('Add', style: TextStyle(fontSize: AppSize.xs.sp)),
+          label: Text(loc.add, style: TextStyle(fontSize: AppSize.xs.sp)),
           icon: Icon(Icons.add, size: 18.sp),
         ),
       ),
@@ -305,14 +312,14 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'NoteBook',
+                            loc.notebook,
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontSize: AppSize.sm.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'Personal notes and reminders',
+                            loc.notesSubtitle,
                             style: TextStyle(
                               fontSize: AppSize.xs.sp,
                               color: theme.colorScheme.onSurfaceVariant,
@@ -333,7 +340,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                       border: Border.all(color: theme.colorScheme.outline),
                     ),
                     child: Text(
-                      '${filteredNotes.length} Items',
+                      '${filteredNotes.length} ${loc.items}',
                       style: TextStyle(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.bold,

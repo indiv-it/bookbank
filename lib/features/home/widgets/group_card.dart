@@ -3,6 +3,8 @@ import 'package:bookbank/features/home/popup/popup_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;
@@ -33,6 +35,8 @@ class GroupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -96,16 +100,16 @@ class GroupCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '\$${groupAmount.toStringAsFixed(2)}',
+                  locProvider.formatAmount(groupAmount),
                   style: TextStyle(fontSize: AppSize.m.sp),
                 ),
                 Spacer(),
                 if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
                   Text(
-                    '฿${savingsGoalAmount.toStringAsFixed(0)}',
+                    locProvider.formatAmount(savingsGoalAmount),
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.s.sp,
+                      fontSize: AppSize.xs.sp,
                     ),
                   ),
                 ],
