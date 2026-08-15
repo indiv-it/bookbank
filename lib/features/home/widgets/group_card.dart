@@ -95,7 +95,7 @@ class GroupCard extends StatelessWidget {
             ),
             Text(
               groupName,
-              style: TextStyle(color: AppColors.grey, fontSize: AppSize.s.sp),
+              style: TextStyle(color: AppColors.grey, fontSize: AppSize.xs.sp),
             ),
             Row(
               children: [
@@ -109,7 +109,7 @@ class GroupCard extends StatelessWidget {
                     locProvider.formatAmount(savingsGoalAmount),
                     style: TextStyle(
                       color: AppColors.grey,
-                      fontSize: AppSize.xs.sp,
+                      fontSize: 11.sp,
                     ),
                   ),
                 ],

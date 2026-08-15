@@ -100,10 +100,10 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildNavItem(0, Icons.home),
-                      _buildNavItem(1, Icons.list_alt),
+                      _buildNavItem(0, Icons.home_rounded),
+                      _buildNavItem(1, Icons.list_alt_rounded),
                       SizedBox(width: 80.w), // Space for center button
-                      _buildNavItem(3, Icons.area_chart),
+                      _buildNavItem(3, Icons.area_chart_rounded),
                       _buildNavItem(4, Icons.edit_square),
                     ],
                   ),

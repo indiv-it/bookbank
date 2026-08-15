@@ -1,3 +1,4 @@
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -156,7 +157,7 @@ class _RecordScreenState extends State<RecordScreen> {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
                   24.w,
-                  45.h,
+                  40.h,
                   24.w,
                   130.h,
                 ),
@@ -167,7 +168,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       children: [
                         Icon(
                           Icons.list_alt,
-                          size: 28.sp,
+                          size: 24.sp,
                           color: theme.iconTheme.color,
                         ),
                         SizedBox(width: 16.w),
@@ -177,7 +178,8 @@ class _RecordScreenState extends State<RecordScreen> {
                             Text(
                               loc.record,
                               style: textTheme.bodyMedium?.copyWith(
-                                fontSize: 16.sp,
+                                fontSize: AppSize.l.sp,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(

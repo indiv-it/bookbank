@@ -307,14 +307,14 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                         color: theme.colorScheme.onSurface,
                         size: 24.sp,
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 16.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             loc.notebook,
                             style: theme.textTheme.titleLarge?.copyWith(
-                              fontSize: AppSize.sm.sp,
+                              fontSize: AppSize.l.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

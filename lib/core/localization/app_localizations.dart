@@ -10,12 +10,14 @@ class AppLocalizations {
     // English
     'en': {
       // Header / Menu
-      'app_name': 'BookBank',
       'edit_group': 'Edit Group',
       'dark_theme': 'Dark Theme',
       'change_language': 'Change Language',
       'change_currency': 'Change Currency',
       'about': 'About',
+      'app_version': 'Version',
+      'app_description': '        An app for tracking your income and expenses that also shows spending trends, helping you plan your finances more effectively. Regarding security, your data is stored exclusively on your device.',
+      'developer': 'Developer',
 
       // Language names
       'lang_thai': 'Thai',
@@ -172,12 +174,14 @@ class AppLocalizations {
     // Thai
     'th': {
       // Header / Menu
-      'app_name': 'บุ๊คแบงก์',
       'edit_group': 'แก้ไขกลุ่ม',
       'dark_theme': 'โหมดมืด',
       'change_language': 'เปลี่ยนภาษา',
       'change_currency': 'เปลี่ยนสกุลเงิน',
       'about': 'เกี่ยวกับ',
+      'app_version': 'เวอร์ชั่น',
+      'app_description': '        แอปพลิเคชันจัดการการประวัติรายรับ-รายจ่าย พร้อมบอกแนวโน้มการใช้จ่ายช้วยให้คุณสามารถวางแผนการเงินได้ดีขึ้น ในด้านความปลอดภัย เราได้จัดการข้อมูลโดยการเก็บไว้ในเครื่องของคุณเท่านั้น',
+      'developer': 'ผู้พัฒนา',
 
       // Language names
       'lang_thai': 'ไทย',
@@ -333,12 +337,14 @@ class AppLocalizations {
     // Chinese (Simplified)
     'zh': {
       // Header / Menu
-      'app_name': '记账本',
       'edit_group': '编辑分组',
       'dark_theme': '深色主题',
       'change_language': '更改语言',
       'change_currency': '更改货币',
       'about': '关于',
+      'app_version': '版本',
+      'app_description': '        款收支记账应用，可展示消费趋势，助您更高效地规划财务。在安全性方面，您的数据仅存储于您的设备中',
+      'developer': '开发者',
 
       // Language names
       'lang_thai': '泰语',
@@ -499,12 +505,14 @@ class AppLocalizations {
   }
 
   // Header / Menu
-  String get appName => translate('app_name');
   String get editGroup => translate('edit_group');
   String get darkTheme => translate('dark_theme');
   String get changeLanguage => translate('change_language');
   String get changeCurrency => translate('change_currency');
   String get about => translate('about');
+  String get appVersion => translate('app_version');
+  String get appDescription => translate('app_description');
+  String get developer => translate('developer');
   // Language names
   String get langThai => translate('lang_thai');
   String get langEnglish => translate('lang_english');

@@ -412,6 +412,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           Text(
                             loc.dashboard,
                             style: textTheme.bodyLarge?.copyWith(
+                              fontSize: AppSize.l.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

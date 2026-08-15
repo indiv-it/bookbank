@@ -28,7 +28,7 @@ class DateSelectorInkWell extends StatelessWidget {
         height: isTablet ? 56.h : 50.h,
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         decoration: BoxDecoration(
-          border: Border.all(color: theme.colorScheme.outline),
+          border: Border.all(color: theme.colorScheme.onSurfaceVariant),
           borderRadius: BorderRadius.circular(10.r),
           color: theme.colorScheme.surface,
         ),
@@ -42,7 +42,7 @@ class DateSelectorInkWell extends StatelessWidget {
                   color: selectedDate != null
                       ? theme.colorScheme.onSurface
                       : theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  fontSize: isTablet ? 16.sp : 14.sp,
+                  fontSize: isTablet ? 16.sp : 12.sp,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),

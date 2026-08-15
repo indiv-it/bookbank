@@ -164,7 +164,7 @@ Widget buildRecordRow(
                   Text(
                     isTransfer ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? '')),
                     style: TextStyle(
-                      fontSize: 10.sp,
+                      fontSize: 9.sp,
                       fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
@@ -181,7 +181,7 @@ Widget buildRecordRow(
                     ? loc.income
                     : loc.expense,
                 style: TextStyle(
-                  fontSize: 11.sp,
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.w600,
                   color: AppColors.grey,
                 ),

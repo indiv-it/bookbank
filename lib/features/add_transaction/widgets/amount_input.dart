@@ -45,7 +45,7 @@ class AmountInput extends StatelessWidget {
           height: isTablet ? 56.h : 50.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(color: theme.colorScheme.outline),
+            border: Border.all(color: theme.colorScheme.onSurfaceVariant),
             color: theme.colorScheme.surface,
           ),
           child: Row(

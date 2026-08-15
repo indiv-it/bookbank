@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bookbank/core/localization/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 // ─── Supported Languages ──────────────────────────────────────────────────────
 
@@ -19,9 +20,9 @@ enum AppLanguage {
 // ─── Supported Currencies ────────────────────────────────────────────────────
 
 enum AppCurrency {
-  baht('THB', '฿', 'บาท', 1.0),
-  dollar('USD', '\$', 'Dollar', 0.028),
-  yuan('CNY', '¥', '人民币', 0.20);
+  baht('THB', '฿ ', 'บาท', 1.0),
+  dollar('USD', '\$ ', 'Dollar', 0.028),
+  yuan('CNY', '¥ ', '人民币', 0.20);
 
   final String code;
   final String symbol;
@@ -99,9 +100,12 @@ class LocalizationProvider extends ChangeNotifier {
   /// Format an amount with the current currency symbol
   String formatAmount(double amountInBaht) {
     final converted = convertAmount(amountInBaht);
-    if (_currency == AppCurrency.dollar) {
-      return '${_currency.symbol}${converted.toStringAsFixed(2)}';
-    }
-    return '${_currency.symbol}${converted.toStringAsFixed(0)}';
+    final hasDecimals = converted != converted.truncate();
+    final formatter = NumberFormat.currency(
+      locale: _language.code == 'th' ? 'th_TH' : 'en_US',
+      symbol: _currency.symbol,
+      decimalDigits: hasDecimals ? 2 : 0,
+    );
+    return formatter.format(converted);
   }
 }

@@ -130,8 +130,8 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
+          left: 20,
+          right: 20,
           top: 24,
           bottom: 24 + keyboardHeight,
         ),
@@ -351,7 +351,7 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
                   loc.save,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

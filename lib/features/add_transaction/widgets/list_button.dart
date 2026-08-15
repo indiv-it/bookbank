@@ -31,7 +31,6 @@ class ListButton extends StatelessWidget {
           minimumSize: const Size(155, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: theme.colorScheme.surface, width: 2),
           ),
           foregroundColor: buttonKey == onKey
               ? theme.colorScheme.surface

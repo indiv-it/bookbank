@@ -258,8 +258,8 @@ class _PopupGroupState extends State<PopupGroup> {
             child: LineChart(
               LineChartData(
                 lineBarsData: createSegmentsWithArea(groupSpots),
-                minY: -5000,
-                maxY: 5000,
+                minY: -3000,
+                maxY: 3000,
                 gridData: FlGridData(show: false),
                 titlesData: FlTitlesData(show: false),
                 borderData: FlBorderData(show: false),

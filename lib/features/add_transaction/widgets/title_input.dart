@@ -34,7 +34,7 @@ class TitleInput extends StatelessWidget {
           height: 50.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(color: theme.colorScheme.outline),
+            border: Border.all(color: theme.colorScheme.onSurfaceVariant),
             color: theme.colorScheme.surface,
           ),
           child: Row(
@@ -56,7 +56,7 @@ class TitleInput extends StatelessWidget {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     labelStyle: textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                      fontSize: isTablet ? 16.sp : 14.sp,
+                      fontSize: isTablet ? 16.sp : 12.sp,
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent),
@@ -72,10 +72,10 @@ class TitleInput extends StatelessWidget {
                   Icons.arrow_drop_down,
                   size: isTablet ? 28.sp : 24.sp,
                 ),
-                offset: Offset(70.w, 50.h),
+                offset: Offset(70.w, 55.h),
                 color: theme.colorScheme.surface,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: theme.colorScheme.outline),
+                  side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 onSelected: (String value) {
@@ -94,7 +94,7 @@ class TitleInput extends StatelessWidget {
                           value: item,
                           child: Text(
                             item,
-                            style: const TextStyle(fontWeight: FontWeight.w400),
+                            style: TextStyle(fontSize: 12.sp),
                           ),
                         ),
                       )

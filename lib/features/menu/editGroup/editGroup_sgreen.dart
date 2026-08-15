@@ -83,7 +83,7 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
     return Container(
       width: 400,
       constraints: BoxConstraints(maxHeight: 500),
-      padding: EdgeInsets.all(24),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),

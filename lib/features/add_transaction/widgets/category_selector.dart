@@ -34,9 +34,9 @@ class CategorySelector extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.all(2),
+          padding: EdgeInsets.symmetric(vertical: 3.w),
           decoration: BoxDecoration(
-            border: Border.all(color: theme.colorScheme.outline),
+            border: Border.all(color: theme.colorScheme.onSurfaceVariant),
             borderRadius: BorderRadius.circular(10),
             color: theme.colorScheme.surface,
           ),

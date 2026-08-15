@@ -66,7 +66,7 @@ class TransferMode extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(color: theme.colorScheme.outline, width: 1),
+                border: Border.all(color: theme.colorScheme.onSurfaceVariant, width: 1),
                 color: theme.colorScheme.surface,
               ),
               child: Row(
