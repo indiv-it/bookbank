@@ -19,26 +19,25 @@ class _EditGroupSgreenState extends State<EditGroupSgreen> {
   bool _isLoading = true;
 
   final List<IconData> _availableIcons = [
-    Icons.add,
-    Icons.shopping_cart,
+    Icons.shopping_cart_rounded,
     Icons.home_rounded,
     Icons.directions_car_rounded,
     Icons.flight_rounded,
     Icons.movie_rounded,
     Icons.music_note_rounded,
-    Icons.bar_chart_rounded,
     Icons.sports_soccer_rounded,
     Icons.health_and_safety_rounded,
     Icons.work_rounded,
     Icons.school_rounded,
     Icons.pets_rounded,
+    Icons.bar_chart_rounded,
     Icons.fastfood_rounded,
     Icons.coffee_rounded,
     Icons.card_giftcard_rounded,
     Icons.celebration_rounded,
     Icons.favorite_rounded,
-    Icons.filter_hdr_rounded,
     Icons.fitness_center_rounded,
+    Icons.filter_hdr_rounded,
     Icons.handyman_outlined,
   ];
 

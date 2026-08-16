@@ -156,9 +156,9 @@ class _RecordScreenState extends State<RecordScreen> {
             builder: (context, constraints) {
               return Padding(
                 padding: EdgeInsets.fromLTRB(
-                  24.w,
+                  20.w,
                   40.h,
-                  24.w,
+                  20.w,
                   130.h,
                 ),
                 child: Column(

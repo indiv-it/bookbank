@@ -16,6 +16,10 @@ class UnallocatedSummary extends StatelessWidget {
   final double group2Amount;
   final double group3Amount;
   final double group4Amount;
+  final double group1Income;
+  final double group2Income;
+  final double group3Income;
+  final double group4Income;
   final double group1Percentage;
   final double group2Percentage;
   final double group3Percentage;
@@ -35,6 +39,10 @@ class UnallocatedSummary extends StatelessWidget {
     required this.group2Amount,
     required this.group3Amount,
     required this.group4Amount,
+    required this.group1Income,
+    required this.group2Income,
+    required this.group3Income,
+    required this.group4Income,
     required this.group1Percentage,
     required this.group2Percentage,
     required this.group3Percentage,
@@ -53,12 +61,7 @@ class UnallocatedSummary extends StatelessWidget {
     final locProvider = Provider.of<LocalizationProvider>(context);
     final loc = locProvider.loc;
 
-    final pureUnallocated =
-        unallocatedAmount -
-        group1Amount -
-        group2Amount -
-        group3Amount -
-        group4Amount;
+    final pureUnallocated = unallocatedAmount;
     final double barTotal = incomeTotal > 0 ? incomeTotal : 1.0;
     final pct = calculatePercentage(
       unallocatedAmount,
@@ -78,6 +81,10 @@ class UnallocatedSummary extends StatelessWidget {
                 group2Amount: group2Amount,
                 group3Amount: group3Amount,
                 group4Amount: group4Amount,
+                group1Income: group1Income,
+                group2Income: group2Income,
+                group3Income: group3Income,
+                group4Income: group4Income,
                 unallocatedAmount: unallocatedAmount,
                 group1Color: group1Color,
                 group2Color: group2Color,
@@ -145,7 +152,7 @@ class UnallocatedSummary extends StatelessWidget {
                     children: [
                       MoneyBar(
                         width: calculateBarWidth(
-                          group1Amount,
+                          group1Income,
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
@@ -153,7 +160,7 @@ class UnallocatedSummary extends StatelessWidget {
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
-                          group2Amount,
+                          group2Income,
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
@@ -161,7 +168,7 @@ class UnallocatedSummary extends StatelessWidget {
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
-                          group3Amount,
+                          group3Income,
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),
@@ -169,7 +176,7 @@ class UnallocatedSummary extends StatelessWidget {
                       ),
                       MoneyBar(
                         width: calculateBarWidth(
-                          group4Amount,
+                          group4Income,
                           barTotal,
                           constraints.maxWidth,
                         ).toDouble(),

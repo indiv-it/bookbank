@@ -116,7 +116,7 @@ class YearlyChart extends StatelessWidget {
                   horizontalInterval: _calculateInterval(spots),
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: theme.colorScheme.outline,
+                      color: theme.colorScheme.onSurfaceVariant,
                       strokeWidth: 1.w,
                     );
                   },
@@ -160,7 +160,7 @@ class YearlyChart extends StatelessWidget {
                       getTitlesWidget: (value, meta) {
                         return Text(
                           locProvider.formatAmount(value),
-                          style: TextStyle(fontSize: AppSize.xs.sp),
+                          style: TextStyle(fontSize: 8.sp),
                         );
                       },
                     ),
@@ -211,7 +211,7 @@ class YearlyChart extends StatelessWidget {
           SizedBox(height: 24.h),
 
           // Divider
-          Divider(color: theme.colorScheme.outline, height: 1.h),
+          Divider(color: theme.colorScheme.onSurfaceVariant, height: 1.h),
           SizedBox(height: 16.h),
 
           // Category title

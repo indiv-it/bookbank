@@ -61,6 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
   double _group2Amount = 0;
   double _group3Amount = 0;
   double _group4Amount = 0;
+  double _group1Income = 0;
+  double _group2Income = 0;
+  double _group3Income = 0;
+  double _group4Income = 0;
   double _unallocatedAmount = 0;
 
   double _incomeTotal = 0;
@@ -76,26 +80,26 @@ class _HomeScreenState extends State<HomeScreen> {
   double _unallocatedPercentage = 0;
 
   final List<IconData> _availableIcons = [
-    Icons.add,
-    Icons.shopping_cart,
-    Icons.food_bank,
-    Icons.home,
-    Icons.directions_car,
-    Icons.flight,
-    Icons.movie,
-    Icons.music_note,
-    Icons.book,
-    Icons.sports_soccer,
-    Icons.health_and_safety,
-    Icons.work,
-    Icons.school,
-    Icons.pets,
-    Icons.restaurant,
-    Icons.coffee,
-    Icons.card_giftcard,
-    Icons.celebration,
-    Icons.favorite,
-    Icons.star,
+    Icons.shopping_cart_rounded,
+    Icons.home_rounded,
+    Icons.directions_car_rounded,
+    Icons.flight_rounded,
+    Icons.movie_rounded,
+    Icons.music_note_rounded,
+    Icons.sports_soccer_rounded,
+    Icons.health_and_safety_rounded,
+    Icons.work_rounded,
+    Icons.school_rounded,
+    Icons.pets_rounded,
+    Icons.bar_chart_rounded,
+    Icons.fastfood_rounded,
+    Icons.coffee_rounded,
+    Icons.card_giftcard_rounded,
+    Icons.celebration_rounded,
+    Icons.favorite_rounded,
+    Icons.fitness_center_rounded,
+    Icons.filter_hdr_rounded,
+    Icons.handyman_outlined,
   ];
 
   IconData _getIconFromCodePoint(int codePoint) {
@@ -190,6 +194,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _group3Amount = calc.sumGroup('Group3').toDouble();
     _group4Amount = calc.sumGroup('Group4').toDouble();
 
+    _group1Income = calc.groupIncome('Group1').toDouble();
+    _group2Income = calc.groupIncome('Group2').toDouble();
+    _group3Income = calc.groupIncome('Group3').toDouble();
+    _group4Income = calc.groupIncome('Group4').toDouble();
+
     _group1Count = calc.groupCount('Group1');
     _group2Count = calc.groupCount('Group2');
     _group3Count = calc.groupCount('Group3');
@@ -248,6 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       group2Amount: _group2Amount,
                       group3Amount: _group3Amount,
                       group4Amount: _group4Amount,
+                      group1Income: _group1Income,
+                      group2Income: _group2Income,
+                      group3Income: _group3Income,
+                      group4Income: _group4Income,
                       group1Percentage: _group1Percentage,
                       group2Percentage: _group2Percentage,
                       group3Percentage: _group3Percentage,

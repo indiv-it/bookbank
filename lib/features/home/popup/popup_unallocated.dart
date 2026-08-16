@@ -13,6 +13,10 @@ class PopupUnallocated extends StatelessWidget {
   final double group2Amount;
   final double group3Amount;
   final double group4Amount;
+  final double group1Income;
+  final double group2Income;
+  final double group3Income;
+  final double group4Income;
   final double unallocatedAmount;
   final Color group1Color;
   final Color group2Color;
@@ -26,6 +30,10 @@ class PopupUnallocated extends StatelessWidget {
     required this.group2Amount,
     required this.group3Amount,
     required this.group4Amount,
+    required this.group1Income,
+    required this.group2Income,
+    required this.group3Income,
+    required this.group4Income,
     required this.unallocatedAmount,
     required this.group1Color,
     required this.group2Color,
@@ -59,12 +67,7 @@ class PopupUnallocated extends StatelessWidget {
       group4Amount,
       totalIncome,
     ).toStringAsFixed(1);
-    final pureUnallocated =
-        unallocatedAmount -
-        group1Amount -
-        group2Amount -
-        group3Amount -
-        group4Amount;
+    final pureUnallocated = unallocatedAmount;
     calculatePercentage(pureUnallocated, totalIncome).toStringAsFixed(1);
 
     final double barTotal = totalIncome > 0 ? totalIncome : 1.0;
@@ -147,7 +150,7 @@ class PopupUnallocated extends StatelessWidget {
                   children: [
                     MoneyBar(
                       width: calculateBarWidth(
-                        group1Amount,
+                        group1Income,
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
@@ -155,7 +158,7 @@ class PopupUnallocated extends StatelessWidget {
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
-                        group2Amount,
+                        group2Income,
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
@@ -163,7 +166,7 @@ class PopupUnallocated extends StatelessWidget {
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
-                        group3Amount,
+                        group3Income,
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),
@@ -171,7 +174,7 @@ class PopupUnallocated extends StatelessWidget {
                     ),
                     MoneyBar(
                       width: calculateBarWidth(
-                        group4Amount,
+                        group4Income,
                         barTotal,
                         constraints.maxWidth,
                       ).toDouble(),

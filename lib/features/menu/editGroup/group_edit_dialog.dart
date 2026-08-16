@@ -24,26 +24,26 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
   late bool _savingsGoalEnabled;
 
   final List<IconData> _availableIcons = [
-    Icons.add,
-    Icons.shopping_cart,
-    Icons.food_bank,
-    Icons.home,
-    Icons.directions_car,
-    Icons.flight,
-    Icons.movie,
-    Icons.music_note,
-    Icons.book,
-    Icons.sports_soccer,
-    Icons.health_and_safety,
-    Icons.work,
-    Icons.school,
-    Icons.pets,
-    Icons.restaurant,
-    Icons.coffee,
-    Icons.card_giftcard,
-    Icons.celebration,
-    Icons.favorite,
-    Icons.star,
+    Icons.shopping_cart_rounded,
+    Icons.home_rounded,
+    Icons.directions_car_rounded,
+    Icons.flight_rounded,
+    Icons.movie_rounded,
+    Icons.music_note_rounded,
+    Icons.sports_soccer_rounded,
+    Icons.health_and_safety_rounded,
+    Icons.work_rounded,
+    Icons.school_rounded,
+    Icons.pets_rounded,
+    Icons.bar_chart_rounded,
+    Icons.fastfood_rounded,
+    Icons.coffee_rounded,
+    Icons.card_giftcard_rounded,
+    Icons.celebration_rounded,
+    Icons.favorite_rounded,
+    Icons.fitness_center_rounded,
+    Icons.filter_hdr_rounded,
+    Icons.handyman_outlined,
   ];
 
   final List<Color> _availableColors = [
@@ -309,24 +309,31 @@ class _GroupEditDialogState extends State<GroupEditDialog> {
             if (_savingsGoalEnabled) ...[
               Text(
                 loc.savingsGoalAmount,
-                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: AppColors.grey,
+                ),
               ),
               SizedBox(height: 8),
               TextField(
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  prefixText: '${locProvider.currencySymbol} ', 
+                  prefixText: '${locProvider.currencySymbol} ',
                   prefixStyle: TextStyle(color: theme.colorScheme.onPrimary),
                   filled: true,
                   fillColor: theme.colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.colorScheme.onSurfaceVariant),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: theme.colorScheme.onSurfaceVariant),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
                 style: TextStyle(fontSize: AppSize.m, height: 1.2),

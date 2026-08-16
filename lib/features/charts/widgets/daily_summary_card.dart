@@ -126,7 +126,7 @@ class DailySummaryCard extends StatelessWidget {
           SizedBox(height: 16.h),
 
           // Divider
-          Divider(color: theme.colorScheme.outline, height: 1),
+          Divider(color: theme.colorScheme.onSurfaceVariant, height: 1),
           SizedBox(height: 16.h),
 
           // Category title
