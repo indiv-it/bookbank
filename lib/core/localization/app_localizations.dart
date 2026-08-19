@@ -169,6 +169,18 @@ class AppLocalizations {
       'month_oct': 'Oct',
       'month_nov': 'Nov',
       'month_dec': 'Dec',
+
+      // Onboarding
+      'welcome_title': 'Welcome to the BookBank app.',
+      'welcome_subtitle': 'Conveniently record your income and expenses, and view detailed spending statistics.',
+      'next': 'Next',
+      'select_currency': 'Select your currency',
+      'start': 'Start',
+      'select_language': 'Select Language',
+      'privacy_policy': 'Privacy Policy',
+      'currency_baht_display': '฿ - Baht (THB)',
+      'currency_dollar_display': '\$ - Dollar (USD)',
+      'currency_yuan_display': '¥ - Yuan (CNY)',
     },
 
     // Thai
@@ -332,6 +344,18 @@ class AppLocalizations {
       'month_oct': 'ต.ค.',
       'month_nov': 'พ.ย.',
       'month_dec': 'ธ.ค.',
+
+      // Onboarding
+      'welcome_title': 'ยินดีต้อนรับสู่แอป BookBank',
+      'welcome_subtitle': 'บันทึกรายรับและรายจ่ายได้อย่างสะดวก และดูสถิติการใช้จ่ายโดยละเอียด',
+      'next': 'ถัดไป',
+      'select_currency': 'เลือกสกุลเงินของคุณ',
+      'start': 'เริ่มต้น',
+      'select_language': 'เลือกภาษา',
+      'privacy_policy': 'นโยบายความเป็นส่วนตัว',
+      'currency_baht_display': '฿ - บาท (THB)',
+      'currency_dollar_display': '\$ - ดอลลาร์ (USD)',
+      'currency_yuan_display': '¥ - หยวน (CNY)',
     },
 
     // Chinese (Simplified)
@@ -495,6 +519,18 @@ class AppLocalizations {
       'month_oct': '10月',
       'month_nov': '11月',
       'month_dec': '12月',
+
+      // Onboarding
+      'welcome_title': '欢迎使用 BookBank 应用',
+      'welcome_subtitle': '便捷记录您的收支，查看详细的消费统计',
+      'next': '下一步',
+      'select_currency': '选择您的货币',
+      'start': '开始',
+      'select_language': '选择语言',
+      'privacy_policy': '隐私政策',
+      'currency_baht_display': '฿ - 泰铢 (THB)',
+      'currency_dollar_display': '\$ - 美元 (USD)',
+      'currency_yuan_display': '¥ - 人民币 (CNY)',
     },
   };
 
@@ -640,4 +676,15 @@ class AppLocalizations {
   String get monthOct => translate('month_oct');
   String get monthNov => translate('month_nov');
   String get monthDec => translate('month_dec');
+  // Onboarding
+  String get welcomeTitle => translate('welcome_title');
+  String get welcomeSubtitle => translate('welcome_subtitle');
+  String get next => translate('next');
+  String get selectCurrency => translate('select_currency');
+  String get start => translate('start');
+  String get selectLanguage => translate('select_language');
+  String get privacyPolicy => translate('privacy_policy');
+  String get currencyBahtDisplay => translate('currency_baht_display');
+  String get currencyDollarDisplay => translate('currency_dollar_display');
+  String get currencyYuanDisplay => translate('currency_yuan_display');
 }

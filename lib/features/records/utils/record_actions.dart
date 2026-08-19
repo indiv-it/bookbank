@@ -76,7 +76,11 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '${item.moneyType == 'transfer' ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? ''))}',
+                    item.moneyType == 'transfer'
+                        ? loc.alternate
+                        : (item.title == 'Anonymous'
+                              ? loc.anonymous
+                              : (item.title ?? '')),
                     style: TextStyle(fontSize: AppSize.s),
                   ),
                 ],
@@ -96,10 +100,10 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
           const SizedBox(height: 16),
           recondListView(
             isIncome
-                ? Icons.trending_up
+                ? Icons.trending_up_rounded
                 : item.moneyType == 'transfer'
-                ? Icons.swap_horiz
-                : Icons.trending_down,
+                ? Icons.swap_horiz_rounded
+                : Icons.trending_down_rounded,
             loc.moneyListLabel,
             isIncome
                 ? loc.income
@@ -110,8 +114,8 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
           const SizedBox(height: 8),
           recondListView(
             item.moneyList == 'bank'
-                ? Icons.account_balance
-                : Icons.account_balance_wallet,
+                ? Icons.account_balance_rounded
+                : Icons.account_balance_wallet_rounded,
             loc.moneyPositionLabel,
             isTransfer
                 ? '$fromLabel → $toLabel'

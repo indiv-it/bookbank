@@ -40,10 +40,16 @@ class AboutSgreen extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                Icon(
-                  Icons.account_balance_rounded,
-                  size: 40,
-                  color: theme.colorScheme.onSurface,
+                Consumer<ThemeProvider>(
+                  builder: (context, themeProvider, child) {
+                    return Image.asset(
+                      themeProvider.isDarkMode
+                          ? 'lib/core/icons/BookBank_Logo 3.png'
+                          : 'lib/core/icons/BookBank_Logo 1.png',
+                      width: 35.w,
+                      height: 35.h,
+                    );
+                  },
                 ),
                 SizedBox(height: 12),
                 Text(

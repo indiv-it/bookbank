@@ -127,7 +127,7 @@ class DashboardSummary extends StatelessWidget {
                 ),
                 _buildBalanceItem(
                   context,
-                  icon: Icons.account_balance_wallet,
+                  icon: Icons.account_balance_wallet_rounded,
                   label: loc.cash,
                   balance: cashBalance,
                   total: totalBalance,

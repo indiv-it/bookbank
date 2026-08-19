@@ -26,10 +26,16 @@ class Header extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.account_balance_rounded,
-                      size: 24.sp,
-                      color: theme.colorScheme.onSurface,
+                    Consumer<ThemeProvider>(
+                      builder: (context, themeProvider, child) {
+                        return Image.asset(
+                          themeProvider.isDarkMode
+                              ? 'lib/core/icons/BookBank_Logo 3.png'
+                              : 'lib/core/icons/BookBank_Logo 1.png',
+                          width: 35.w,
+                          height: 35.h,
+                        );
+                      },
                     ),
                     SizedBox(width: 8.w),
                     Text(
@@ -186,7 +192,11 @@ class _MenuRow extends StatelessWidget {
             SizedBox(width: 10.w),
             Text(
               label,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: theme.colorScheme.onSurface),
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: theme.colorScheme.onSurface,
+              ),
             ),
           ],
         );
@@ -211,25 +221,35 @@ class _DarkThemeRow extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
           child: Row(
             children: [
-              Icon(Icons.nightlight_round_rounded, size: 16.sp, color: theme.colorScheme.onSurface),
+              Icon(
+                Icons.nightlight_round_rounded,
+                size: 16.sp,
+                color: theme.colorScheme.onSurface,
+              ),
               SizedBox(width: 10.w),
-              Text(label, style: TextStyle(fontSize: 14.sp, color: theme.colorScheme.onSurface)),
-          const Spacer(),
-          Transform.scale(
-            scale: 0.6,
-            child: Switch(
-              value: themeProvider.isDarkMode,
-              onChanged: (value) {
-                themeProvider.toggleTheme();
-              },
-              activeThumbColor: Colors.white,
-              activeTrackColor: const Color.fromARGB(255, 75, 87, 255),
-              inactiveThumbColor: Colors.grey.shade400,
-              inactiveTrackColor: Colors.grey.shade200,
-            ),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              const Spacer(),
+              Transform.scale(
+                scale: 0.6,
+                child: Switch(
+                  value: themeProvider.isDarkMode,
+                  onChanged: (value) {
+                    themeProvider.toggleTheme();
+                  },
+                  activeThumbColor: Colors.white,
+                  activeTrackColor: const Color.fromARGB(255, 75, 87, 255),
+                  inactiveThumbColor: Colors.grey.shade400,
+                  inactiveTrackColor: Colors.grey.shade200,
+                ),
+              ),
+            ],
           ),
-          ],
-        ),
         );
       },
     );
@@ -313,58 +333,77 @@ class _ExpandableMenuItemState extends State<_ExpandableMenuItem>
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: Row(
                   children: [
-                    Icon(widget.icon, size: 16.sp, color: currentTheme.colorScheme.onSurface),
+                    Icon(
+                      widget.icon,
+                      size: 16.sp,
+                      color: currentTheme.colorScheme.onSurface,
+                    ),
                     SizedBox(width: 10.w),
                     Expanded(
-                      child: Text(widget.label, style: TextStyle(fontSize: 14.sp, color: currentTheme.colorScheme.onSurface)),
+                      child: Text(
+                        widget.label,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: currentTheme.colorScheme.onSurface,
+                        ),
+                      ),
                     ),
-                // Badge showing current selection
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: currentTheme.colorScheme.primary.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Text(
-                    widget.badge,
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: currentTheme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
+                    // Badge showing current selection
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: currentTheme.colorScheme.primary.withValues(
+                          alpha: 0.12,
+                        ),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Text(
+                        widget.badge,
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          color: currentTheme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(width: 6.w),
+                    // Animated chevron
+                    RotationTransition(
+                      turns: _arrowAngle,
+                      child: Icon(
+                        Icons.expand_more,
+                        size: 16.sp,
+                        color: currentTheme.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 6.w),
-                // Animated chevron
-                RotationTransition(
-                  turns: _arrowAngle,
-                  child: Icon(
-                    Icons.expand_more,
-                    size: 16.sp,
-                    color: currentTheme.colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // ── Animated children ────────────────────────────────────────────────
-        SizeTransition(
-          sizeFactor: _expandAnimation,
-          child: Container(
-            margin: EdgeInsets.only(left: 16.w, right: 8.w, bottom: 4.h),
-            decoration: BoxDecoration(
-              color: currentTheme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(
-                color: currentTheme.colorScheme.outline.withValues(alpha: 0.4),
               ),
             ),
-            child: Column(children: widget.children),
-          ),
-        ),
-        ],
+
+            // ── Animated children ────────────────────────────────────────────────
+            SizeTransition(
+              sizeFactor: _expandAnimation,
+              child: Container(
+                margin: EdgeInsets.only(left: 16.w, right: 8.w, bottom: 4.h),
+                decoration: BoxDecoration(
+                  color: currentTheme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(
+                    color: currentTheme.colorScheme.outline.withValues(
+                      alpha: 0.4,
+                    ),
+                  ),
+                ),
+                child: Column(children: widget.children),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -407,14 +446,22 @@ class _SubMenuItem extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Text(flag, style: TextStyle(fontSize: 14.sp, color: currentTheme.colorScheme.onSurface)),
+                Text(
+                  flag,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: currentTheme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
                     label,
                     style: TextStyle(
                       fontSize: 13.sp,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w400,
                       color: isSelected
                           ? currentTheme.colorScheme.primary
                           : currentTheme.colorScheme.onSurface,

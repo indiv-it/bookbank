@@ -58,7 +58,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "lib/core/icons/Logo_V.3.3.png"
+  image_path: "lib/core/icons/BookBank_Logo 1.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,6 +70,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - lib/core/icons/
+    - lib/core/images/
 
   fonts:
     - family: ADLaMDisplay
