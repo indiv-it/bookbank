@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
 import 'package:bookbank/features/onboarding/providers/onboarding_provider.dart';
 import 'package:bookbank/Widgets/navigation_bar.dart';
+import 'package:bookbank/features/menu/about/privacy_policy_dialog.dart';
 import 'onboarding_page_2.dart';
 
 // ─── Onboarding Wrapper ───────────────────────────────────────────────────────
@@ -257,7 +258,12 @@ class _OnboardingPage1State extends State<OnboardingPage1>
 
                       // Privacy Policy
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => PrivacyPolicyDialog(),
+                          );
+                        },
                         child: Text(
                           loc.privacyPolicy,
                           style: TextStyle(

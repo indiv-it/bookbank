@@ -97,170 +97,198 @@ Widget recondListView(IconData icon, String title, String data) {
 Widget buildRecordRow(
   BuildContext context,
   MyData item,
-  void Function(String) onMenuAction,
-) {
+  void Function(String) onMenuAction, {
+  bool isMultiSelectMode = false,
+  bool isSelected = false,
+  VoidCallback? onTap,
+  VoidCallback? onLongPress,
+}) {
   final theme = Theme.of(context);
   final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
   final loc = locProvider.loc;
   final isTransfer = item.moneyType == 'transfer';
   final isIncome = item.moneyType == 'income';
 
-  final fromLabel = item.moneyList == 'bank' ? loc.bank : loc.cash;
-  final toLabel = item.moneyGroup == 'bank' ? loc.bank : loc.cash;
+  // Group transfer: moneyList = source groupId, moneyGroup = target groupId
+  // Legacy bank/cash transfer: moneyList and moneyGroup are 'bank' or 'cash'
+  final fromLabel = (item.moneyList == 'bank')
+      ? loc.bank
+      : loc.cash;
+  final toLabel = (item.moneyGroup == 'bank')
+      ? loc.bank
+      : loc.cash;
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: isTransfer
-                      ? AppColors.amber
-                      : (isIncome ? AppColors.green : AppColors.red),
-                  width: 1,
+  return GestureDetector(
+    onTap: onTap,
+    onLongPress: onLongPress,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: isSelected 
+            ? theme.colorScheme.onSurface.withValues(alpha: 0.1) 
+            : theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              if (isMultiSelectMode) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+                  child: Icon(
+                    isSelected ? Icons.check_circle : Icons.circle_outlined,
+                    size: 24,
+                  ),
                 ),
-                color: isIncome
-                    ? AppColors.green.withValues(alpha: 0.3)
-                    : isTransfer
-                    ? AppColors.amber.withValues(alpha: 0.3)
-                    : AppColors.red.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                isIncome
-                    ? Icons.trending_up
-                    : isTransfer
-                    ? Icons.swap_horiz
-                    : Icons.trending_down,
-                size: 16,
-                color: isTransfer
-                    ? AppColors.amber
-                    : (isIncome ? AppColors.green : AppColors.red),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    locProvider.formatAmount(item.amount.toDouble()),
-                    style: TextStyle(
-                      fontSize: AppSize.s - 1,
-                      color: theme.colorScheme.onSurface,
+              ] else ...[
+                Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: isTransfer
+                          ? AppColors.amber
+                          : (isIncome ? AppColors.green : AppColors.red),
+                      width: 1,
                     ),
+                    color: isIncome
+                        ? AppColors.green.withValues(alpha: 0.3)
+                        : isTransfer
+                        ? AppColors.amber.withValues(alpha: 0.3)
+                        : AppColors.red.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  Text(
-                    isTransfer ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? '')),
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  child: Icon(
+                    isIncome
+                        ? Icons.trending_up
+                        : isTransfer
+                        ? Icons.swap_horiz
+                        : Icons.trending_down,
+                    size: 16,
+                    color: isTransfer
+                        ? AppColors.amber
+                        : (isIncome ? AppColors.green : AppColors.red),
+                  ),
+                ),
+                const SizedBox(width: 10),
+              ],
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      locProvider.formatAmount(item.amount.toDouble()),
+                      style: TextStyle(
+                        fontSize: AppSize.s - 1,
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                isTransfer
-                    ? '$fromLabel → $toLabel'
-                    : isIncome
-                    ? loc.income
-                    : loc.expense,
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.grey,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                formatDisplayDate(item.date),
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
-                textAlign: TextAlign.end,
-              ),
-            ),
-            PopupMenuButton<String>(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.more_horiz,
-                size: 18,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-              color: theme.colorScheme.surface,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: theme.colorScheme.outline),
-              ),
-              onSelected: onMenuAction,
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'view',
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.visibility, size: AppSize.l),
-                      const SizedBox(width: 8),
-                      Text(loc.view, style: TextStyle(fontSize: AppSize.s)),
-                    ],
-                  ),
-                ),
-                if (!isTransfer) ...[
-                  PopupMenuItem(
-                    value: 'edit',
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.edit, size: AppSize.l),
-                        const SizedBox(width: 8),
-                        Text(loc.edit, style: TextStyle(fontSize: AppSize.s)),
-                      ],
+                    Text(
+                      isTransfer ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? '')),
+                      style: TextStyle(
+                        fontSize: 9.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  isTransfer
+                      ? (item.moneyList != 'bank' && item.moneyList != 'cash')
+                          ? loc.transferMoney
+                          : '$fromLabel → $toLabel'
+                      : isIncome
+                      ? loc.income
+                      : loc.expense,
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: AppColors.grey,
                   ),
-                ],
-                PopupMenuItem(
-                  value: 'delete',
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.delete, color: AppColors.red, size: AppSize.l),
-                      const SizedBox(width: 8),
-                      Text(
-                        loc.delete,
-                        style: TextStyle(
-                          color: AppColors.red,
-                          fontSize: AppSize.s,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  formatDisplayDate(item.date),
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+              if (!isMultiSelectMode)
+                PopupMenuButton<String>(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.more_horiz,
+                    size: 18,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  color: theme.colorScheme.surface,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
+                  ),
+                  onSelected: onMenuAction,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'view',
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.visibility, size: AppSize.l),
+                          const SizedBox(width: 8),
+                          Text(loc.view, style: TextStyle(fontSize: AppSize.s)),
+                        ],
+                      ),
+                    ),
+                    if (!isTransfer) ...[
+                      PopupMenuItem(
+                        value: 'edit',
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.edit, size: AppSize.l),
+                            const SizedBox(width: 8),
+                            Text(loc.edit, style: TextStyle(fontSize: AppSize.s)),
+                          ],
                         ),
                       ),
                     ],
-                  ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.delete, color: AppColors.red, size: AppSize.l),
+                          const SizedBox(width: 8),
+                          Text(
+                            loc.delete,
+                            style: TextStyle(
+                              color: AppColors.red,
+                              fontSize: AppSize.s,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      const Divider(height: 1),
-    ],
+        const Divider(height: 1),
+      ],
+    ),
   );
 }
 

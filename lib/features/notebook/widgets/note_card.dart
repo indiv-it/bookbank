@@ -10,6 +10,9 @@ class NoteCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final VoidCallback onTogglePin;
+  final bool isMultiSelectMode;
+  final bool isSelected;
+  final VoidCallback? onToggleSelection;
 
   const NoteCard({
     super.key,
@@ -18,6 +21,9 @@ class NoteCard extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onTogglePin,
+    this.isMultiSelectMode = false,
+    this.isSelected = false,
+    this.onToggleSelection,
   });
 
   @override
@@ -26,22 +32,26 @@ class NoteCard extends StatelessWidget {
     final loc = context.watch<LocalizationProvider>().loc;
     final cardColor = Color(note.colorValue);
 
-    return Card(
-      elevation: 1,
-      margin: EdgeInsets.only(bottom: 12.h),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
-        side: BorderSide(
-          color: note.isPinned
-              ? theme.colorScheme.onSurface.withValues(alpha: 0.8)
-              : theme.colorScheme.outline,
-          width: note.isPinned ? 1.5 : 1.0,
+    return GestureDetector(
+      onTap: isMultiSelectMode ? onToggleSelection : onTap,
+      onLongPress: isMultiSelectMode ? null : onToggleSelection,
+      child: Card(
+        elevation: 1,
+        margin: EdgeInsets.only(bottom: 12.h),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          side: BorderSide(
+            color: isSelected
+                ? theme.colorScheme.onSurface.withValues(alpha: 0.8)
+                : note.isPinned
+                    ? theme.colorScheme.onSurface.withValues(alpha: 0.8)
+                    : theme.colorScheme.outline,
+            width: isSelected ? 2.0 : (note.isPinned ? 1.5 : 1.0),
+          ),
         ),
-      ),
-      color: theme.colorScheme.surface,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16.r),
+        color: isSelected 
+            ? theme.colorScheme.onSurface.withValues(alpha: 0.1)
+            : theme.colorScheme.surface,
         child: Padding(
           padding: EdgeInsets.all(14.w),
           child: Column(
@@ -50,83 +60,127 @@ class NoteCard extends StatelessWidget {
               // Header row (Color bar, Category tag, Pin, Actions)
               Row(
                 children: [
-                  Container(
-                    width: 12.w,
-                    height: 12.h,
-                    decoration: BoxDecoration(
-                      color: cardColor,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: cardColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      note.category,
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface,
+                  if (isMultiSelectMode) ...[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      child: Icon(
+                        isSelected ? Icons.check_circle : Icons.circle_outlined,
+                        size: 24.sp,
+                        color: isSelected ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: Icon(
-                      note.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
-                      size: 18.sp,
-                      color: note.isPinned
-                          ? theme.colorScheme.onSurface
-                          : theme.colorScheme.onSurfaceVariant,
+                    Container(
+                      width: 12.w,
+                      height: 12.h,
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                    constraints: const BoxConstraints(),
-                    padding: EdgeInsets.all(4.w),
-                    onPressed: onTogglePin,
-                    tooltip: note.isPinned ? loc.unpin : loc.pin,
-                  ),
-                  SizedBox(width: 4.w),
-                  PopupMenuButton<String>(
-                    icon: Icon(
-                      Icons.more_vert,
-                      size: 18.sp,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                    constraints: const BoxConstraints(),
-                    padding: EdgeInsets.all(4.w),
-                    onSelected: (value) {
-                      if (value == 'edit') {
-                        onEdit();
-                      } else if (value == 'delete') {
-                        onDelete();
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit_outlined, size: 16.sp),
-                            SizedBox(width: 8.w),
-                            Text(loc.edit, style: TextStyle(fontSize: 13.sp)),
-                          ],
+                    SizedBox(width: 8.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      decoration: BoxDecoration(
+                        color: cardColor.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        note.category == 'General'
+                            ? loc.categoryGeneral
+                            : note.category == 'Finance'
+                            ? loc.categoryFinance
+                            : loc.categoryGoals,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete_outline, color: theme.colorScheme.error, size: 16.sp),
-                            SizedBox(width: 8.w),
-                            Text(loc.delete, style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
-                          ],
+                    ),
+                    const Spacer(),
+                  ] else ...[
+                    Container(
+                      width: 12.w,
+                      height: 12.h,
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      decoration: BoxDecoration(
+                        color: cardColor.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        note.category == 'General'
+                            ? loc.categoryGeneral
+                            : note.category == 'Finance'
+                            ? loc.categoryFinance
+                            : loc.categoryGoals,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: Icon(
+                        note.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                        size: 18.sp,
+                        color: note.isPinned
+                            ? theme.colorScheme.onSurface
+                            : theme.colorScheme.onSurfaceVariant,
+                      ),
+                      constraints: const BoxConstraints(),
+                      padding: EdgeInsets.all(4.w),
+                      onPressed: onTogglePin,
+                      tooltip: note.isPinned ? loc.unpin : loc.pin,
+                    ),
+                    SizedBox(width: 4.w),
+                    PopupMenuButton<String>(
+                      icon: Icon(
+                        Icons.more_vert,
+                        size: 18.sp,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      constraints: const BoxConstraints(),
+                      padding: EdgeInsets.all(4.w),
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          onEdit();
+                        } else if (value == 'delete') {
+                          onDelete();
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit_outlined, size: 16.sp),
+                              SizedBox(width: 8.w),
+                              Text(loc.edit, style: TextStyle(fontSize: 13.sp)),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete_outline, color: theme.colorScheme.error, size: 16.sp),
+                              SizedBox(width: 8.w),
+                              Text(loc.delete, style: TextStyle(fontSize: 13.sp, color: theme.colorScheme.error)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
               SizedBox(height: 10.h),

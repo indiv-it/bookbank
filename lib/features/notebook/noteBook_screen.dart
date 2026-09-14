@@ -18,6 +18,9 @@ class NoteBookScreen extends StatefulWidget {
 }
 
 class _NoteBookScreenState extends State<NoteBookScreen> {
+  final Set<int> _selectedIds = {};
+  bool _isMultiSelectMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -120,6 +123,66 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
         ],
       ),
     );
+  }
+
+  void _toggleSelection(int id) {
+    setState(() {
+      if (_selectedIds.contains(id)) {
+        _selectedIds.remove(id);
+        if (_selectedIds.isEmpty) {
+          _isMultiSelectMode = false;
+        }
+      } else {
+        _selectedIds.add(id);
+        _isMultiSelectMode = true;
+      }
+    });
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedIds.clear();
+      _isMultiSelectMode = false;
+    });
+  }
+
+  Future<void> _deleteSelectedNotes() async {
+    if (_selectedIds.isEmpty) return;
+
+    final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+    final loc = Provider.of<LocalizationProvider>(context, listen: false).loc;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        ),
+        title: Text(loc.delete),
+        content: Text('${loc.delete} ${_selectedIds.length} ${loc.notes}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(loc.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              loc.delete,
+              style: TextStyle(color: AppColors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      for (final id in _selectedIds) {
+        await noteProvider.deleteNote(id);
+      }
+      _clearSelection();
+    }
   }
 
   void _showNoteDetailDialog(BuildContext context, NoteModel note) {
@@ -352,8 +415,54 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // Search & Category Filters
-              const NoteSearchBar(),
+              // Search & Category Filters or Selection Menu
+              if (_isMultiSelectMode)
+                Container(
+                  height: 48.h,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.r),
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${_selectedIds.length} ${loc.selected}',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: _clearSelection,
+                        borderRadius: BorderRadius.circular(20.r),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.w),
+                          child: Icon(
+                            Icons.close,
+                            size: 20.sp,
+                            color: theme.scaffoldBackgroundColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      InkWell(
+                        onTap: _deleteSelectedNotes,
+                        borderRadius: BorderRadius.circular(20.r),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.w),
+                          child: Icon(
+                            Icons.delete,
+                            size: 20.sp,
+                            color: AppColors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                const NoteSearchBar(),
               SizedBox(height: 16.h),
 
               // Note Content List /Grid View
@@ -385,6 +494,9 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                               onDelete: () =>
                                   _showDeleteConfirmation(context, note),
                               onTogglePin: () => noteProvider.togglePin(note),
+                              isMultiSelectMode: _isMultiSelectMode,
+                              isSelected: _selectedIds.contains(note.id ?? 0),
+                              onToggleSelection: () => _toggleSelection(note.id ?? 0),
                             );
                           },
                         ),

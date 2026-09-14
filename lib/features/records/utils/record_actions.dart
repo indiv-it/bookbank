@@ -21,8 +21,14 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
   final locProvider = context.read<LocalizationProvider>();
   final loc = locProvider.loc;
 
-  final fromLabel = item.moneyList == 'bank' ? loc.bank : loc.cash;
-  final toLabel = item.moneyGroup == 'bank' ? loc.bank : loc.cash;
+  // Group transfer: moneyList = source groupId, moneyGroup = target groupId
+  // Legacy bank/cash transfer: moneyList and moneyGroup are 'bank' or 'cash'
+  final fromLabel = (item.moneyList == 'bank')
+      ? loc.bank
+      : loc.cash;
+  final toLabel = (item.moneyGroup == 'bank')
+      ? loc.bank
+      : loc.cash;
 
   // Get group settings to display dynamic group name
   final groupSettings = context.read<GroupSettingsProvider>().groupSettings;
@@ -118,7 +124,9 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
                 : Icons.account_balance_wallet_rounded,
             loc.moneyPositionLabel,
             isTransfer
-                ? '$fromLabel → $toLabel'
+                ? (item.moneyList == 'bank' || item.moneyList == 'cash')
+                    ? '$fromLabel → $toLabel'
+                    : ''
                 : item.moneyList == 'bank'
                 ? loc.bank
                 : loc.cash,
@@ -127,7 +135,11 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
           recondListView(
             Icons.group_outlined,
             loc.group,
-            item.moneyType == 'transfer' ? '' : getGroupName(item.moneyGroup),
+            isTransfer
+                ? (item.moneyList != 'bank' && item.moneyList != 'cash')
+                    ? '${getGroupName(item.moneyList)} → ${getGroupName(item.moneyGroup)}'
+                    : ''
+                : getGroupName(item.moneyGroup),
           ),
           const SizedBox(height: 8),
           recondListView(Icons.date_range, loc.dateLabel, item.date.toString()),

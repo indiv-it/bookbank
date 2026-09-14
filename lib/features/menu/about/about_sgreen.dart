@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
+import 'privacy_policy_dialog.dart';
 
 class AboutSgreen extends StatelessWidget {
   const AboutSgreen({super.key});
@@ -13,8 +14,8 @@ class AboutSgreen extends StatelessWidget {
     final loc = context.watch<LocalizationProvider>().loc;
 
     return Container(
-      width: 400,
-      constraints: BoxConstraints(maxHeight: 600),
+      width: 500.w,
+      constraints: BoxConstraints(maxHeight: 650.h),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -133,6 +134,24 @@ class AboutSgreen extends StatelessWidget {
               backgroundColor: theme.colorScheme.onSurface,
             ),
             child: Text(loc.cancel),
+          ),
+
+          TextButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => PrivacyPolicyDialog(),
+              );
+            },
+            child: Center(
+              child: Text(
+                loc.privacyPolicy,
+                style: TextStyle(
+                  fontSize: AppSize.sm.sp,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
           ),
         ],
       ),

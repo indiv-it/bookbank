@@ -16,7 +16,8 @@ class AppLocalizations {
       'change_currency': 'Change Currency',
       'about': 'About',
       'app_version': 'Version',
-      'app_description': '        An app for tracking your income and expenses that also shows spending trends, helping you plan your finances more effectively. Regarding security, your data is stored exclusively on your device.',
+      'app_description':
+          '        An app for tracking your income and expenses that also shows spending trends, helping you plan your finances more effectively. Regarding security, your data is stored exclusively on your device.',
       'developer': 'Developer',
 
       // Language names
@@ -56,6 +57,8 @@ class AppLocalizations {
       'all': 'All',
       'search': 'Search',
       'no_records': 'No records found',
+      'selected': 'selected',
+      'records': 'records',
       'amount': 'Amount',
       'position': 'Position',
       'date': 'Date',
@@ -86,6 +89,7 @@ class AppLocalizations {
       'notes_subtitle': 'Personal notes and reminders',
       'add': 'Add',
       'items': 'Items',
+      'notes': 'notes',
       'recorded_on': 'Recorded on',
       'confirm_delete': 'Confirm Delete',
       'confirm_delete_note': 'Are you sure you want to delete the note',
@@ -172,15 +176,45 @@ class AppLocalizations {
 
       // Onboarding
       'welcome_title': 'Welcome to the BookBank app.',
-      'welcome_subtitle': 'Conveniently record your income and expenses, and view detailed spending statistics.',
+      'welcome_subtitle':
+          'Conveniently record your income and expenses, and view detailed spending statistics.',
       'next': 'Next',
       'select_currency': 'Select your currency',
       'start': 'Start',
       'select_language': 'Select Language',
       'privacy_policy': 'Privacy Policy',
+      'privacy_policy_title': 'Privacy Policy',
+      'privacy_policy_content': '''
+Data Collection:
+We collect minimal data necessary for the app to function, including your financial records and app settings.
+
+Data Storage:
+All your data is stored locally on your device. We do not store any personal information on external servers.
+
+Data Usage:
+Your data is used solely for the purpose of tracking your finances and providing app functionality.
+
+Data Sharing:
+We do not share your personal data with any third parties.
+
+Security:
+We implement reasonable security measures to protect your data, but please note that no method of transmission over the internet is 100% secure.
+
+Contact:
+If you have any questions about this privacy policy, please contact the developer.
+      ''',
+      'privacy_policy_close': 'Close',
       'currency_baht_display': '฿ - Baht (THB)',
       'currency_dollar_display': '\$ - Dollar (USD)',
       'currency_yuan_display': '¥ - Yuan (CNY)',
+
+      // transfer
+      'transfer_amount_not_enough': 'Insufficient funds',
+      'transfer_to': 'Transfer to',
+      'transfer_title': 'Transfer money between groups',
+      'transfer_remaining': 'Remaining balance',
+      'transfer_money': 'Transfer money',
+      'transfer_success': 'Transfer money success',
     },
 
     // Thai
@@ -192,7 +226,8 @@ class AppLocalizations {
       'change_currency': 'เปลี่ยนสกุลเงิน',
       'about': 'เกี่ยวกับ',
       'app_version': 'เวอร์ชั่น',
-      'app_description': '        แอปพลิเคชันจัดการการประวัติรายรับ-รายจ่าย พร้อมบอกแนวโน้มการใช้จ่ายช้วยให้คุณสามารถวางแผนการเงินได้ดีขึ้น ในด้านความปลอดภัย เราได้จัดการข้อมูลโดยการเก็บไว้ในเครื่องของคุณเท่านั้น',
+      'app_description':
+          '        แอปพลิเคชันจัดการการประวัติรายรับ-รายจ่าย พร้อมบอกแนวโน้มการใช้จ่ายช้วยให้คุณสามารถวางแผนการเงินได้ดีขึ้น ในด้านความปลอดภัย เราได้จัดการข้อมูลโดยการเก็บไว้ในเครื่องของคุณเท่านั้น',
       'developer': 'ผู้พัฒนา',
 
       // Language names
@@ -232,6 +267,8 @@ class AppLocalizations {
       'all': 'ทั้งหมด',
       'search': 'ค้นหา',
       'no_records': 'ไม่พบรายการ',
+      'selected': 'รายการที่เลือก',
+      'records': 'รายการ',
       'amount': 'จำนวนเงิน',
       'position': 'ตำแหน่ง',
       'date': 'วันที่',
@@ -262,12 +299,14 @@ class AppLocalizations {
       'notes_subtitle': 'บันทึกและการแจ้งเตือนส่วนตัว',
       'add': 'เพิ่ม',
       'items': 'รายการ',
+      'notes': 'บันทึก',
       'recorded_on': 'บันทึกเมื่อ',
       'confirm_delete': 'ยืนยันการลบ',
       'confirm_delete_note': 'คุณแน่ใจหรือไม่ว่าต้องการลบโน้ต',
       'note_deleted': 'ลบโน้ตสำเร็จ',
       'noRecord': 'ไม่พบรายการ',
-      'addNotePrompt': 'เริ่มบันทึกความทรงจำหรือบันทึกสำคัญได้ง่ายๆ โดยการคลิกที่ปุ่มเพิ่มโน้ตด้านล่าง',
+      'addNotePrompt':
+          'เริ่มบันทึกความทรงจำหรือบันทึกสำคัญได้ง่ายๆ โดยการคลิกที่ปุ่มเพิ่มโน้ตด้านล่าง',
 
       // Action feedback
       'added_success': 'เพิ่มสำเร็จ',
@@ -347,15 +386,45 @@ class AppLocalizations {
 
       // Onboarding
       'welcome_title': 'ยินดีต้อนรับสู่แอป BookBank',
-      'welcome_subtitle': 'บันทึกรายรับและรายจ่ายได้อย่างสะดวก และดูสถิติการใช้จ่ายโดยละเอียด',
+      'welcome_subtitle':
+          'บันทึกรายรับและรายจ่ายได้อย่างสะดวก และดูสถิติการใช้จ่ายโดยละเอียด',
       'next': 'ถัดไป',
       'select_currency': 'เลือกสกุลเงินของคุณ',
       'start': 'เริ่มต้น',
       'select_language': 'เลือกภาษา',
       'privacy_policy': 'นโยบายความเป็นส่วนตัว',
+      'privacy_policy_title': 'นโยบายความเป็นส่วนตัว',
+      'privacy_policy_content': '''
+การเก็บข้อมูล:
+เราเก็บข้อมูลขั้นต่ำที่จำเป็นสำหรับการทำงานของแอป รวมถึงบันทึกทางการเงินและการตั้งค่าแอปของคุณ
+
+การจัดเก็บข้อมูล:
+ข้อมูลทั้งหมดของคุณถูกจัดเก็บในเครื่องของคุณ เราไม่ได้จัดเก็บข้อมูลส่วนบุคคลใดๆ บนเซิร์ฟเวอร์ภายนอก
+
+การใช้ข้อมูล:
+ข้อมูลของคุณถูกใช้เพื่อการติดตามการเงินและให้บริการฟังก์ชันแอปเท่านั้น
+
+การแบ่งปันข้อมูล:
+เราไม่ได้แบ่งปันข้อมูลส่วนบุคคลของคุณกับบุคคลภายนอกใดๆ
+
+ความปลอดภัย:
+เราใช้มาตรการความปลอดภัยที่เหมาะสมเพื่อปกป้องข้อมูลของคุณ แต่โปรดทราบว่าไม่มีวิธีการส่งข้อมูลผ่านอินเทอร์เน็ตที่ปลอดภัย 100%
+
+ติดต่อ:
+หากคุณมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัวนี้ โปรดติดต่อผู้พัฒนา
+      ''',
+      'privacy_policy_close': 'ปิด',
       'currency_baht_display': '฿ - บาท (THB)',
       'currency_dollar_display': '\$ - ดอลลาร์ (USD)',
       'currency_yuan_display': '¥ - หยวน (CNY)',
+
+      // transfer
+      'transfer_amount_not_enough': 'ยอดเงินไม่พอ',
+      'transfer_to': 'ย้ายไป',
+      'transfer_title': 'ย้ายเงินระหว่างหมวดหมู่',
+      'transfer_remaining': 'ยอดคงเหลือ',
+      'transfer_money': 'ย้ายเงิน',
+      'transfer_success': 'ย้ายเงินสำเร็จ',
     },
 
     // Chinese (Simplified)
@@ -367,7 +436,8 @@ class AppLocalizations {
       'change_currency': '更改货币',
       'about': '关于',
       'app_version': '版本',
-      'app_description': '        款收支记账应用，可展示消费趋势，助您更高效地规划财务。在安全性方面，您的数据仅存储于您的设备中',
+      'app_description':
+          '        款收支记账应用，可展示消费趋势，助您更高效地规划财务。在安全性方面，您的数据仅存储于您的设备中',
       'developer': '开发者',
 
       // Language names
@@ -407,6 +477,8 @@ class AppLocalizations {
       'all': '全部',
       'search': '搜索',
       'no_records': '未找到记录',
+      'selected': '已选择',
+      'records': '条记录',
       'amount': '金额',
       'position': '位置',
       'date': '日期',
@@ -437,6 +509,7 @@ class AppLocalizations {
       'notes_subtitle': '个人笔记和提醒',
       'add': '添加',
       'items': '条',
+      'notes': '笔记',
       'recorded_on': '记录于',
       'confirm_delete': '确认删除',
       'confirm_delete_note': '您确定要删除笔记吗',
@@ -528,9 +601,38 @@ class AppLocalizations {
       'start': '开始',
       'select_language': '选择语言',
       'privacy_policy': '隐私政策',
+      'privacy_policy_title': '隐私政策',
+      'privacy_policy_content': '''
+数据收集：
+我们收集应用程序运行所需的最少数据，包括您的财务记录和应用程序设置。
+
+数据存储：
+您的所有数据都存储在您的设备本地。我们不会在外部服务器上存储任何个人信息。
+
+数据使用：
+您的数据仅用于跟踪您的财务状况和提供应用程序功能。
+
+数据共享：
+我们不会与任何第三方共享您的个人数据。
+
+安全：
+我们采取合理的安全措施来保护您的数据，但请注意，没有任何互联网传输方法是100%安全的。
+
+联系：
+如果您对此隐私政策有任何疑问，请联系开发者。
+      ''',
+      'privacy_policy_close': '关闭',
       'currency_baht_display': '฿ - 泰铢 (THB)',
       'currency_dollar_display': '\$ - 美元 (USD)',
       'currency_yuan_display': '¥ - 人民币 (CNY)',
+
+      // transfer
+      'transfer_amount_not_enough': '余额不足',
+      'transfer_to': '转到',
+      'transfer_title': '转账',
+      'transfer_remaining': '还剩下',
+      'transfer_money': '转账',
+      'transfer_success': '转账成功',
     },
   };
 
@@ -582,6 +684,8 @@ class AppLocalizations {
   String get all => translate('all');
   String get search => translate('search');
   String get noRecords => translate('no_records');
+  String get selected => translate('selected');
+  String get records => translate('records');
   String get amount => translate('amount');
   String get position => translate('position');
   String get date => translate('date');
@@ -608,6 +712,7 @@ class AppLocalizations {
   String get notesSubtitle => translate('notes_subtitle');
   String get add => translate('add');
   String get items => translate('items');
+  String get notes => translate('notes');
   String get recordedOn => translate('recorded_on');
   String get confirmDelete => translate('confirm_delete');
   String get confirmDeleteNote => translate('confirm_delete_note');
@@ -684,7 +789,17 @@ class AppLocalizations {
   String get start => translate('start');
   String get selectLanguage => translate('select_language');
   String get privacyPolicy => translate('privacy_policy');
+  String get privacyPolicyTitle => translate('privacy_policy_title');
+  String get privacyPolicyContent => translate('privacy_policy_content');
+  String get privacyPolicyClose => translate('privacy_policy_close');
   String get currencyBahtDisplay => translate('currency_baht_display');
   String get currencyDollarDisplay => translate('currency_dollar_display');
   String get currencyYuanDisplay => translate('currency_yuan_display');
+  // transfer
+  String get transferAmountNotEnough => translate('transfer_amount_not_enough');
+  String get transferTo => translate('transfer_to');
+  String get transferTitle => translate('transfer_title');
+  String get transferRemaining => translate('transfer_remaining');
+  String get transferMoney => translate('transfer_money');
+  String get transferSuccess => translate('transfer_success');
 }

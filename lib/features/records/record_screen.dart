@@ -27,6 +27,8 @@ class _RecordScreenState extends State<RecordScreen> {
   bool _isLoading = true;
 
   final TextEditingController _searchController = TextEditingController();
+  final Set<int> _selectedIds = {};
+  bool _isMultiSelectMode = false;
 
   @override
   void initState() {
@@ -123,6 +125,67 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
+  void _toggleSelection(int id) {
+    setState(() {
+      if (_selectedIds.contains(id)) {
+        _selectedIds.remove(id);
+        if (_selectedIds.isEmpty) {
+          _isMultiSelectMode = false;
+        }
+      } else {
+        _selectedIds.add(id);
+        _isMultiSelectMode = true;
+      }
+    });
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedIds.clear();
+      _isMultiSelectMode = false;
+    });
+  }
+
+  Future<void> _deleteSelectedRecords() async {
+    if (_selectedIds.isEmpty) return;
+
+    final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
+    final loc = locProvider.loc;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        ),
+        title: Text(loc.delete),
+        content: Text('${loc.delete} ${_selectedIds.length} ${loc.records}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(loc.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              loc.delete,
+              style: TextStyle(color: AppColors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      for (final id in _selectedIds) {
+        await DatabaseHelper.instance.deleteData(id);
+      }
+      _clearSelection();
+      await _loadData();
+    }
+  }
+
   Widget _buildFilterTab({
     required RecordFilter value,
     required IconData icon,
@@ -139,7 +202,15 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Widget _buildRecordRow(MyData item) {
-    return buildRecordRow(context, item, (action) => _handleMenuAction(action, item));
+    return buildRecordRow(
+      context,
+      item,
+      (action) => _handleMenuAction(action, item),
+      isMultiSelectMode: _isMultiSelectMode,
+      isSelected: _selectedIds.contains(item.id ?? 0),
+      onTap: () => _toggleSelection(item.id ?? 0),
+      onLongPress: () => _toggleSelection(item.id ?? 0),
+    );
   }
 
   @override
@@ -230,128 +301,174 @@ class _RecordScreenState extends State<RecordScreen> {
                       ),
                     ),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: 48.h,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
+                    if (_isMultiSelectMode)
+                      Container(
+                        height: 48.h,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.r),
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              '${_selectedIds.length} ${loc.selected}',
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: theme.scaffoldBackgroundColor,
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: theme.colorScheme.outline),
-                              borderRadius: BorderRadius.circular(50.r),
-                              color: theme.colorScheme.surface,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.search,
+                            const Spacer(),
+                            InkWell(
+                              onTap: _clearSelection,
+                              borderRadius: BorderRadius.circular(20.r),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Icon(
+                                  Icons.close,
                                   size: 20.sp,
-                                  color: theme.iconTheme.color,
+                                  color: theme.scaffoldBackgroundColor,
                                 ),
-                                SizedBox(width: 8.w),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _searchController,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      fontSize: 12.sp,
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: loc.search,
-                                      hintStyle: textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onSurface
-                                            .withValues(alpha: 0.5),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            InkWell(
+                              onTap: _deleteSelectedRecords,
+                              borderRadius: BorderRadius.circular(20.r),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 20.sp,
+                                  color: AppColors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 48.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: theme.colorScheme.outline),
+                                borderRadius: BorderRadius.circular(50.r),
+                                color: theme.colorScheme.surface,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    size: 20.sp,
+                                    color: theme.iconTheme.color,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _searchController,
+                                      style: textTheme.bodySmall?.copyWith(
                                         fontSize: 12.sp,
                                       ),
-                                      border: InputBorder.none,
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.zero,
+                                      decoration: InputDecoration(
+                                        hintText: loc.search,
+                                        hintStyle: textTheme.bodySmall?.copyWith(
+                                          color: theme.colorScheme.onSurface
+                                              .withValues(alpha: 0.5),
+                                          fontSize: 12.sp,
+                                        ),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                      ),
+                                      onChanged: (_) => setState(() {}),
                                     ),
-                                    onChanged: (_) => setState(() {}),
                                   ),
+                                  if (_searchController.text.isNotEmpty)
+                                    GestureDetector(
+                                      onTap: () {
+                                        _searchController.clear();
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 18.sp,
+                                        color: theme.colorScheme.onSurface
+                                            .withValues(alpha: 0.5),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Flexible(
+                            child: Container(
+                              height: 48.h,
+                              width: 150.w,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 14.w,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: _hasDateRange
+                                      ? theme.colorScheme.onSurface
+                                      : theme.colorScheme.outline,
                                 ),
-                                if (_searchController.text.isNotEmpty)
-                                  GestureDetector(
-                                    onTap: () {
-                                      _searchController.clear();
-                                      setState(() {});
-                                    },
+                                borderRadius: BorderRadius.circular(50.r),
+                                color: theme.colorScheme.surface,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: InkWell(
+                                      onTap: _selectDateRange,
+                                      borderRadius: BorderRadius.circular(50.r),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 12.h,
+                                        ),
+                                        child: Text(
+                                          _dateRangeLabel,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textTheme.bodySmall?.copyWith(
+                                            color: _hasDateRange
+                                                ? theme.colorScheme.onSurface
+                                                : theme.colorScheme.onSurface
+                                                      .withValues(alpha: 0.5),
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  InkWell(
+                                    onTap: _hasDateRange
+                                        ? _clearDateFilter
+                                        : _selectDateRange,
+                                    borderRadius: BorderRadius.circular(20.r),
                                     child: Icon(
-                                      Icons.close,
+                                      _hasDateRange
+                                          ? Icons.close
+                                          : Icons.calendar_today,
                                       size: 18.sp,
                                       color: theme.colorScheme.onSurface
                                           .withValues(alpha: 0.5),
                                     ),
                                   ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Flexible(
-                          child: Container(
-                            height: 48.h,
-                            width: 150.w,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 14.w,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: _hasDateRange
-                                    ? theme.colorScheme.onSurface
-                                    : theme.colorScheme.outline,
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(50.r),
-                              color: theme.colorScheme.surface,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: InkWell(
-                                    onTap: _selectDateRange,
-                                    borderRadius: BorderRadius.circular(50.r),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 12.h,
-                                      ),
-                                      child: Text(
-                                        _dateRangeLabel,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: textTheme.bodySmall?.copyWith(
-                                          color: _hasDateRange
-                                              ? theme.colorScheme.onSurface
-                                              : theme.colorScheme.onSurface
-                                                    .withValues(alpha: 0.5),
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 8.w),
-                                InkWell(
-                                  onTap: _hasDateRange
-                                      ? _clearDateFilter
-                                      : _selectDateRange,
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  child: Icon(
-                                    _hasDateRange
-                                        ? Icons.close
-                                        : Icons.calendar_today,
-                                    size: 18.sp,
-                                    color: theme.colorScheme.onSurface
-                                        .withValues(alpha: 0.5),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
                     Expanded(
                       child: Container(

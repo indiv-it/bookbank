@@ -134,9 +134,21 @@ class FinancialCalculations {
     return sumBank() + sumCash();
   }
 
-  // รวมเงินคงเหลือตามกลุ่ม
+  // รวมเงินคงเหลือตามกลุ่ม (รวม group-transfer ด้วย)
   double sumGroup(String group) {
-    return groupIncome(group) - groupExpense(group);
+    double base = groupIncome(group) - groupExpense(group);
+
+    // transfer ออกจาก group นี้ (moneyList = groupId)
+    double transferOut = transactions
+        .where((e) => e.moneyType == 'transfer' && e.moneyList == group)
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
+
+    // transfer เข้า group นี้ (moneyGroup = groupId)
+    double transferIn = transactions
+        .where((e) => e.moneyType == 'transfer' && e.moneyGroup == group)
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
+
+    return base - transferOut + transferIn;
   }
 
   // รวมเงินคงเหลือตามกลุ่มทั้งหมด
